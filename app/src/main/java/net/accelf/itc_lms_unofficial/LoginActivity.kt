@@ -121,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
             .apply()
 
         val lms = lmsClient()
-        lms.getTimeTable()
+        lms.getLog()
             .call(this)
             .subscribe({
                 startActivity(MainActivity.intent(this))

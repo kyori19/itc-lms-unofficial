@@ -22,7 +22,6 @@ fun Context.lmsClient(): LMS {
     return Retrofit.Builder()
         .client(okHttpClient(this))
         .baseUrl(lmsHostUrl)
-        .addConverterFactory(DocumentConverterFactory())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
         .build()
         .create(LMS::class.java)
