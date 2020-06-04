@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">ITC-LMS Unofficial</string>
+
+    <string name="button_start_login">Login to ITC-LMS</string>
+
+    <string name="loading_default">Loading…</string>
+    <string name="loading_check_account">Checking login state…</string>
+
+    <string name="err_default">Something wrong happened!</string>
+    <string name="err_page_not_loaded">Page is not loaded.</string>
+    <string name="err_login_failed">Login failed.</string>
+
+    <string name="snackbar_hint_restart">Back to top page?</string>
+    <string name="snackbar_button_restart">Restart</string>
+    <string name="snackbar_hint_re_login">If this loading screen won\'t close for a long time, maybe id or password is wrong.</string>
+    <string name="snackbar_button_re_login">Retry</string>
+
+    <string name="login_instruction">This application saves only cookies and won\'t save passwords.</string>
+    <string name="login_hint_user_name">Username</string>
+    <string name="login_hint_password">Password</string>
+    <string name="button_login">Login</string>
 </resources>
