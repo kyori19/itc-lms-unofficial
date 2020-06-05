@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">ITC-LMS Unofficial</string>
 
+    <string name="hint_start_login">"Looks like you didn't logged in or the session was expired!\nLogin and enjoy this app now!"</string>
     <string name="button_start_login">Login to ITC-LMS</string>
 
     <string name="loading_default">Loading…</string>
     <string name="loading_check_account">Checking login state…</string>
+    <string name="loading_time_table">Loading timetable…</string>
 
     <string name="err_default">Something wrong happened!</string>
     <string name="err_page_not_loaded">Page is not loaded.</string>
@@ -19,4 +21,6 @@
     <string name="login_hint_user_name">Username</string>
     <string name="login_hint_password">Password</string>
     <string name="button_login">Login</string>
+
+    <string name="course_temp">TEMP</string>
 </resources>
