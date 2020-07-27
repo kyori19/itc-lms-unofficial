@@ -14,7 +14,7 @@ class LoadingFragment(login: Boolean) : ActionableFragment(
     } else {
         ActionableFragment.Companion.ActionType.BACK_TO_MAIN
     },
-    3000L
+    5000L
 ) {
 
     private var loadingText: String? = null
