@@ -11,6 +11,8 @@ open class ActionableFragment(
     private val delayMillis: Long = 0
 ) : Fragment() {
 
+    private var snackbar: Snackbar? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -27,24 +29,38 @@ open class ActionableFragment(
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        snackbar?.dismiss()
+    }
+
     private fun showAction(view: View) {
         when (type) {
             ActionType.BACK_TO_MAIN -> {
-                Snackbar.make(view, R.string.snackbar_hint_restart, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.snackbar_button_restart) {
-                        startActivity(MainActivity.intent(requireContext()))
-                        activity?.finish()
-                    }
-                    .show()
+                snackbar =
+                    Snackbar.make(view, R.string.snackbar_hint_restart, Snackbar.LENGTH_INDEFINITE)
+                        .apply {
+                            setAction(R.string.snackbar_button_restart) {
+                                startActivity(MainActivity.intent(requireContext()))
+                                activity?.finish()
+                            }
+
+                            show()
+                        }
             }
             ActionType.RETRY_LOGIN -> {
-                Snackbar.make(view, R.string.snackbar_hint_re_login, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.snackbar_button_re_login) {
-                        if (activity is LoginActivity) {
-                            (activity as LoginActivity).retryLogin()
+                snackbar =
+                    Snackbar.make(view, R.string.snackbar_hint_re_login, Snackbar.LENGTH_INDEFINITE)
+                        .apply {
+                            setAction(R.string.snackbar_button_re_login) {
+                                if (activity is LoginActivity) {
+                                    (activity as LoginActivity).retryLogin()
+                                }
+                            }
+
+                            show()
                         }
-                    }
-                    .show()
             }
         }
     }
