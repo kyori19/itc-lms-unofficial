@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity
 import net.accelf.itc_lms_unofficial.models.Course
 import net.accelf.itc_lms_unofficial.util.dp
 
@@ -29,6 +30,9 @@ class CoursesAdapter(
 
         if (item != null) {
             holder.apply {
+                root.setOnClickListener { view ->
+                    view.context.startActivity(CourseDetailActivity.intent(view.context, item.id))
+                }
                 cardCourse.apply {
                     cardElevation = 1f.dp
                     strokeWidth = if (item.temp) {
@@ -53,6 +57,7 @@ class CoursesAdapter(
             }
         } else {
             holder.apply {
+                root.setOnClickListener {}
                 cardCourse.apply {
                     cardElevation = 0f.dp
                     strokeWidth = 0.dp
@@ -73,6 +78,7 @@ class CoursesAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val root: View = view
         val textPeriod: TextView = view.findViewById(R.id.textPeriod)
         val cardCourse: MaterialCardView = view.findViewById(R.id.cardCourse)
         val textCourseName: TextView = view.findViewById(R.id.textCourseName)

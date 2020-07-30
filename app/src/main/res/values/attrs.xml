@@ -4,6 +4,14 @@
     <declare-styleable name="AppTheme">
         <attr name="colorTextBehind" format="color" />
         <attr name="colorTemporary" format="color" />
+        <attr name="colorSuccess" format="color" />
+        <attr name="colorWarning" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ExpandableHeaderView">
+        <attr name="text" format="string|reference" />
+        <attr name="iconContentDescription" format="string|reference" />
+        <attr name="targetLayout" format="reference" />
     </declare-styleable>
 
 </resources>

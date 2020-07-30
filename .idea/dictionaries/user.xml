@@ -2,6 +2,10 @@
   <dictionary name="user">
     <words>
       <w>accelf</w>
+      <w>coursedetail</w>
+      <w>idnumber</w>
+      <w>subblock</w>
+      <w>takeresult</w>
     </words>
   </dictionary>
 </component>

@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".coursedetail.CourseDetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textDepartment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@id/textCourseName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Department" />
+
+        <TextView
+            android:id="@+id/textCourseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textDepartment"
+            tools:text="Course Title" />
+
+        <TextView
+            android:id="@+id/textCourseCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginVertical="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/textCourseName"
+            app:layout_constraintStart_toEndOf="@+id/textCourseName"
+            tools:text="123456" />
+
+        <TextView
+            android:id="@+id/textPeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/textCourseName"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="S / MON 4" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerCourseDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_course_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textCourseName"
+            app:targetLayout="@id/expandableCourseDetails"
+            app:text="@string/title_course_details" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableCourseDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerCourseDetails">
+
+            <TextView
+                android:id="@+id/titleTeachersName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_teachers_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/textTeachersName"
+                app:layout_constraintEnd_toStartOf="@id/textTeachersName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textTeachersName" />
+
+            <TextView
+                android:id="@+id/textTeachersName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/titleTeachersName"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Teacher 1, Teacher 2" />
+
+            <TextView
+                android:id="@+id/titleCourseSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_course_summary"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textTeachersName" />
+
+            <TextView
+                android:id="@+id/textCourseSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleCourseSummary"
+                tools:text="The summary of the course will be displayed here.\nIt can be multi lines." />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerNotifies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_notifies"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandableCourseDetails"
+            app:targetLayout="@id/expandableNotifies"
+            app:text="@string/title_notifies" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableNotifies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerNotifies">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listNotifies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_notify" />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerCourseContents"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_course_contents"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandableNotifies"
+            app:targetLayout="@id/expandableCourseContents"
+            app:text="@string/title_course_contents" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableCourseContents"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerCourseContents">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listCourseContents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_course_content" />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerReports"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_reports"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandableCourseContents"
+            app:targetLayout="@id/expandableReports"
+            app:text="@string/title_reports" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableReports"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerReports">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listReports"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_report" />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerMessages"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_messages"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandableReports"
+            app:targetLayout="@id/expandableMessages"
+            app:text="@string/title_messages" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableMessages"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerMessages">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listMessages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_message" />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerAttendances"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_attendances"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandableMessages"
+            app:targetLayout="@id/expandableAttendances"
+            app:text="@string/title_attendances" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableAttendances"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerAttendances">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listAttendances"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_attendance" />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerTests"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_tests"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandableAttendances"
+            app:targetLayout="@id/expandableTests"
+            app:text="@string/title_tests" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableTests"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerTests">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listTests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_test" />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerForums"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_forums"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandableTests"
+            app:targetLayout="@id/expandableForums"
+            app:text="@string/title_forums" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableForums"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerForums">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listForums"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_forum" />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
+            android:id="@+id/headerSurveys"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            app:iconContentDescription="@string/hint_open_surveys"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expandableForums"
+            app:targetLayout="@id/expandableSurveys"
+            app:text="@string/title_surveys" />
+
+        <net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
+            android:id="@+id/expandableSurveys"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerSurveys">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listSurveys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_survey" />
+
+        </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

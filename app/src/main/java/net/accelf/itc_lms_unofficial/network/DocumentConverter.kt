@@ -1,5 +1,6 @@
 package net.accelf.itc_lms_unofficial.network
 
+import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.TimeTable
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
@@ -18,6 +19,7 @@ class DocumentConverterFactory : Converter.Factory() {
     ): Converter<ResponseBody, *>? {
         val baseUri = retrofit.baseUrl().toString()
         return when (type) {
+            CourseDetail::class.java -> CourseDetail.CourseDetailConverter(baseUri)
             TimeTable::class.java -> TimeTable.TimeTableConverter(baseUri)
             else -> null
         }

@@ -7,6 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorTextBehind">@color/grayDarken</item>
         <item name="colorTemporary">@color/yellowDarken</item>
+        <item name="colorSuccess">@color/green</item>
+        <item name="colorError">@color/red</item>
+        <item name="colorWarning">@color/yellowDarken</item>
     </style>
 
 </resources>

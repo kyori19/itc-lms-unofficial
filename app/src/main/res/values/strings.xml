@@ -7,6 +7,7 @@
     <string name="loading_default">Loading…</string>
     <string name="loading_check_account">Checking login state…</string>
     <string name="loading_time_table">Loading timetable…</string>
+    <string name="loading_course_detail">Loading course details…</string>
 
     <string name="err_default">Something wrong happened!</string>
     <string name="err_page_not_loaded">Page is not loaded.</string>
@@ -17,10 +18,70 @@
     <string name="snackbar_hint_re_login">If this loading screen won\'t close for a long time, maybe id or password is wrong.</string>
     <string name="snackbar_button_re_login">Retry</string>
 
+    <string name="button_dialog_cancel">Cancel</string>
+    <string name="button_dialog_close">Close</string>
+    <string name="button_dialog_open">Open</string>
+
     <string name="login_instruction">This application saves only cookies and won\'t save passwords.</string>
     <string name="login_hint_user_name">Username</string>
     <string name="login_hint_password">Password</string>
     <string name="button_login">Login</string>
 
     <string name="course_temp">TEMP</string>
+
+    <string name="dialog_message_open_link">Open this link?\n%s</string>
+    <string name="dialog_message_open_video_unsupported">Sorry, watching video is not supported now.</string>
+    <string name="dialog_title_open_link">Open link</string>
+    <string name="dialog_title_open_video">Watch video</string>
+
+    <string name="hint_icon_file">File</string>
+    <string name="hint_icon_link">Link</string>
+    <string name="hint_icon_video">Video</string>
+
+    <string name="hint_icon_not_submitted">Not submitted</string>
+    <string name="hint_icon_submitted_after_deadline">Submitted after deadline</string>
+    <string name="hint_icon_submitted_in_time">Submitted in time</string>
+
+    <string name="hint_icon_completed">Completed</string>
+    <string name="hint_icon_has_answer">Has answer</string>
+    <string name="hint_icon_waiting_for_answer">Waiting for answer</string>
+
+    <string name="hint_icon_absent">Absent</string>
+    <string name="hint_icon_present">Present</string>
+
+    <string name="hint_icon_not_taken">Not taken</string>
+    <string name="hint_icon_taken">Taken</string>
+    <string name="hint_icon_unknown">Unknown</string>
+
+    <string name="hint_open_attendances">Open attendances</string>
+    <string name="hint_open_course_contents">Open course contents</string>
+    <string name="hint_open_course_details">Open course details</string>
+    <string name="hint_open_forums">Open forums</string>
+    <string name="hint_open_materials">Open materials</string>
+    <string name="hint_open_messages">Open messages</string>
+    <string name="hint_open_notifies">Open notifies</string>
+    <string name="hint_open_reports">Open reports</string>
+    <string name="hint_open_surveys">Open surveys</string>
+    <string name="hint_open_tests">Open tests</string>
+
+    <string name="text_period">%s / %s %d</string>
+    <string name="text_time_span_multi_lines">%s\n~ %s</string>
+
+    <string name="text_message_completed_by">Marked as completed by %s</string>
+    <string name="text_message_got_answer_at">Received an answer at %s</string>
+    <string name="text_message_sent_at">Sent a message at %s</string>
+
+    <string name="title_attendances">Attendances</string>
+    <string name="title_course_contents">Course contents</string>
+    <string name="title_course_details">Course details</string>
+    <string name="title_course_summary">Course summary</string>
+    <string name="title_forums">Forums</string>
+    <string name="title_materials">Materials</string>
+    <string name="title_messages">Messages</string>
+    <string name="title_notifies">Notifies</string>
+    <string name="title_reports">Reports</string>
+    <string name="title_surveys">Surveys</string>
+    <string name="title_teachers_name">Teachers</string>
+    <string name="title_tests">Tests</string>
+
 </resources>

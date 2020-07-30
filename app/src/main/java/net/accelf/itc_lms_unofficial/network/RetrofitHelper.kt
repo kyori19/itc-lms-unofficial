@@ -13,7 +13,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 const val PREF_COOKIE = "cookie"
 
-private val lmsHostUrl = HttpUrl.Builder()
+val lmsHostUrl = HttpUrl.Builder()
     .scheme("https")
     .host("itc-lms.ecc.u-tokyo.ac.jp")
     .build()
