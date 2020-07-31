@@ -6,18 +6,29 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.*
 import androidx.appcompat.app.AppCompatActivity
-import net.accelf.itc_lms_unofficial.network.PREF_COOKIE
-import net.accelf.itc_lms_unofficial.network.lmsClient
+import dagger.hilt.android.AndroidEntryPoint
+import net.accelf.itc_lms_unofficial.di.SavedCookieJar
+import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.call
 import net.accelf.itc_lms_unofficial.util.defaultSharedPreference
 import net.accelf.itc_lms_unofficial.util.replaceErrorFragment
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.util.concurrent.locks.ReentrantLock
+import javax.inject.Inject
 import kotlin.concurrent.thread
 import kotlin.concurrent.withLock
 
+const val PREF_COOKIE = "cookie"
+
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var lms: LMS
+
+    @Inject
+    lateinit var cookieJar: SavedCookieJar
 
     private val waitForScripting = ReentrantLock()
     private val loginRequestFragment by lazy {
@@ -119,8 +130,8 @@ class LoginActivity : AppCompatActivity() {
         defaultSharedPreference.edit()
             .putStringSet(PREF_COOKIE, cookie.split(";").toSet())
             .apply()
+        cookieJar.loadCookies()
 
-        val lms = lmsClient()
         lms.getLog()
             .call(this)
             .subscribe({

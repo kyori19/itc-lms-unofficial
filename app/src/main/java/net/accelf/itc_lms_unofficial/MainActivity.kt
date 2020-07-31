@@ -4,14 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import net.accelf.itc_lms_unofficial.network.lmsClient
+import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.timetable.TimeTableFragment
 import net.accelf.itc_lms_unofficial.util.call
 import net.accelf.itc_lms_unofficial.util.replaceErrorFragment
 import net.accelf.itc_lms_unofficial.util.replaceFragment
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var lms: LMS
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -21,7 +28,6 @@ class MainActivity : AppCompatActivity() {
             content.id
         )
 
-        val lms = lmsClient()
         lms.getLog()
             .call(this)
             .subscribe({

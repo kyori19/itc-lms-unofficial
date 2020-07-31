@@ -3,9 +3,15 @@ package net.accelf.itc_lms_unofficial.network
 import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.TimeTable
+import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Query
+
+val lmsHostUrl = HttpUrl.Builder()
+    .scheme("https")
+    .host("itc-lms.ecc.u-tokyo.ac.jp")
+    .build()
 
 interface LMS {
 
