@@ -3,9 +3,7 @@ package net.accelf.itc_lms_unofficial
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.timetable.TimeTableFragment
 import net.accelf.itc_lms_unofficial.util.call
@@ -14,40 +12,33 @@ import net.accelf.itc_lms_unofficial.util.replaceFragment
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var lms: LMS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        replaceFragment(
-            LoadingFragment.newInstance(getString(R.string.loading_check_account)),
-            content.id
-        )
+        replaceFragment(LoadingFragment.newInstance(getString(R.string.loading_check_account)))
 
         lms.getLog()
             .call(this)
             .subscribe({
                 if (it.contentLength() != 0L) {
-                    replaceFragment(StartLoginFragment.newInstance(), content.id)
+                    replaceFragment(StartLoginFragment.newInstance())
                 } else {
-                    replaceFragment(
-                        LoadingFragment.newInstance(getString(R.string.loading_time_table)),
-                        content.id
-                    )
+                    replaceFragment(LoadingFragment.newInstance(getString(R.string.loading_time_table)))
                     lms.getTimeTable()
                         .call(this)
                         .subscribe({ timeTable ->
-                            replaceFragment(TimeTableFragment.newInstance(timeTable), content.id)
+                            replaceFragment(TimeTableFragment.newInstance(timeTable))
                         }, { throwable ->
-                            replaceErrorFragment(throwable, content.id)
+                            replaceErrorFragment(throwable)
                         })
                 }
             }, { throwable ->
-                replaceErrorFragment(throwable, content.id)
+                replaceErrorFragment(throwable)
             })
     }
 

@@ -2,9 +2,7 @@ package net.accelf.itc_lms_unofficial.coursedetail
 
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_course_detail.*
@@ -15,7 +13,7 @@ import net.accelf.itc_lms_unofficial.util.set
 
 private const val ARG_COURSE_DETAIL = "course_detail"
 
-class CourseDetailFragment : Fragment() {
+class CourseDetailFragment : Fragment(R.layout.fragment_course_detail) {
     private lateinit var courseDetail: CourseDetail
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,13 +21,6 @@ class CourseDetailFragment : Fragment() {
         arguments?.let {
             courseDetail = it.getSerializable(ARG_COURSE_DETAIL) as CourseDetail
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_course_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

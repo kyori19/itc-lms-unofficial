@@ -3,8 +3,8 @@ package net.accelf.itc_lms_unofficial.coursedetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.LoadingFragment
 import net.accelf.itc_lms_unofficial.MainActivity
 import net.accelf.itc_lms_unofficial.R
@@ -15,7 +15,7 @@ import net.accelf.itc_lms_unofficial.util.replaceFragment
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CourseDetailActivity : AppCompatActivity() {
+class CourseDetailActivity : BaseActivity() {
 
     @Inject
     lateinit var lms: LMS

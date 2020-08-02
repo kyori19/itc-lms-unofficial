@@ -2,14 +2,16 @@ package net.accelf.itc_lms_unofficial
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import kotlin.concurrent.thread
 
 open class ActionableFragment(
+    @LayoutRes contentLayoutId: Int,
     private val type: ActionType,
     private val delayMillis: Long = 0
-) : Fragment() {
+) : Fragment(contentLayoutId) {
 
     private var snackbar: Snackbar? = null
 

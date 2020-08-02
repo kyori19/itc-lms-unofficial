@@ -4,10 +4,11 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import net.accelf.itc_lms_unofficial.ErrorFragment
+import net.accelf.itc_lms_unofficial.R
 
 fun AppCompatActivity.replaceFragment(fragment: Fragment, @IdRes target: Int? = null) {
     supportFragmentManager.beginTransaction().apply {
-        replace(target ?: android.R.id.content, fragment)
+        replace(target ?: R.id.content, fragment)
         commit()
     }
 }
