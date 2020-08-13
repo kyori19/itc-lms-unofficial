@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.item_material.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.models.Material.MaterialType
@@ -103,8 +104,8 @@ class MaterialsAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val root = view
-        val iconMaterialType: ImageView = view.findViewById(R.id.iconMaterialType)
-        val textMaterialName: TextView = view.findViewById(R.id.textMaterialName)
-        val textMaterialDate: TextView = view.findViewById(R.id.textMaterialDate)
+        val iconMaterialType: ImageView = view.iconMaterialType
+        val textMaterialName: TextView = view.textMaterialName
+        val textMaterialDate: TextView = view.textMaterialDate
     }
 }

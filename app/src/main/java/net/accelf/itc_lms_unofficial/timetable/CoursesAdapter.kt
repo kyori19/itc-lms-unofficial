@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import kotlinx.android.synthetic.main.item_course.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity
 import net.accelf.itc_lms_unofficial.models.Course
@@ -79,10 +80,10 @@ class CoursesAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val root: View = view
-        val textPeriod: TextView = view.findViewById(R.id.textPeriod)
-        val cardCourse: MaterialCardView = view.findViewById(R.id.cardCourse)
-        val textCourseName: TextView = view.findViewById(R.id.textCourseName)
-        val textTeachersName: TextView = view.findViewById(R.id.textCourseTeachersName)
-        val textCourseTemp: TextView = view.findViewById(R.id.textCourseTemp)
+        val textPeriod: TextView = view.textPeriod
+        val cardCourse: MaterialCardView = view.cardCourse
+        val textCourseName: TextView = view.textCourseName
+        val textTeachersName: TextView = view.textCourseTeachersName
+        val textCourseTemp: TextView = view.textCourseTemp
     }
 }

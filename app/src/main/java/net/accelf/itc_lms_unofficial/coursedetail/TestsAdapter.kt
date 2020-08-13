@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_test.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Test
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
@@ -51,8 +52,8 @@ class TestsAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val iconTestStatus: ImageView = view.findViewById(R.id.iconTestStatus)
-        val titleTest: TextView = view.findViewById(R.id.titleTest)
-        val textTestDate: TextView = view.findViewById(R.id.textTestDate)
+        val iconTestStatus: ImageView = view.iconTestStatus
+        val titleTest: TextView = view.titleTest
+        val textTestDate: TextView = view.textTestDate
     }
 }

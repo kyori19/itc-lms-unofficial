@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_survey.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Survey
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
@@ -33,7 +34,7 @@ class SurveysAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textSurveyTitle: TextView = view.findViewById(R.id.textSurveyTitle)
-        val textSurveyDate: TextView = view.findViewById(R.id.textSurveyDate)
+        val textSurveyTitle: TextView = view.textSurveyTitle
+        val textSurveyDate: TextView = view.textSurveyDate
     }
 }

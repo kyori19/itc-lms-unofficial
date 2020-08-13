@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_course_content.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.CourseContent
 import net.accelf.itc_lms_unofficial.util.fromHtml
@@ -44,10 +45,10 @@ class CourseContentsAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val titleCourseContent: TextView = view.findViewById(R.id.titleCourseContent)
-        val textCourseContentDate: TextView = view.findViewById(R.id.textCourseContentDate)
-        val textCourseContentSummary: TextView = view.findViewById(R.id.textCourseContentSummary)
-        val headerMaterials: ExpandableHeaderView = view.findViewById(R.id.headerMaterials)
-        val listMaterials: RecyclerView = view.findViewById(R.id.listMaterials)
+        val titleCourseContent: TextView = view.titleCourseContent
+        val textCourseContentDate: TextView = view.textCourseContentDate
+        val textCourseContentSummary: TextView = view.textCourseContentSummary
+        val headerMaterials: ExpandableHeaderView = view.headerMaterials
+        val listMaterials: RecyclerView = view.listMaterials
     }
 }

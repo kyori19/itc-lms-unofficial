@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_attendance.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Attendance
 import net.accelf.itc_lms_unofficial.models.DATE_FORMAT
@@ -46,7 +47,7 @@ class AttendancesAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val iconAttendanceStatus: ImageView = view.findViewById(R.id.iconAttendanceStatus)
-        val textAttendanceDate: TextView = view.findViewById(R.id.textAttendanceDate)
+        val iconAttendanceStatus: ImageView = view.iconAttendanceStatus
+        val textAttendanceDate: TextView = view.textAttendanceDate
     }
 }

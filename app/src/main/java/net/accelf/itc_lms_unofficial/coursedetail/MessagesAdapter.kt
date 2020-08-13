@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_message.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Message
 import net.accelf.itc_lms_unofficial.models.TIME_FORMAT
@@ -66,9 +67,9 @@ class MessagesAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val iconMessageStatus: ImageView = view.findViewById(R.id.iconMessageStatus)
-        val titleMessage: TextView = view.findViewById(R.id.titleMessage)
-        val textMessageDate: TextView = view.findViewById(R.id.textMessageDate)
-        val textLatestInfo: TextView = view.findViewById(R.id.textLatestInfo)
+        val iconMessageStatus: ImageView = view.iconMessageStatus
+        val titleMessage: TextView = view.titleMessage
+        val textMessageDate: TextView = view.textMessageDate
+        val textLatestInfo: TextView = view.textLatestInfo
     }
 }
