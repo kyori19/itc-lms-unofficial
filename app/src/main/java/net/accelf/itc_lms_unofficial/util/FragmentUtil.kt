@@ -3,13 +3,16 @@ package net.accelf.itc_lms_unofficial.util
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import net.accelf.itc_lms_unofficial.ErrorFragment
 import net.accelf.itc_lms_unofficial.R
 
 fun AppCompatActivity.replaceFragment(fragment: Fragment, @IdRes target: Int? = null) {
-    supportFragmentManager.beginTransaction().apply {
-        replace(target ?: R.id.content, fragment)
-        commit()
+    lifecycleScope.launchWhenResumed {
+        supportFragmentManager.beginTransaction().apply {
+            replace(target ?: R.id.content, fragment)
+            commit()
+        }
     }
 }
 
