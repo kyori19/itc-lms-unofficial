@@ -8,10 +8,10 @@ import android.webkit.*
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.di.SavedCookieJar
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.util.call
 import net.accelf.itc_lms_unofficial.util.defaultSharedPreference
 import net.accelf.itc_lms_unofficial.util.replaceErrorFragment
 import net.accelf.itc_lms_unofficial.util.replaceFragment
+import net.accelf.itc_lms_unofficial.util.withResponse
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.util.concurrent.locks.ReentrantLock
 import javax.inject.Inject
@@ -132,13 +132,10 @@ class LoginActivity : BaseActivity() {
         cookieJar.loadCookies()
 
         lms.getLog()
-            .call(this)
-            .subscribe({
+            .withResponse(this) {
                 startActivity(MainActivity.intent(this))
                 finish()
-            }, { throwable ->
-                replaceErrorFragment(throwable)
-            })
+            }
     }
 
     fun retryLogin() {

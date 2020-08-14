@@ -27,6 +27,7 @@ class ApplicationModule {
                     .setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE)
             )
             cookieJar(cookieJar)
+            followRedirects(false)
         }.build()
 
         return Retrofit.Builder()

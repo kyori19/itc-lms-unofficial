@@ -9,9 +9,8 @@ import net.accelf.itc_lms_unofficial.LoadingFragment
 import net.accelf.itc_lms_unofficial.MainActivity
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.util.call
-import net.accelf.itc_lms_unofficial.util.replaceErrorFragment
 import net.accelf.itc_lms_unofficial.util.replaceFragment
+import net.accelf.itc_lms_unofficial.util.withResponse
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -39,16 +38,9 @@ class CourseDetailActivity : BaseActivity() {
             )
         )
         lms.getCourseDetail(intent.getStringExtra(EXTRA_COURSE_ID)!!)
-            .call(this)
-            .subscribe({ courseDetail ->
-                replaceFragment(
-                    CourseDetailFragment.newInstance(
-                        courseDetail
-                    )
-                )
-            }, { throwable ->
-                replaceErrorFragment(throwable)
-            })
+            .withResponse(this) {
+                replaceFragment(CourseDetailFragment.newInstance(it))
+            }
     }
 
     companion object {

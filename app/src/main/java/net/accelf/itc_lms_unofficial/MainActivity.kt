@@ -6,9 +6,8 @@ import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.timetable.TimeTableFragment
-import net.accelf.itc_lms_unofficial.util.call
-import net.accelf.itc_lms_unofficial.util.replaceErrorFragment
 import net.accelf.itc_lms_unofficial.util.replaceFragment
+import net.accelf.itc_lms_unofficial.util.withResponse
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,26 +19,12 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        replaceFragment(LoadingFragment.newInstance(getString(R.string.loading_check_account)))
+        replaceFragment(LoadingFragment.newInstance(getString(R.string.loading_time_table)))
 
-        lms.getLog()
-            .call(this)
-            .subscribe({
-                if (it.contentLength() != 0L) {
-                    replaceFragment(StartLoginFragment.newInstance())
-                } else {
-                    replaceFragment(LoadingFragment.newInstance(getString(R.string.loading_time_table)))
-                    lms.getTimeTable()
-                        .call(this)
-                        .subscribe({ timeTable ->
-                            replaceFragment(TimeTableFragment.newInstance(timeTable))
-                        }, { throwable ->
-                            replaceErrorFragment(throwable)
-                        })
-                }
-            }, { throwable ->
-                replaceErrorFragment(throwable)
-            })
+        lms.getTimeTable()
+            .withResponse(this) {
+                replaceFragment(TimeTableFragment.newInstance(it))
+            }
     }
 
     companion object {
