@@ -14,4 +14,8 @@
         <attr name="targetLayout" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="TaskWorkerView">
+        <attr name="title" format="string|reference" />
+    </declare-styleable>
+
 </resources>

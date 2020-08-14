@@ -53,6 +53,7 @@
     <string name="hint_icon_taken">Taken</string>
     <string name="hint_icon_unknown">Unknown</string>
 
+    <string name="hint_delete_all_workers">Delete all workers</string>
     <string name="hint_open_attendances">Open attendances</string>
     <string name="hint_open_course_contents">Open course contents</string>
     <string name="hint_open_course_details">Open course details</string>
@@ -63,6 +64,7 @@
     <string name="hint_open_reports">Open reports</string>
     <string name="hint_open_surveys">Open surveys</string>
     <string name="hint_open_tests">Open tests</string>
+    <string name="hint_start_task_now">Start task immediately</string>
 
     <string name="text_period">%s / %s %d</string>
     <string name="text_time_span_multi_lines">%s\n~ %s</string>
@@ -83,5 +85,10 @@
     <string name="title_surveys">Surveys</string>
     <string name="title_teachers_name">Teachers</string>
     <string name="title_tests">Tests</string>
+    <string name="title_task_manager">Task Manager</string>
+    <string name="title_task_pull_updates">Worker: Pull updates</string>
+
+    <string name="notify_name_lms_updates">Updates</string>
+    <string name="notify_desc_lms_updates">Unread updates from ITC-LMS</string>
 
 </resources>

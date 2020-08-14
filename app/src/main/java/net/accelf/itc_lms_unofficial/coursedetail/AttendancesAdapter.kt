@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_attendance.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Attendance
-import net.accelf.itc_lms_unofficial.models.DATE_FORMAT
+import net.accelf.itc_lms_unofficial.util.DATE_FORMAT
 
 class AttendancesAdapter(
     private val items: List<Attendance>

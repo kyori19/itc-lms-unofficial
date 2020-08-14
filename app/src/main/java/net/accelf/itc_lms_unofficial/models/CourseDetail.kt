@@ -4,36 +4,12 @@ import net.accelf.itc_lms_unofficial.models.Attendance.AttendanceStatus.Companio
 import net.accelf.itc_lms_unofficial.models.Message.MessageStatus.Companion.toMessageStatus
 import net.accelf.itc_lms_unofficial.models.TimeTable.DayOfWeek.Companion.toDow
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
-import net.accelf.itc_lms_unofficial.util.second
+import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.ResponseBody
 import java.io.Serializable
-import java.text.SimpleDateFormat
-import java.util.*
 
 private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
 private val SEMESTER_REGEX = Regex("""(.+)/(.+)/.*(\d).*""")
-private val TIME_SPAN_REGEX = Regex("""\d{4}/\d{2}/\d{2}\s\d{2}:\d{2}""")
-val TIME_FORMAT = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.US)
-val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.US)
-private val TIME_SECONDS_FORMAT = SimpleDateFormat("yyyy-MM-dd hh:MM:ss.S", Locale.US)
-
-private fun String.toTimeSpan(): List<Date> {
-    return TIME_SPAN_REGEX.findAll(this).map {
-        TIME_FORMAT.parse(it.value)
-    }.toList()
-}
-
-private fun String.toDateTime(): Date? {
-    return TIME_FORMAT.parse(this)
-}
-
-private fun String.toDate(): Date? {
-    return DATE_FORMAT.parse(this)
-}
-
-private fun String.toTimeSeconds(): Date? {
-    return TIME_SECONDS_FORMAT.parse(this)
-}
 
 data class CourseDetail(
     val id: String,

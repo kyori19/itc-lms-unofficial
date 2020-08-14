@@ -24,7 +24,14 @@ fun <T> RecyclerView.set(
         it.visibility = VISIBLE
     }
 
-    layoutManager = LinearLayoutManager(context)
-    adapter = adapterClass.constructors.first().newInstance(items) as RecyclerView.Adapter<*>?
+    if (layoutManager == null) {
+        layoutManager = LinearLayoutManager(context)
+    }
+    if (adapter == null) {
+        adapter = adapterClass.constructors.first().newInstance(items) as RecyclerView.Adapter<*>?
+    } else if (adapter is UpdatableAdapter<*, *>) {
+        @Suppress("UNCHECKED_CAST")
+        (adapter as UpdatableAdapter<T, *>).items = items
+    }
     isNestedScrollingEnabled = false
 }

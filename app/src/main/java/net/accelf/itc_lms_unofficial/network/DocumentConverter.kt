@@ -2,6 +2,7 @@ package net.accelf.itc_lms_unofficial.network
 
 import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.TimeTable
+import net.accelf.itc_lms_unofficial.models.Updates
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -21,6 +22,7 @@ class DocumentConverterFactory : Converter.Factory() {
         return when (type) {
             CourseDetail::class.java -> CourseDetail.CourseDetailConverter(baseUri)
             TimeTable::class.java -> TimeTable.TimeTableConverter(baseUri)
+            Updates::class.java -> Updates.UpdatesConverter(baseUri)
             else -> null
         }
     }
