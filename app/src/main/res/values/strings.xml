@@ -88,6 +88,10 @@
     <string name="title_task_manager">Task Manager</string>
     <string name="title_task_pull_updates">Worker: Pull updates</string>
 
+    <string name="notify_name_errors">Errors</string>
+    <string name="notify_desc_errors">Errors happened while pulling updates</string>
+    <string name="notify_title_session_expired">LMS session is expired</string>
+    <string name="notify_text_request_login">Please re-login to ITC-LMS by clicking this notification.</string>
     <string name="notify_name_lms_updates">Updates</string>
     <string name="notify_desc_lms_updates">Unread updates from ITC-LMS</string>
 

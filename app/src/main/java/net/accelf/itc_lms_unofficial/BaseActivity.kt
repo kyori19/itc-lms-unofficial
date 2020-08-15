@@ -14,6 +14,9 @@ import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
 
 const val CHANNEL_ID_LMS_UPDATES = "lms_updates"
+const val CHANNEL_ID_ERRORS = "errors"
+
+const val NOTIFICATION_ID_SESSION_EXPIRED = 10000001
 
 open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
 
@@ -26,14 +29,24 @@ open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                .createNotificationChannel(
-                    NotificationChannel(
-                        CHANNEL_ID_LMS_UPDATES,
-                        getString(R.string.notify_name_lms_updates),
-                        NotificationManager.IMPORTANCE_HIGH
-                    ).apply {
-                        description = getString(R.string.notify_desc_lms_updates)
-                    }
+                .createNotificationChannels(
+                    listOf(
+                        NotificationChannel(
+                            CHANNEL_ID_LMS_UPDATES,
+                            getString(R.string.notify_name_lms_updates),
+                            NotificationManager.IMPORTANCE_HIGH
+                        ).apply {
+                            description = getString(R.string.notify_desc_lms_updates)
+                        },
+                        NotificationChannel(
+                            CHANNEL_ID_ERRORS,
+                            getString(R.string.notify_name_errors),
+                            NotificationManager.IMPORTANCE_DEFAULT
+                        ).apply {
+                            description = getString(R.string.notify_desc_errors)
+                        }
+                    )
+
                 )
         }
 
