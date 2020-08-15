@@ -31,15 +31,6 @@ class MaterialsAdapter(
 
         holder.apply {
             root.setOnClickListener {
-                lateinit var intent: CustomTabsIntent
-
-                if (item.type == MaterialType.LINK) {
-                    intent = CustomTabsIntent.Builder()
-                        .setShowTitle(true)
-                        .setToolbarColor(ContextCompat.getColor(it.context, R.color.colorPrimary))
-                        .build()
-                }
-
                 when (item.type) {
                     MaterialType.FILE -> {
 
@@ -55,6 +46,16 @@ class MaterialsAdapter(
                                     )
                                 )
                                 .setPositiveButton(R.string.button_dialog_open) { _, _ ->
+                                    val intent = CustomTabsIntent.Builder()
+                                        .setShowTitle(true)
+                                        .setToolbarColor(
+                                            ContextCompat.getColor(
+                                                it.context,
+                                                R.color.colorPrimary
+                                            )
+                                        )
+                                        .build()
+
                                     intent.launchUrl(it.context, url.toUri())
                                 }
                                 .setNeutralButton(R.string.button_dialog_close) { dialog, _ ->
