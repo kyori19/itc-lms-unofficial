@@ -11,6 +11,16 @@ fun <T> RecyclerView.set(
     adapterClass: Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
     vararg relatedView: View
 ) {
+    setWithoutInitAdapter(items, *relatedView) {
+        adapterClass.constructors.first().newInstance(items) as RecyclerView.Adapter<*>
+    }
+}
+
+fun <T> RecyclerView.setWithoutInitAdapter(
+    items: List<T>,
+    vararg relatedView: View,
+    initAdapter: () -> RecyclerView.Adapter<out RecyclerView.ViewHolder>
+) {
     if (items.isEmpty()) {
         visibility = GONE
         relatedView.forEach {
@@ -28,7 +38,7 @@ fun <T> RecyclerView.set(
         layoutManager = LinearLayoutManager(context)
     }
     if (adapter == null) {
-        adapter = adapterClass.constructors.first().newInstance(items) as RecyclerView.Adapter<*>?
+        adapter = initAdapter()
     } else if (adapter is UpdatableAdapter<*, *>) {
         @Suppress("UNCHECKED_CAST")
         (adapter as UpdatableAdapter<T, *>).items = items

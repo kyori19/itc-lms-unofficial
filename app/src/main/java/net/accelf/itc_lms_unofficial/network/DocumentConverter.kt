@@ -21,6 +21,7 @@ class DocumentConverterFactory : Converter.Factory() {
         val baseUri = retrofit.baseUrl().toString()
         return when (type) {
             CourseDetail::class.java -> CourseDetail.CourseDetailConverter(baseUri)
+            String::class.java -> StringConverter()
             TimeTable::class.java -> TimeTable.TimeTableConverter(baseUri)
             Updates::class.java -> Updates.UpdatesConverter(baseUri)
             else -> null
@@ -38,6 +39,12 @@ class DocumentConverterFactory : Converter.Factory() {
                 baseUri,
                 Parser.htmlParser()
             )
+        }
+    }
+
+    class StringConverter : Converter<ResponseBody, String> {
+        override fun convert(value: ResponseBody): String? {
+            return value.string()
         }
     }
 }

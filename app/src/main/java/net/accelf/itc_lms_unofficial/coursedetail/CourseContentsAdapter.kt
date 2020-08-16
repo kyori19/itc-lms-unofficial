@@ -9,12 +9,13 @@ import kotlinx.android.synthetic.main.item_course_content.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.CourseContent
 import net.accelf.itc_lms_unofficial.util.fromHtml
-import net.accelf.itc_lms_unofficial.util.set
+import net.accelf.itc_lms_unofficial.util.setWithoutInitAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 import net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
 
 class CourseContentsAdapter(
-    private val items: List<CourseContent>
+    private val items: List<CourseContent>,
+    private val listener: MaterialListener
 ) : RecyclerView.Adapter<CourseContentsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,12 +34,10 @@ class CourseContentsAdapter(
             }
             textCourseContentSummary.text = item.summary.fromHtml()
 
-            @Suppress("UNCHECKED_CAST")
-            listMaterials.set(
-                item.materials,
-                MaterialsAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
-                headerMaterials
-            )
+            listMaterials.adapter = null
+            listMaterials.setWithoutInitAdapter(item.materials, headerMaterials) {
+                MaterialsAdapter(item.materials, listener)
+            }
         }
     }
 

@@ -136,7 +136,12 @@ data class CourseDetail(
                                                 when (type) {
                                                     Material.MaterialType.FILE -> it.select(".objectName")
                                                         .first().text()
-                                                    else -> null
+                                                    else -> ""
+                                                },
+                                                when (type) {
+                                                    Material.MaterialType.FILE -> it.select(".fileName")
+                                                        .first().text()
+                                                    else -> ""
                                                 },
                                                 when (type) {
                                                     Material.MaterialType.LINK -> it.select("a")
