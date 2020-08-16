@@ -11,7 +11,7 @@ import java.util.*
 val TIME_SPAN_REGEX = Regex("""\d{4}/\d{2}/\d{2}\s\d{2}:\d{2}""")
 val TIME_FORMAT = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.US)
 val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd", Locale.US)
-val TIME_SECONDS_FORMAT = SimpleDateFormat("yyyy-MM-dd hh:MM:ss.S", Locale.US)
+val TIME_SECONDS_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.US)
 
 fun String.toTimeSpan(): List<Date> {
     return TIME_SPAN_REGEX.findAll(this).map {
