@@ -70,6 +70,10 @@
     <string name="hint_open_tests">Open tests</string>
     <string name="hint_start_task_now">Start task immediately</string>
 
+    <string name="menu_copy_url">Copy URL</string>
+    <string name="menu_open_in_browser">Open this page in browser</string>
+    <string name="menu_share_url">Share URL of this page</string>
+
     <string name="text_period">%s / %s %d</string>
     <string name="text_time_span_multi_lines">%s\n~ %s</string>
 
