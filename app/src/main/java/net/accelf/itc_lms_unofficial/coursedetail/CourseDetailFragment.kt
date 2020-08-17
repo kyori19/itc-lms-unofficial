@@ -29,10 +29,11 @@ import javax.inject.Inject
 private const val ARG_COURSE_DETAIL = "course_detail"
 
 @AndroidEntryPoint
-class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), MaterialListener {
+class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyListener,
+    MaterialListener {
 
     private lateinit var courseDetail: CourseDetail
-    private var loadingFileId = false
+    private var fetching = false
 
     @Inject
     lateinit var lms: LMS
@@ -42,7 +43,16 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), Material
             .useRoundedCornerBackground(true)
     }
 
-    private val snackProgressBar by lazy {
+    private val notifySnackProgressBar by lazy {
+        SnackProgressBar(
+            SnackProgressBar.TYPE_HORIZONTAL,
+            getString(R.string.snackbar_fetching_notify)
+        )
+            .setIsIndeterminate(true)
+            .setAllowUserInput(true)
+    }
+
+    private val fileIdSnackProgressBar by lazy {
         SnackProgressBar(
             SnackProgressBar.TYPE_HORIZONTAL,
             getString(R.string.snackbar_getting_file_id)
@@ -56,6 +66,13 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), Material
             .setShowTitle(true)
             .setToolbarColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
             .build()
+    }
+
+    private val notifyDialog by lazy {
+        MaterialAlertDialogBuilder(requireContext())
+            .setPositiveButton(R.string.button_dialog_close) { dialog, _ ->
+                dialog.dismiss()
+            }
     }
 
     private val openingLinkDialog by lazy {
@@ -99,12 +116,12 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), Material
             movementMethod = LinkMovementMethod.getInstance()
         }
 
-        @Suppress("UNCHECKED_CAST")
-        listNotifies.set(
+        listNotifies.setWithoutInitAdapter(
             courseDetail.notifies,
-            NotifiesAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
             headerNotifies
-        )
+        ) {
+            NotifiesAdapter(courseDetail.notifies, this)
+        }
 
         listCourseContents.setWithoutInitAdapter(
             courseDetail.courseContents,
@@ -156,6 +173,29 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), Material
         )
     }
 
+    override fun openNotify(notifyId: String) {
+        if (fetching) {
+            Toast.makeText(requireContext(), R.string.toast_already_fetching, Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
+
+        fetching = true
+        snackProgressBarManager.show(
+            notifySnackProgressBar,
+            SnackProgressBarManager.LENGTH_INDEFINITE
+        )
+        lms.getNotifyDetail(notifyId)
+            .withResponse(activity as AppCompatActivity) {
+                fetching = false
+                snackProgressBarManager.dismiss()
+
+                notifyDialog.setTitle(it.title)
+                    .setMessage(it.text.fromHtml())
+                    .show()
+            }
+    }
+
     override fun openFile(
         materialId: String,
         resourceId: String,
@@ -163,17 +203,20 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), Material
         objectName: String,
         endDate: Date
     ) {
-        if (loadingFileId) {
-            Toast.makeText(requireContext(), R.string.toast_already_downloading, Toast.LENGTH_SHORT)
+        if (fetching) {
+            Toast.makeText(requireContext(), R.string.toast_already_fetching, Toast.LENGTH_SHORT)
                 .show()
             return
         }
 
-        loadingFileId = true
-        snackProgressBarManager.show(snackProgressBar, SnackProgressBarManager.LENGTH_INDEFINITE)
+        fetching = true
+        snackProgressBarManager.show(
+            fileIdSnackProgressBar,
+            SnackProgressBarManager.LENGTH_INDEFINITE
+        )
         lms.getFileId(courseDetail.id, materialId, resourceId, fileName, objectName)
             .withResponse(activity as AppCompatActivity) {
-                loadingFileId = false
+                fetching = false
                 snackProgressBarManager.dismiss()
 
                 if (fileName.endsWith(".pdf")) {

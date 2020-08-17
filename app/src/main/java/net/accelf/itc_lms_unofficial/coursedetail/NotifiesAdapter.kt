@@ -11,7 +11,8 @@ import net.accelf.itc_lms_unofficial.models.Notify
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class NotifiesAdapter(
-    private val items: List<Notify>
+    private val items: List<Notify>,
+    private val listener: NotifyListener
 ) : RecyclerView.Adapter<NotifiesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,6 +25,10 @@ class NotifiesAdapter(
         val item = items[position]
 
         holder.apply {
+            root.setOnClickListener {
+                listener.openNotify(item.id)
+            }
+
             textNotifyTitle.text = item.title
             textNotifyDate.apply {
                 text = context.timeSpanToString(item.from, item.until)
@@ -34,6 +39,7 @@ class NotifiesAdapter(
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val root = view
         val textNotifyTitle: TextView = view.textNotifyTitle
         val textNotifyDate: TextView = view.textNotifyDate
     }

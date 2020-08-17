@@ -2,6 +2,7 @@ package net.accelf.itc_lms_unofficial.network
 
 import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.models.CourseDetail
+import net.accelf.itc_lms_unofficial.models.NotifyDetail
 import net.accelf.itc_lms_unofficial.models.TimeTable
 import net.accelf.itc_lms_unofficial.models.Updates
 import okhttp3.HttpUrl
@@ -21,6 +22,9 @@ interface LMS {
 
     @GET("lms/course")
     fun getCourseDetail(@Query("idnumber") idNumber: String): Single<CourseDetail>
+
+    @GET("lms/coursetop/information/listdetail")
+    fun getNotifyDetail(@Query("informationId") notifyId: String): Single<NotifyDetail>
 
     @GET("lms/course/material/tempfile")
     fun getFileId(

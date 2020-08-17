@@ -1,6 +1,7 @@
 package net.accelf.itc_lms_unofficial.network
 
 import net.accelf.itc_lms_unofficial.models.CourseDetail
+import net.accelf.itc_lms_unofficial.models.NotifyDetail
 import net.accelf.itc_lms_unofficial.models.TimeTable
 import net.accelf.itc_lms_unofficial.models.Updates
 import okhttp3.ResponseBody
@@ -21,6 +22,7 @@ class DocumentConverterFactory : Converter.Factory() {
         val baseUri = retrofit.baseUrl().toString()
         return when (type) {
             CourseDetail::class.java -> CourseDetail.CourseDetailConverter(baseUri)
+            NotifyDetail::class.java -> NotifyDetail.NotifyDetailConverter(baseUri)
             String::class.java -> StringConverter()
             TimeTable::class.java -> TimeTable.TimeTableConverter(baseUri)
             Updates::class.java -> Updates.UpdatesConverter(baseUri)
