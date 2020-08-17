@@ -1,10 +1,13 @@
 package net.accelf.itc_lms_unofficial
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.github.polesapart.pdfviewer.PDFView
+import com.shockwave.pdfium.PdfPasswordException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_pdf.*
 import net.accelf.itc_lms_unofficial.network.LMS
@@ -12,14 +15,20 @@ import net.accelf.itc_lms_unofficial.util.withResponse
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PdfFragment : Fragment(R.layout.fragment_pdf) {
+class PdfFragment : Fragment(R.layout.fragment_pdf), PasswordDialogFragment.PasswordDialogListener {
 
     private lateinit var fileId: String
     private lateinit var materialId: String
     private lateinit var endDate: String
 
+    private lateinit var pdfFile: ByteArray
+
     @Inject
     lateinit var lms: LMS
+
+    private val passwordDialog by lazy {
+        PasswordDialogFragment.newInstance(this@PdfFragment)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,13 +53,40 @@ class PdfFragment : Fragment(R.layout.fragment_pdf) {
 
         lms.downloadFile(fileId, materialId, endDate)
             .withResponse(activity as AppCompatActivity) {
+                pdfFile = it.bytes()
+
                 pdfView.apply {
                     visibility = VISIBLE
-                    fromBytes(it.bytes())
-                        .spacing(1)
+                    fromBytes(pdfFile)
+                        .setDefaults()
                         .load()
                 }
             }
+    }
+
+    private fun PDFView.Configurator.setDefaults(): PDFView.Configurator {
+        return spacing(1)
+            .onError {
+                if (it is PdfPasswordException) {
+                    passwordDialog.display(parentFragmentManager)
+                }
+            }
+    }
+
+    override fun onPasswordSubmit(dialog: DialogInterface, password: String) {
+        passwordDialog.hide(parentFragmentManager)
+
+        pdfView.fromBytes(pdfFile)
+            .setDefaults()
+            .password(password)
+            .onLoad { _, _, _ ->
+                dialog.dismiss()
+            }
+            .load()
+    }
+
+    override fun onPasswordCancel() {
+        activity?.finish()
     }
 
     companion object {
