@@ -19,6 +19,7 @@
     <string name="snackbar_button_re_login">Retry</string>
     <string name="snackbar_fetching_notify">Fetching notify…</string>
     <string name="snackbar_getting_file_id">Preparing requested file…</string>
+    <string name="snackbar_copied">URL copied!</string>
 
     <string name="button_dialog_cancel">Cancel</string>
     <string name="button_dialog_close">Close</string>

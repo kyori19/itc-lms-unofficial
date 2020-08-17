@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewTreeLifecycleOwner
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_base.*
 import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
@@ -33,6 +34,10 @@ open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
             .setShowTitle(true)
             .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
             .build()
+    }
+
+    private val copiedSnackbar by lazy {
+        Snackbar.make(content, R.string.snackbar_copied, Snackbar.LENGTH_SHORT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +102,7 @@ open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
                             Uri.parse((this as ProvidesUrl).url().toString())
                         )
                     )
+                copiedSnackbar.show()
                 true
             }
             R.id.actionShareUrl -> {
