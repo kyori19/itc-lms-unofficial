@@ -17,6 +17,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.google.android.material.snackbar.Snackbar
+import com.mikepenz.aboutlibraries.LibsBuilder
 import kotlinx.android.synthetic.main.activity_base.*
 import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
@@ -119,6 +120,16 @@ open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
                         null
                     )
                 )
+                true
+            }
+            R.id.openAbout -> {
+                LibsBuilder().apply {
+                    showLicense = true
+                    aboutAppName = getString(R.string.app_name)
+                    activityTitle = getString(R.string.title_about)
+
+                    withLibraryModification(libraries)
+                }.start(this)
                 true
             }
             else -> {

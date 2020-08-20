@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -53,6 +54,8 @@ dependencies {
     implementation 'com.github.tingyik90:snackprogressbar:6.4.2'
     implementation 'com.google.android.material:material:1.2.0'
     implementation 'com.google.dagger:hilt-android:2.28-alpha'
+    implementation "com.mikepenz:aboutlibraries:$about_libs_version"
+    implementation "com.mikepenz:aboutlibraries-core:$about_libs_version"
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'

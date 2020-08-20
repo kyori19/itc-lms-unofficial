@@ -29,4 +29,10 @@
         android:visible="false"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/openAbout"
+        android:icon="@drawable/ic_info"
+        android:title="@string/title_about"
+        app:showAsAction="never" />
+
 </menu>
