@@ -11,6 +11,7 @@ import com.shockwave.pdfium.PdfPasswordException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_pdf.*
 import net.accelf.itc_lms_unofficial.network.LMS
+import net.accelf.itc_lms_unofficial.util.readWithProgress
 import net.accelf.itc_lms_unofficial.util.withResponse
 import javax.inject.Inject
 
@@ -51,9 +52,16 @@ class PdfFragment : Fragment(R.layout.fragment_pdf), PasswordDialogFragment.Pass
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progressDownload.progressMax = 1f
+
         lms.downloadFile(fileId, materialId, endDate)
-            .withResponse(activity as AppCompatActivity) {
-                pdfFile = it.bytes()
+            .map {
+                val fullLength = it.contentLength()
+                it.byteStream().readWithProgress { readBytes ->
+                    progressDownload.progress = readBytes.toFloat() / fullLength
+                }
+            }.withResponse(activity as AppCompatActivity) {
+                pdfFile = it
 
                 pdfView.apply {
                     visibility = VISIBLE

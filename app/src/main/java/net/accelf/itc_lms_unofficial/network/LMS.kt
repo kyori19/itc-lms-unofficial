@@ -9,6 +9,7 @@ import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Streaming
 
 val lmsHostUrl = HttpUrl.Builder()
     .scheme("https")
@@ -35,6 +36,7 @@ interface LMS {
         @Query("objectName") objectName: String
     ): Single<String>
 
+    @Streaming
     @GET("lms/course/material/setfiledown/download")
     fun downloadFile(
         @Query("fileId") fileId: String,

@@ -4,9 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/progressDownload"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        app:cpb_background_progressbar_width="8dp"
+        app:cpb_progressbar_color="@color/colorAccent"
+        app:cpb_progressbar_width="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
