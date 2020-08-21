@@ -16,7 +16,8 @@ data class Updates(
     val updates: List<Update>,
     val throwable: Throwable?
 ) : Serializable {
-    class UpdatesConverter(baseUrl: String) :
+
+    class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<Updates>(baseUrl) {
         override fun convert(value: ResponseBody): Updates? {
             document(value).let { document ->

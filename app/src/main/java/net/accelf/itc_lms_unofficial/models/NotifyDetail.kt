@@ -15,7 +15,7 @@ data class NotifyDetail(
     val text: String
 ) : Serializable {
 
-    class NotifyDetailConverter(baseUrl: String) :
+    class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<NotifyDetail>(baseUrl) {
         override fun convert(value: ResponseBody): NotifyDetail? {
             document(value).let { document ->

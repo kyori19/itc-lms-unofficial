@@ -30,7 +30,8 @@ data class CourseDetail(
     val forums: List<Forum>,
     val surveys: List<Survey>
 ) : Serializable {
-    class CourseDetailConverter(baseUrl: String) :
+
+    class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<CourseDetail>(baseUrl) {
         override fun convert(value: ResponseBody): CourseDetail? {
             document(value).let { document ->

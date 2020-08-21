@@ -21,11 +21,11 @@ class DocumentConverterFactory : Converter.Factory() {
     ): Converter<ResponseBody, *>? {
         val baseUri = retrofit.baseUrl().toString()
         return when (type) {
-            CourseDetail::class.java -> CourseDetail.CourseDetailConverter(baseUri)
-            NotifyDetail::class.java -> NotifyDetail.NotifyDetailConverter(baseUri)
+            CourseDetail::class.java -> CourseDetail.Converter(baseUri)
+            NotifyDetail::class.java -> NotifyDetail.Converter(baseUri)
             String::class.java -> StringConverter()
-            TimeTable::class.java -> TimeTable.TimeTableConverter(baseUri)
-            Updates::class.java -> Updates.UpdatesConverter(baseUri)
+            TimeTable::class.java -> TimeTable.Converter(baseUri)
+            Updates::class.java -> Updates.Converter(baseUri)
             else -> null
         }
     }

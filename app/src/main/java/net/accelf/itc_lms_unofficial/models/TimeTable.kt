@@ -27,7 +27,7 @@ data class TimeTable(
         }
     }
 
-    class TimeTableConverter(baseUrl: String) :
+    class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<TimeTable>(baseUrl) {
         override fun convert(value: ResponseBody): TimeTable? {
             document(value).let {
