@@ -1,6 +1,7 @@
 package net.accelf.itc_lms_unofficial
 
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -133,6 +134,9 @@ class LoginActivity : BaseActivity() {
 
         lms.getLog()
             .withResponse(this) {
+                (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
+                    .cancel(NOTIFICATION_ID_SESSION_EXPIRED)
+
                 startActivity(MainActivity.intent(this))
                 finish()
             }
