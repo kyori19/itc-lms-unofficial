@@ -62,7 +62,15 @@ class PullUpdatesWorker @WorkerInject constructor(
 
                 setAutoCancel(true)
 
-                val intent = CourseDetailActivity.intent(context, courseId)
+                val intent = CourseDetailActivity.intent(
+                    context,
+                    courseId,
+                    if (contentType == Update.ContentType.NOTIFY) {
+                        contentId
+                    } else {
+                        null
+                    }
+                )
                 val pendingIntent = TaskStackBuilder.create(context)
                     .run {
                         addNextIntentWithParentStack(intent)

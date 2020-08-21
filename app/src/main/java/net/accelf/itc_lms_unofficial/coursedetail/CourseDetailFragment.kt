@@ -26,13 +26,12 @@ import net.accelf.itc_lms_unofficial.util.withResponse
 import java.util.*
 import javax.inject.Inject
 
-private const val ARG_COURSE_DETAIL = "course_detail"
-
 @AndroidEntryPoint
 class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyListener,
     MaterialListener {
 
     private lateinit var courseDetail: CourseDetail
+    private var notifyId: String? = null
     private var fetching = false
 
     @Inject
@@ -96,6 +95,7 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         super.onCreate(savedInstanceState)
         arguments?.let {
             courseDetail = it.getSerializable(ARG_COURSE_DETAIL) as CourseDetail
+            notifyId = it.getString(ARG_NOTIFY_ID)
         }
     }
 
@@ -171,6 +171,19 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             SurveysAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
             headerSurveys
         )
+
+        if (notifyId != null) {
+            if (courseDetail.notifies.any { it.id == notifyId }) {
+                openNotify(notifyId!!)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    R.string.toast_notify_not_found,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        }
     }
 
     override fun openNotify(notifyId: String) {
@@ -238,12 +251,17 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
     }
 
     companion object {
+
+        private const val ARG_COURSE_DETAIL = "course_detail"
+        private const val ARG_NOTIFY_ID = "notify_id"
+
         @JvmStatic
-        fun newInstance(courseDetail: CourseDetail): CourseDetailFragment {
+        fun newInstance(courseDetail: CourseDetail, notifyId: String?): CourseDetailFragment {
             return CourseDetailFragment()
                 .apply {
                     arguments = Bundle().apply {
                         putSerializable(ARG_COURSE_DETAIL, courseDetail)
+                        putString(ARG_NOTIFY_ID, notifyId)
                     }
                 }
         }

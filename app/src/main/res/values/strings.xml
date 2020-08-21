@@ -99,6 +99,7 @@
     <string name="title_task_pull_updates">Worker: Pull updates</string>
 
     <string name="toast_already_fetching">Already fetching another content.</string>
+    <string name="toast_notify_not_found">Requested notify not found.</string>
 
     <string name="notify_name_errors">Errors</string>
     <string name="notify_desc_errors">Errors happened while pulling updates</string>

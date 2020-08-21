@@ -18,6 +18,7 @@ import javax.inject.Inject
 class CourseDetailActivity : BaseActivity(), BaseActivity.ProvidesUrl {
 
     private lateinit var courseId: String
+    private var notifyId: String? = null
 
     @Inject
     lateinit var lms: LMS
@@ -26,6 +27,7 @@ class CourseDetailActivity : BaseActivity(), BaseActivity.ProvidesUrl {
         super.onCreate(savedInstanceState)
 
         courseId = intent.getStringExtra(EXTRA_COURSE_ID)!!
+        notifyId = intent.getStringExtra(EXTRA_NOTIFY_ID)
 
         replaceFragment(
             LoadingFragment.newInstance(
@@ -34,7 +36,7 @@ class CourseDetailActivity : BaseActivity(), BaseActivity.ProvidesUrl {
         )
         lms.getCourseDetail(courseId)
             .withResponse(this) {
-                replaceFragment(CourseDetailFragment.newInstance(it))
+                replaceFragment(CourseDetailFragment.newInstance(it, notifyId))
             }
     }
 
@@ -47,10 +49,12 @@ class CourseDetailActivity : BaseActivity(), BaseActivity.ProvidesUrl {
 
     companion object {
         private const val EXTRA_COURSE_ID = "course_id"
+        private const val EXTRA_NOTIFY_ID = "notify_id"
 
-        fun intent(context: Context, id: String): Intent {
+        fun intent(context: Context, courseId: String, notifyId: String? = null): Intent {
             return Intent(context, CourseDetailActivity::class.java).apply {
-                putExtra(EXTRA_COURSE_ID, id)
+                putExtra(EXTRA_COURSE_ID, courseId)
+                putExtra(EXTRA_NOTIFY_ID, notifyId)
             }
         }
     }
