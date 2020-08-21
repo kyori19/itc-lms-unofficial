@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ITC-LMS Unofficial</string>
+    <string name="app_name" translatable="false">ITC-LMS Unofficial</string>
 
     <string name="hint_start_login">"Looks like you didn't logged in or the session was expired!\nLogin and enjoy this app now!"</string>
     <string name="button_start_login">Login to ITC-LMS</string>
@@ -75,8 +75,8 @@
     <string name="menu_open_in_browser">Open this page in browser</string>
     <string name="menu_share_url">Share URL of this page</string>
 
-    <string name="text_period">%s / %s %d</string>
-    <string name="text_time_span_multi_lines">%s\n~ %s</string>
+    <string name="text_period" translatable="false">%s / %s %d</string>
+    <string name="text_time_span_multi_lines" translatable="false">%s\n~ %s</string>
 
     <string name="text_message_completed_by">Marked as completed by %s</string>
     <string name="text_message_got_answer_at">Received an answer at %s</string>
