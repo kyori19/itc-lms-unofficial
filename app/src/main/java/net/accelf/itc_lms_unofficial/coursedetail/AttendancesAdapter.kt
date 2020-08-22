@@ -46,7 +46,7 @@ class AttendancesAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val iconAttendanceStatus: ImageView = view.iconAttendanceStatus
         val textAttendanceDate: TextView = view.textAttendanceDate
     }

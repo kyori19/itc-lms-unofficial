@@ -51,7 +51,7 @@ class TestsAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val iconTestStatus: ImageView = view.iconTestStatus
         val titleTest: TextView = view.titleTest
         val textTestDate: TextView = view.textTestDate

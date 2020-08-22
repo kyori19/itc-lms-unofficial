@@ -33,7 +33,7 @@ class SurveysAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textSurveyTitle: TextView = view.textSurveyTitle
         val textSurveyDate: TextView = view.textSurveyDate
     }

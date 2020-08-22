@@ -51,7 +51,7 @@ class ReportsAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val iconReportStatus: ImageView = view.iconReportStatus
         val titleReport: TextView = view.titleReport
         val textReportDate: TextView = view.textReportDate

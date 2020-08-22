@@ -38,7 +38,7 @@ class NotifiesAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val root = view
         val textNotifyTitle: TextView = view.textNotifyTitle
         val textNotifyDate: TextView = view.textNotifyDate

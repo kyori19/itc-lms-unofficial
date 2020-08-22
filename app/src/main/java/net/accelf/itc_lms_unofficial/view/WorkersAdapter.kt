@@ -62,7 +62,7 @@ class WorkersAdapter(items: List<WorkInfo>) :
         const val DATA_MESSAGE = "message"
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textWorkerState: TextView = view.textWorkerState
         val textWorkerId: TextView = view.textWorkerId
         val textWorkerMessage: TextView = view.textWorkerMessage

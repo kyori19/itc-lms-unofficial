@@ -43,7 +43,7 @@ class CourseContentsAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleCourseContent: TextView = view.titleCourseContent
         val textCourseContentDate: TextView = view.textCourseContentDate
         val textCourseContentSummary: TextView = view.textCourseContentSummary

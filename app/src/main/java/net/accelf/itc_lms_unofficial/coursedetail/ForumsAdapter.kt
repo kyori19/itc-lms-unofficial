@@ -33,7 +33,7 @@ class ForumsAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textForumTitle: TextView = view.textForumTitle
         val textForumDate: TextView = view.textForumDate
     }

@@ -72,7 +72,7 @@ class MaterialsAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val root = view
         val iconMaterialType: ImageView = view.iconMaterialType
         val textMaterialName: TextView = view.textMaterialName
