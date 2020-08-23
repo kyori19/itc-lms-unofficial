@@ -74,6 +74,7 @@ class PdfFragment : Fragment(R.layout.fragment_pdf), PasswordDialogFragment.Pass
 
     private fun PDFView.Configurator.setDefaults(): PDFView.Configurator {
         return spacing(1)
+            .enableAnnotationRendering(true)
             .onError {
                 if (it is PdfPasswordException) {
                     passwordDialog.display(parentFragmentManager)
