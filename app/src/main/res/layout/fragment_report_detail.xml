@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleReport"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorAccent"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toTopOf="@id/iconReportStatus"
+            app:layout_constraintEnd_toStartOf="@id/textReportDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Report title" />
+
+        <TextView
+            android:id="@+id/textReportDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="@id/titleReport"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/titleReport"
+            app:layout_constraintTop_toTopOf="@id/titleReport"
+            tools:text="2000/01/23 04:56:59\n~ 2020/12/31 00:00:00" />
+
+        <ImageView
+            android:id="@+id/iconReportStatus"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toTopOf="@id/textReportSubmittedDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleReport"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_check" />
+
+        <TextView
+            android:id="@+id/textReportStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/iconReportStatus"
+            app:layout_constraintStart_toEndOf="@id/iconReportStatus"
+            app:layout_constraintTop_toTopOf="@id/iconReportStatus"
+            tools:text="Submitted" />
+
+        <ImageView
+            android:id="@+id/iconReportLateSubmittable"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/iconReportStatus"
+            app:layout_constraintStart_toEndOf="@id/textReportStatus"
+            app:layout_constraintTop_toTopOf="@id/iconReportStatus"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_check" />
+
+        <TextView
+            android:id="@+id/textReportLateSubmittable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/iconReportStatus"
+            app:layout_constraintStart_toEndOf="@id/iconReportLateSubmittable"
+            app:layout_constraintTop_toTopOf="@id/iconReportStatus"
+            tools:text="Submittable after deadline" />
+
+        <TextView
+            android:id="@+id/textReportSubmittedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/textReportDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iconReportStatus"
+            tools:text="Submitted at 2020/02/02 02:02:02" />
+
+        <TextView
+            android:id="@+id/textReportDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginVertical="4dp"
+            app:layout_constraintBottom_toTopOf="@id/iconAttachmentFile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textReportSubmittedDate"
+            tools:text="The summary of the course will be displayed here.\nIt can be multi lines." />
+
+        <ImageView
+            android:id="@+id/iconAttachmentFile"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="4dp"
+            android:contentDescription="@string/hint_icon_attachment_file"
+            android:src="@drawable/ic_file"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/cardReportFiles"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textReportDescription"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textAttachmentFileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/iconAttachmentFile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iconAttachmentFile"
+            app:layout_constraintTop_toTopOf="@id/iconAttachmentFile"
+            tools:text="File name"
+            tools:visibility="visible" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardReportFiles"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="4dp"
+            app:layout_constraintBottom_toTopOf="@id/cardReportText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iconAttachmentFile">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titleReportFiles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_report_submit_files"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constraintBottom_toTopOf="@id/listReportFiles"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listReportFiles"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/titleReportFiles"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_file" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardReportText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="4dp"
+            app:layout_constraintBottom_toTopOf="@id/cardReportFeedback"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardReportFiles">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titleReportText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_report_submit_text"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constraintBottom_toTopOf="@id/textReportText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textReportText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/titleReportText"
+                    tools:text="Inputted texts" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardReportFeedback"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardReportText">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titleReportFeedback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_report_feedback"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constraintBottom_toTopOf="@id/textReportFedBackBy"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/titleReportFedBackBy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_report_fed_back_by"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/textReportFedBackBy"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textReportFedBackBy" />
+
+                <TextView
+                    android:id="@+id/textReportFedBackBy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/titleReportFedBackBy"
+                    app:layout_constraintTop_toBottomOf="@id/titleReportFeedback"
+                    tools:text="Teacher" />
+
+                <TextView
+                    android:id="@+id/titleReportFeedbackScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_report_feedback_score"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textReportFeedbackScore"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textReportFeedbackScore" />
+
+                <TextView
+                    android:id="@+id/textReportFeedbackScore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/titleReportFeedbackScore"
+                    app:layout_constraintTop_toBottomOf="@id/textReportFedBackBy"
+                    tools:text="10" />
+
+                <TextView
+                    android:id="@+id/titleReportFeedbackComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_report_feedback_comment"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textReportFeedbackComment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textReportFeedbackComment" />
+
+                <TextView
+                    android:id="@+id/textReportFeedbackComment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/titleReportFeedbackComment"
+                    app:layout_constraintTop_toBottomOf="@id/textReportFeedbackScore"
+                    tools:text="Comment" />
+
+                <ImageView
+                    android:id="@+id/iconReportFeedbackFile"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/hint_icon_feedback_file"
+                    android:src="@drawable/ic_file"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textReportFeedbackComment"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textReportFeedbackFileName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/iconReportFeedbackFile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iconReportFeedbackFile"
+                    app:layout_constraintTop_toTopOf="@id/iconReportFeedbackFile"
+                    tools:text="File name"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textReportFeedbackDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iconReportFeedbackFile"
+                    tools:text="2020/02/20 02:20:20" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

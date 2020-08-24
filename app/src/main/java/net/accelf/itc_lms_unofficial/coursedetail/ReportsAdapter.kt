@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_report.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Report
+import net.accelf.itc_lms_unofficial.reportdetail.ReportDetailActivity
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class ReportsAdapter(
-    private val items: List<Report>
+    private val courseId: String,
+    private val items: List<Report>,
 ) : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,6 +27,10 @@ class ReportsAdapter(
         val item = items[position]
 
         holder.apply {
+            root.setOnClickListener {
+                it.context.startActivity(ReportDetailActivity.intent(it.context, courseId, item.id))
+            }
+
             iconReportStatus.apply {
                 setImageResource(
                     when (item.status) {
@@ -52,6 +58,7 @@ class ReportsAdapter(
     override fun getItemCount(): Int = items.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val root = view
         val iconReportStatus: ImageView = view.iconReportStatus
         val titleReport: TextView = view.titleReport
         val textReportDate: TextView = view.textReportDate

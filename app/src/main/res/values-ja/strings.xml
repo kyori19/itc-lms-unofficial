@@ -85,4 +85,17 @@
     <string name="notify_text_request_login">この通知を選択してITC-LMSにログインしなおしてください。</string>
     <string name="notify_name_lms_updates">更新</string>
     <string name="notify_desc_lms_updates">ITC-LMSからの未読の更新</string>
+    <string name="loading_report_detail">課題詳細を読込中…</string>
+    <string name="hint_icon_attachment_file">添付ファイル</string>
+    <string name="title_report_submit_files">ファイル提出</string>
+    <string name="hint_icon_report_file">提出済みファイル</string>
+    <string name="title_report_submit_text">直接入力</string>
+    <string name="title_report_feedback">フィードバック</string>
+    <string name="title_report_fed_back_by">担当教員</string>
+    <string name="title_report_feedback_score">評価</string>
+    <string name="title_report_feedback_comment">コメント</string>
+    <string name="hint_icon_feedback_file">フィードバックファイル</string>
+    <string name="hint_icon_late_submittable">期限後提出可</string>
+    <string name="hint_icon_not_late_submittable">期限後提出不可</string>
+    <string name="text_report_submitted_at">%sに提出済み</string>
 </resources>

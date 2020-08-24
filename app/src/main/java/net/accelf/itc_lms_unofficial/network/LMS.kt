@@ -1,10 +1,7 @@
 package net.accelf.itc_lms_unofficial.network
 
 import io.reactivex.Single
-import net.accelf.itc_lms_unofficial.models.CourseDetail
-import net.accelf.itc_lms_unofficial.models.NotifyDetail
-import net.accelf.itc_lms_unofficial.models.TimeTable
-import net.accelf.itc_lms_unofficial.models.Updates
+import net.accelf.itc_lms_unofficial.models.*
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.http.GET
@@ -42,7 +39,7 @@ interface LMS {
         @Query("fileId") fileId: String,
         @Query("contentId") materialId: String,
         @Query("endDate") endDate: String,
-        @Query("fileName") name: String = "file"
+        @Query("fileName") name: String = "file",
     ): Single<ResponseBody>
 
     @GET("lms/timetable/log")
@@ -50,5 +47,18 @@ interface LMS {
 
     @GET("updateinfo")
     fun getUpdates(): Single<Updates>
+
+    @GET("lms/course/report/submission")
+    fun getReportDetail(
+        @Query("idnumber") idNumber: String,
+        @Query("reportId") reportId: String,
+    ): Single<ReportDetail>
+
+    @Streaming
+    @GET("lms/course/report/submission_download/download")
+    fun downloadReportFile(
+        @Query("objectName") objectName: String,
+        @Query("downloadFileName") name: String = "file",
+    ): Single<ResponseBody>
 
 }

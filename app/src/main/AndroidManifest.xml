@@ -28,6 +28,7 @@
             android:name=".task.TaskManagerActivity"
             android:label="@string/title_task_manager" />
         <activity android:name=".PdfActivity" />
+        <activity android:name=".reportdetail.ReportDetailActivity" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

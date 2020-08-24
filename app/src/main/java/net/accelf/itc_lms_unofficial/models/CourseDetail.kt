@@ -135,31 +135,18 @@ data class CourseDetail(
                                                     else -> ""
                                                 },
                                                 when (type) {
-                                                    Material.MaterialType.FILE -> it.select(".objectName")
-                                                        .first().text()
-                                                    else -> ""
-                                                },
-                                                when (type) {
-                                                    Material.MaterialType.FILE -> it.select(".fileName")
-                                                        .first().text()
-                                                    else -> ""
+                                                    Material.MaterialType.FILE -> File(
+                                                        it.select(".objectName").first().text(),
+                                                        it.select(".fileName").first().text(),
+                                                        File.ScanStatus.fromText(it.select(".scanStatus")
+                                                            .first().text())
+                                                    )
+                                                    else -> null
                                                 },
                                                 when (type) {
                                                     Material.MaterialType.LINK -> it.select("a")
                                                         .first().attr("href")
                                                     else -> null
-                                                },
-                                                when (type) {
-                                                    Material.MaterialType.FILE -> {
-                                                        when (it.select(".scanStatus").first()
-                                                            .text()) {
-                                                            "0" -> Material.ScanStatus.NOT_SCANNED
-                                                            "1" -> Material.ScanStatus.SCANNED
-                                                            "9" -> Material.ScanStatus.FAILED
-                                                            else -> Material.ScanStatus.NOT_A_FILE
-                                                        }
-                                                    }
-                                                    else -> Material.ScanStatus.NOT_A_FILE
                                                 },
                                                 it.select(".result_list_txt").last().text()
                                                     .toDate(),

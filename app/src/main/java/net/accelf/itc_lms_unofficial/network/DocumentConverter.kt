@@ -1,9 +1,6 @@
 package net.accelf.itc_lms_unofficial.network
 
-import net.accelf.itc_lms_unofficial.models.CourseDetail
-import net.accelf.itc_lms_unofficial.models.NotifyDetail
-import net.accelf.itc_lms_unofficial.models.TimeTable
-import net.accelf.itc_lms_unofficial.models.Updates
+import net.accelf.itc_lms_unofficial.models.*
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -23,6 +20,7 @@ class DocumentConverterFactory : Converter.Factory() {
         return when (type) {
             CourseDetail::class.java -> CourseDetail.Converter(baseUri)
             NotifyDetail::class.java -> NotifyDetail.Converter(baseUri)
+            ReportDetail::class.java -> ReportDetail.Converter(baseUri)
             String::class.java -> StringConverter()
             TimeTable::class.java -> TimeTable.Converter(baseUri)
             Updates::class.java -> Updates.Converter(baseUri)

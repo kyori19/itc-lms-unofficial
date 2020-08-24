@@ -8,24 +8,15 @@ data class Material(
     val materialId: String,
     val type: MaterialType,
     val name: String,
-    val objectName: String,
-    val fileName: String,
+    val file: File?,
     val url: String?,
-    val scanStatus: ScanStatus,
     val createdAt: Date?,
-    val until: Date?
+    val until: Date?,
 ) : Serializable {
 
     enum class MaterialType {
         FILE,
         LINK,
         VIDEO
-    }
-
-    enum class ScanStatus {
-        SCANNED,
-        NOT_SCANNED,
-        FAILED,
-        NOT_A_FILE
     }
 }

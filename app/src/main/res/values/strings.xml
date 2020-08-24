@@ -8,6 +8,7 @@
     <string name="loading_check_account">Checking login state…</string>
     <string name="loading_time_table">Loading timetable…</string>
     <string name="loading_course_detail">Loading course details…</string>
+    <string name="loading_report_detail">Loading report details…</string>
 
     <string name="err_default">Something wrong happened!</string>
     <string name="err_page_not_loaded">Page is not loaded.</string>
@@ -58,6 +59,13 @@
     <string name="hint_icon_taken">Taken</string>
     <string name="hint_icon_unknown">Unknown</string>
 
+    <string name="hint_icon_attachment_file">Attachment file</string>
+    <string name="hint_icon_feedback_file">Feedback file</string>
+    <string name="hint_icon_report_file">Submitted file</string>
+
+    <string name="hint_icon_late_submittable">Late submittable</string>
+    <string name="hint_icon_not_late_submittable">Not late submittable</string>
+
     <string name="hint_delete_all_workers">Delete all workers</string>
     <string name="hint_open_attendances">Open attendances</string>
     <string name="hint_open_course_contents">Open course contents</string>
@@ -81,6 +89,7 @@
     <string name="text_message_completed_by">Marked as completed by %s</string>
     <string name="text_message_got_answer_at">Received an answer at %s</string>
     <string name="text_message_sent_at">Sent a message at %s</string>
+    <string name="text_report_submitted_at">Submitted at %s</string>
 
     <string name="title_about">About this app</string>
     <string name="title_attendances">Attendances</string>
@@ -91,6 +100,12 @@
     <string name="title_materials">Materials</string>
     <string name="title_messages">Messages</string>
     <string name="title_notifies">Notifies</string>
+    <string name="title_report_fed_back_by">Teacher</string>
+    <string name="title_report_feedback">Feedback</string>
+    <string name="title_report_feedback_comment">Comment</string>
+    <string name="title_report_feedback_score">Score</string>
+    <string name="title_report_submit_files">Submit files</string>
+    <string name="title_report_submit_text">Submit text</string>
     <string name="title_reports">Reports</string>
     <string name="title_surveys">Surveys</string>
     <string name="title_teachers_name">Teachers</string>

@@ -130,12 +130,12 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             CourseContentsAdapter(courseDetail.courseContents, this)
         }
 
-        @Suppress("UNCHECKED_CAST")
-        listReports.set(
+        listReports.setWithoutInitAdapter(
             courseDetail.reports,
-            ReportsAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
             headerReports
-        )
+        ) {
+            ReportsAdapter(courseDetail.id, courseDetail.reports)
+        }
 
         @Suppress("UNCHECKED_CAST")
         listMessages.set(

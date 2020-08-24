@@ -31,7 +31,13 @@ class MaterialsAdapter(
                 when (item.type) {
                     MaterialType.FILE -> {
                         item.apply {
-                            listener.openFile(materialId, resourceId, fileName, objectName, until!!)
+                            listener.openFile(
+                                materialId,
+                                resourceId,
+                                file!!.fileName,
+                                file.objectName,
+                                until!!
+                            )
                         }
                     }
                     MaterialType.LINK -> {
