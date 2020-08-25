@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.about_libs_version = '8.3.0'
+    ext.dagger_version='2.28.3-alpha'
     ext.kotlin_version = '1.4.0'
 
     repositories {
@@ -9,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.28-alpha'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_version"
         classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$about_libs_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
