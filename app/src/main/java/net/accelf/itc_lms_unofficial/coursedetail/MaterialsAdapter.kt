@@ -30,15 +30,7 @@ class MaterialsAdapter(
             root.setOnClickListener {
                 when (item.type) {
                     MaterialType.FILE -> {
-                        item.apply {
-                            listener.openFile(
-                                materialId,
-                                resourceId,
-                                file!!.fileName,
-                                file.objectName,
-                                until!!
-                            )
-                        }
+                        listener.openFile(item)
                     }
                     MaterialType.LINK -> {
                         item.url?.let { url ->

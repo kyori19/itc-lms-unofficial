@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_file.view.*
-import net.accelf.itc_lms_unofficial.PdfActivity
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.file.Downloadable
 import net.accelf.itc_lms_unofficial.models.SubmittedFile
 import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
 
@@ -25,11 +25,10 @@ class SubmittedFileAdapter(
         val item = items[position]
 
         holder.apply {
+            val downloadable = Downloadable.reportFile(item.file)
+
             root.setOnClickListener { view ->
-                if (item.file.fileName.endsWith(".pdf")) {
-                    view.context.startActivity(PdfActivity.intent(view.context,
-                        item.file.objectName))
-                }
+                downloadable.open(view.context)
             }
 
             textReportFileName.text = item.file.fileName

@@ -27,7 +27,7 @@
         <activity
             android:name=".task.TaskManagerActivity"
             android:label="@string/title_task_manager" />
-        <activity android:name=".PdfActivity" />
+        <activity android:name=".file.PdfActivity" />
         <activity android:name=".reportdetail.ReportDetailActivity" />
 
         <provider

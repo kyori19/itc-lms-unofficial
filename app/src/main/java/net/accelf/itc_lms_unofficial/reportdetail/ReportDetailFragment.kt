@@ -5,8 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_report_detail.*
-import net.accelf.itc_lms_unofficial.PdfActivity
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.file.Downloadable
 import net.accelf.itc_lms_unofficial.models.Report
 import net.accelf.itc_lms_unofficial.models.ReportDetail
 import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
@@ -96,10 +96,8 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail) {
             textAttachmentFileName) {
             listOf(iconAttachmentFile, textAttachmentFileName).forEach {
                 it.setOnClickListener { view ->
-                    if (reportDetail.attachmentFile!!.fileName.endsWith(".pdf")) {
-                        startActivity(PdfActivity.intent(view.context,
-                            reportDetail.attachmentFile!!.objectName))
-                    }
+                    val downloadable = Downloadable.reportFile(reportDetail.attachmentFile!!)
+                    downloadable.open(view.context)
                 }
             }
 
@@ -142,10 +140,8 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail) {
                 textReportFeedbackFileName) {
                 listOf(iconReportFeedbackFile, textReportFeedbackFileName).forEach {
                     it.setOnClickListener { view ->
-                        if (reportDetail.feedbackFile!!.fileName.endsWith(".pdf")) {
-                            startActivity(PdfActivity.intent(view.context,
-                                reportDetail.feedbackFile!!.objectName))
-                        }
+                        val downloadable = Downloadable.reportFile(reportDetail.feedbackFile!!)
+                        downloadable.open(view.context)
                     }
                 }
 

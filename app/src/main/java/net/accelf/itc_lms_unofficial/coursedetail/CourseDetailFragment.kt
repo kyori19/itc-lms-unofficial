@@ -15,15 +15,15 @@ import com.tingyik90.snackprogressbar.SnackProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_course_detail.*
-import net.accelf.itc_lms_unofficial.PdfActivity
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.file.Downloadable
 import net.accelf.itc_lms_unofficial.models.CourseDetail
+import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.fromHtml
 import net.accelf.itc_lms_unofficial.util.set
 import net.accelf.itc_lms_unofficial.util.setWithoutInitAdapter
 import net.accelf.itc_lms_unofficial.util.withResponse
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,15 +46,6 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         SnackProgressBar(
             SnackProgressBar.TYPE_HORIZONTAL,
             getString(R.string.snackbar_fetching_notify)
-        )
-            .setIsIndeterminate(true)
-            .setAllowUserInput(true)
-    }
-
-    private val fileIdSnackProgressBar by lazy {
-        SnackProgressBar(
-            SnackProgressBar.TYPE_HORIZONTAL,
-            getString(R.string.snackbar_getting_file_id)
         )
             .setIsIndeterminate(true)
             .setAllowUserInput(true)
@@ -209,33 +200,9 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             }
     }
 
-    override fun openFile(
-        materialId: String,
-        resourceId: String,
-        fileName: String,
-        objectName: String,
-        endDate: Date
-    ) {
-        if (fetching) {
-            Toast.makeText(requireContext(), R.string.toast_already_fetching, Toast.LENGTH_SHORT)
-                .show()
-            return
-        }
-
-        fetching = true
-        snackProgressBarManager.show(
-            fileIdSnackProgressBar,
-            SnackProgressBarManager.LENGTH_INDEFINITE
-        )
-        lms.getFileId(courseDetail.id, materialId, resourceId, fileName, objectName)
-            .withResponse(activity as AppCompatActivity) {
-                fetching = false
-                snackProgressBarManager.dismiss()
-
-                if (fileName.endsWith(".pdf")) {
-                    startActivity(PdfActivity.intent(requireContext(), it, materialId, endDate))
-                }
-            }
+    override fun openFile(material: Material) {
+        val downloadable = Downloadable.materialFile(courseDetail.id, material)
+        downloadable.open(requireContext())
     }
 
     override fun openLink(url: String) {

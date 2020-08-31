@@ -26,16 +26,16 @@ interface LMS {
 
     @GET("lms/course/material/tempfile")
     fun getFileId(
-        @Query("idnumber") idNumber: String,
+        @Query("idnumber") courseId: String,
         @Query("materialId") materialId: String,
         @Query("resourceId") resourceId: String,
         @Query("fileName") fileName: String,
-        @Query("objectName") objectName: String
+        @Query("objectName") objectName: String,
     ): Single<String>
 
     @Streaming
     @GET("lms/course/material/setfiledown/download")
-    fun downloadFile(
+    fun downloadMaterialFile(
         @Query("fileId") fileId: String,
         @Query("contentId") materialId: String,
         @Query("endDate") endDate: String,

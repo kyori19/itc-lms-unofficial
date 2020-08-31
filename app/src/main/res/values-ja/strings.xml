@@ -14,7 +14,6 @@
     <string name="snackbar_hint_re_login">この読み込み画面が長時間閉じない場合、IDかパスワードが間違っている可能性があります。</string>
     <string name="snackbar_button_re_login">再試行</string>
     <string name="snackbar_fetching_notify">通知を取得中…</string>
-    <string name="snackbar_getting_file_id">ファイルを準備しています…</string>
     <string name="snackbar_copied">URLをコピーしました</string>
     <string name="button_dialog_cancel">キャンセル</string>
     <string name="button_dialog_close">閉じる</string>

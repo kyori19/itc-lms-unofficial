@@ -1,4 +1,4 @@
-package net.accelf.itc_lms_unofficial
+package net.accelf.itc_lms_unofficial.file
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -9,18 +9,18 @@ import androidx.fragment.app.Fragment
 import com.github.polesapart.pdfviewer.PDFView
 import com.shockwave.pdfium.PdfPasswordException
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.Single
 import kotlinx.android.synthetic.main.fragment_pdf.*
+import net.accelf.itc_lms_unofficial.PasswordDialogFragment
+import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.readWithProgress
 import net.accelf.itc_lms_unofficial.util.withResponse
-import okhttp3.ResponseBody
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class PdfFragment : Fragment(R.layout.fragment_pdf), PasswordDialogFragment.PasswordDialogListener {
 
-    private lateinit var download: Single<ResponseBody>
+    private lateinit var downloadable: Downloadable
 
     private lateinit var pdfFile: ByteArray
 
@@ -35,24 +35,7 @@ class PdfFragment : Fragment(R.layout.fragment_pdf), PasswordDialogFragment.Pass
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            val fileId = it.getString(ARG_FILE_ID)
-            val materialId = it.getString(ARG_MATERIAL_ID)
-            val endDate = it.getString(ARG_END_DATE)
-            val objectName = it.getString(ARG_OBJECT_NAME)
-
-            if ((fileId == null) != (materialId == null) || (fileId == null) != (endDate == null)
-                || (fileId == null && objectName == null)
-            ) {
-                startActivity(MainActivity.intent(requireContext()))
-                activity?.finish()
-                return
-            }
-
-            download = if (fileId != null) {
-                lms.downloadFile(fileId, materialId!!, endDate!!)
-            } else {
-                lms.downloadReportFile(objectName!!)
-            }
+            downloadable = it.getSerializable(ARG_DOWNLOADABLE) as Downloadable
         }
     }
 
@@ -61,7 +44,7 @@ class PdfFragment : Fragment(R.layout.fragment_pdf), PasswordDialogFragment.Pass
 
         progressDownload.progressMax = 1f
 
-        download
+        downloadable.download(lms)
             .map {
                 val fullLength = it.contentLength()
                 it.byteStream().readWithProgress { readBytes ->
@@ -106,27 +89,13 @@ class PdfFragment : Fragment(R.layout.fragment_pdf), PasswordDialogFragment.Pass
     }
 
     companion object {
-        private const val ARG_FILE_ID = "file_id"
-        private const val ARG_MATERIAL_ID = "material_id"
-        private const val ARG_END_DATE = "end_date"
-        private const val ARG_OBJECT_NAME = "object_name"
+        private const val ARG_DOWNLOADABLE = "downloadable"
 
         @JvmStatic
-        fun newInstance(fileId: String?, materialId: String?, endDate: String?): PdfFragment {
+        fun newInstance(downloadable: Downloadable): PdfFragment {
             return PdfFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_FILE_ID, fileId)
-                    putString(ARG_MATERIAL_ID, materialId)
-                    putString(ARG_END_DATE, endDate)
-                }
-            }
-        }
-
-        @JvmStatic
-        fun newInstance(objectName: String?): PdfFragment {
-            return PdfFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_OBJECT_NAME, objectName)
+                    putSerializable(ARG_DOWNLOADABLE, downloadable)
                 }
             }
         }
