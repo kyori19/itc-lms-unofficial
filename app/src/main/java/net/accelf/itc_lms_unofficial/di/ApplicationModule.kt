@@ -1,5 +1,6 @@
 package net.accelf.itc_lms_unofficial.di
 
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Singleton
 
 @Module
@@ -37,5 +39,17 @@ class ApplicationModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
             .build()
             .create(LMS::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationId(): AtomicInteger {
+        return AtomicInteger(0)
     }
 }

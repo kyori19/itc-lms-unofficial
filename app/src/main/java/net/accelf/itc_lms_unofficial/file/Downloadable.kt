@@ -1,10 +1,21 @@
 package net.accelf.itc_lms_unofficial.file
 
-import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import com.google.gson.Gson
 import io.reactivex.Single
+import net.accelf.itc_lms_unofficial.file.ConfirmDownloadDialogFragment.Companion.BUNDLE_RESULT_CODE
+import net.accelf.itc_lms_unofficial.file.ConfirmDownloadDialogFragment.Companion.BUNDLE_RESULT_FILE_NAME
+import net.accelf.itc_lms_unofficial.file.ConfirmDownloadDialogFragment.Companion.BUNDLE_RESULT_TARGET_DIR
+import net.accelf.itc_lms_unofficial.file.ConfirmDownloadDialogFragment.Companion.RESULT_SUCCESS
 import net.accelf.itc_lms_unofficial.models.File
 import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.network.LMS
+import net.accelf.itc_lms_unofficial.permission.Permission
+import net.accelf.itc_lms_unofficial.permission.RequestPermissionActivity
+import net.accelf.itc_lms_unofficial.task.FileDownloadWorker
 import net.accelf.itc_lms_unofficial.util.TIME_SECONDS_FORMAT
 import okhttp3.ResponseBody
 import java.io.Serializable
@@ -29,10 +40,50 @@ data class Downloadable(
         }
     }
 
-    fun open(context: Context) {
+    fun open(fragment: Fragment, gson: Gson) {
+        val context = fragment.requireContext()
         if (file.fileName.endsWith(".pdf")) {
             context.startActivity(PdfActivity.intent(context, this))
+            return
         }
+
+        val permission = Permission.WRITE_EXTERNAL_STORAGE
+        if (!permission.granted(context)) {
+            permission.request(fragment.requireActivity() as AppCompatActivity) {
+                if (permission.granted(context)) {
+                    downloadWithDialog(fragment, gson)
+                    return@request
+                }
+
+                val (id, notification) = RequestPermissionActivity.permissionRequiredNotification(
+                    context,
+                    permission)
+                NotificationManagerCompat.from(context)
+                    .notify(id, notification)
+            }
+            return
+        }
+
+        downloadWithDialog(fragment, gson)
+    }
+
+    private fun downloadWithDialog(fragment: Fragment, gson: Gson) {
+        val confirmDownloadDialog = ConfirmDownloadDialogFragment.newInstance(file.fileName)
+        fragment.setFragmentResultListener(ConfirmDownloadDialogFragment::class.java.simpleName) { _, it ->
+            when (it.getInt(BUNDLE_RESULT_CODE)) {
+                RESULT_SUCCESS -> {
+                    FileDownloadWorker.enqueue(
+                        fragment.requireContext(),
+                        this,
+                        gson,
+                        it.getString(BUNDLE_RESULT_TARGET_DIR, ""),
+                        it.getString(BUNDLE_RESULT_FILE_NAME, "")
+                    )
+                }
+            }
+        }
+        confirmDownloadDialog.show(fragment.parentFragmentManager,
+            ConfirmDownloadDialogFragment::class.java.simpleName)
     }
 
     companion object {

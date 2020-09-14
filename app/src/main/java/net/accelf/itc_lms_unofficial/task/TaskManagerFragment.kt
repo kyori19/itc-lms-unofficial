@@ -11,7 +11,15 @@ class TaskManagerFragment : Fragment(R.layout.fragment_task_manager) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewWorkerPullUpdates.tag = PullUpdatesWorker::class.java.name
+        viewWorkerPullUpdates.apply {
+            tag = PullUpdatesWorker::class.java.name
+
+            setOnEnqueueClickListener {
+                PullUpdatesWorker.enqueue(it.context, true)
+            }
+        }
+
+        viewWorkerFileDownload.tag = FileDownloadWorker::class.java.name
     }
 
     companion object {

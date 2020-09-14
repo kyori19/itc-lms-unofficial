@@ -18,6 +18,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/title_task_pull_updates" />
 
+        <net.accelf.itc_lms_unofficial.view.TaskWorkerView
+            android:id="@+id/viewWorkerFileDownload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewWorkerPullUpdates"
+            app:title="@string/title_task_file_download" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

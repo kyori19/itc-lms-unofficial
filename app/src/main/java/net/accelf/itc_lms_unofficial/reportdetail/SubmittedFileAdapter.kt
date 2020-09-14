@@ -7,12 +7,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_file.view.*
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.file.Downloadable
 import net.accelf.itc_lms_unofficial.models.SubmittedFile
 import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
 
 class SubmittedFileAdapter(
     val items: List<SubmittedFile>,
+    private val listener: SubmittedFileListener,
 ) : RecyclerView.Adapter<SubmittedFileAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,10 +25,8 @@ class SubmittedFileAdapter(
         val item = items[position]
 
         holder.apply {
-            val downloadable = Downloadable.reportFile(item.file)
-
-            root.setOnClickListener { view ->
-                downloadable.open(view.context)
+            root.setOnClickListener {
+                listener.openFile(item.file)
             }
 
             textReportFileName.text = item.file.fileName

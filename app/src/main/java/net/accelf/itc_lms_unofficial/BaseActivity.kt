@@ -25,8 +25,11 @@ import okhttp3.HttpUrl
 
 const val CHANNEL_ID_LMS_UPDATES = "lms_updates"
 const val CHANNEL_ID_ERRORS = "errors"
+const val CHANNEL_ID_DOWNLOADS = "downloads"
 
 const val NOTIFICATION_ID_SESSION_EXPIRED = 10000001
+const val NOTIFICATION_ID_PERMISSION_REQUIRED = 20000000
+const val NOTIFICATION_ID_DOWNLOAD_PROGRESS = 30000001
 
 open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
 
@@ -65,9 +68,15 @@ open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
                             NotificationManager.IMPORTANCE_DEFAULT
                         ).apply {
                             description = getString(R.string.notify_desc_errors)
+                        },
+                        NotificationChannel(
+                            CHANNEL_ID_DOWNLOADS,
+                            getString(R.string.notify_name_downloads),
+                            NotificationManager.IMPORTANCE_LOW
+                        ).apply {
+                            description = getString(R.string.notify_desc_downloads)
                         }
                     )
-
                 )
         }
 

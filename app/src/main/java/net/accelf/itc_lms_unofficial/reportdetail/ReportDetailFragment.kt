@@ -3,20 +3,27 @@ package net.accelf.itc_lms_unofficial.reportdetail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_report_detail.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.Downloadable
+import net.accelf.itc_lms_unofficial.models.File
 import net.accelf.itc_lms_unofficial.models.Report
 import net.accelf.itc_lms_unofficial.models.ReportDetail
 import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
-import net.accelf.itc_lms_unofficial.util.set
+import net.accelf.itc_lms_unofficial.util.setWithoutInitAdapter
 import net.accelf.itc_lms_unofficial.util.showViewsAndDoWhen
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
+import javax.inject.Inject
 
-class ReportDetailFragment : Fragment(R.layout.fragment_report_detail) {
+@AndroidEntryPoint
+class ReportDetailFragment : Fragment(R.layout.fragment_report_detail), SubmittedFileListener {
 
     private lateinit var reportDetail: ReportDetail
+
+    @Inject
+    lateinit var gson: Gson
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,9 +102,9 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail) {
             iconAttachmentFile,
             textAttachmentFileName) {
             listOf(iconAttachmentFile, textAttachmentFileName).forEach {
-                it.setOnClickListener { view ->
+                it.setOnClickListener {
                     val downloadable = Downloadable.reportFile(reportDetail.attachmentFile!!)
-                    downloadable.open(view.context)
+                    downloadable.open(this, gson)
                 }
             }
 
@@ -107,9 +114,9 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail) {
         showViewsAndDoWhen(reportDetail.submissionType == ReportDetail.SubmissionType.FILE
                 || reportDetail.submittedFiles.isNotEmpty(), cardReportFiles) {
 
-            @Suppress("UNCHECKED_CAST")
-            listReportFiles.set(reportDetail.submittedFiles,
-                SubmittedFileAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>)
+            listReportFiles.setWithoutInitAdapter(reportDetail.submittedFiles) {
+                SubmittedFileAdapter(reportDetail.submittedFiles, this)
+            }
         }
 
         showViewsAndDoWhen(
@@ -139,9 +146,9 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail) {
                 iconReportFeedbackFile,
                 textReportFeedbackFileName) {
                 listOf(iconReportFeedbackFile, textReportFeedbackFileName).forEach {
-                    it.setOnClickListener { view ->
+                    it.setOnClickListener {
                         val downloadable = Downloadable.reportFile(reportDetail.feedbackFile!!)
-                        downloadable.open(view.context)
+                        downloadable.open(this, gson)
                     }
                 }
 
@@ -150,6 +157,11 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail) {
 
             textReportFeedbackDate.text = TIME_FORMAT.format(reportDetail.fedBackAt!!)
         }
+    }
+
+    override fun openFile(file: File) {
+        val downloadable = Downloadable.reportFile(file)
+        downloadable.open(this, gson)
     }
 
     companion object {

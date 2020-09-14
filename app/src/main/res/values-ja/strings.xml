@@ -79,7 +79,7 @@
     <string name="toast_already_fetching">現在別のデータを取得中です。</string>
     <string name="toast_notify_not_found">お知らせが見つかりませんでした。</string>
     <string name="notify_name_errors">エラー</string>
-    <string name="notify_desc_errors">更新の取得中に発生したエラー</string>
+    <string name="notify_desc_errors">処理中に発生したエラー</string>
     <string name="notify_title_session_expired">LMSのセッションが失効しています</string>
     <string name="notify_text_request_login">この通知を選択してITC-LMSにログインしなおしてください。</string>
     <string name="notify_name_lms_updates">更新</string>
@@ -97,4 +97,21 @@
     <string name="hint_icon_late_submittable">期限後提出可</string>
     <string name="hint_icon_not_late_submittable">期限後提出不可</string>
     <string name="text_report_submitted_at">%sに提出済み</string>
+    <string name="notify_name_downloads">ダウンロード</string>
+    <string name="notify_desc_downloads">ダウンロード中のファイルに関する通知</string>
+    <string name="notify_text_downloading">ファイルをダウンロード中…</string>
+    <string name="title_task_file_download">ワーカー: ファイルダウンロード</string>
+    <string name="notify_title_permission_required">必要な権限が許可されていません</string>
+    <string name="notify_text_request_permission">この通知をタップして権限を許可してください。</string>
+    <string name="text_permission_used_to">利用目的</string>
+    <string name="button_grant_permission">権限を許可する</string>
+    <string name="text_permission_name_write_external_storage">ストレージへのアクセス</string>
+    <string name="text_permission_usage_write_external_storage">* 添付ファイルをストレージにダウンロードする</string>
+    <string name="hint_pick_directory">保存先のディレクトリを選択</string>
+    <string name="input_hint_file_name">ファイル名</string>
+    <string name="input_hint_target_dir">ディレクトリ</string>
+    <string name="dialog_title_confirm_download">ファイルをダウンロード</string>
+    <string name="button_dialog_download">ダウンロード</string>
+    <string name="menu_download">ダウンロード</string>
+    <string name="notify_text_downloaded">ダウンロードが完了しました</string>
 </resources>

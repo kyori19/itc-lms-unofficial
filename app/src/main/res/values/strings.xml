@@ -23,6 +23,7 @@
 
     <string name="button_dialog_cancel">Cancel</string>
     <string name="button_dialog_close">Close</string>
+    <string name="button_dialog_download">Download</string>
     <string name="button_dialog_open">Open</string>
 
     <string name="login_instruction">This application saves only cookies and won\'t save passwords.</string>
@@ -35,6 +36,7 @@
 
     <string name="dialog_message_open_link">Open this link?\n%s</string>
     <string name="dialog_message_open_video_unsupported">Sorry, watching video is not supported now.</string>
+    <string name="dialog_title_confirm_download">Download file</string>
     <string name="dialog_title_open_link">Open link</string>
     <string name="dialog_title_open_video">Watch video</string>
     <string name="dialog_title_pdf_require_password">This PDF requires password</string>
@@ -76,9 +78,14 @@
     <string name="hint_open_reports">Open reports</string>
     <string name="hint_open_surveys">Open surveys</string>
     <string name="hint_open_tests">Open tests</string>
+    <string name="hint_pick_directory">Pick target directory</string>
     <string name="hint_start_task_now">Start task immediately</string>
 
+    <string name="input_hint_file_name">File name</string>
+    <string name="input_hint_target_dir">Directory</string>
+
     <string name="menu_copy_url">Copy URL</string>
+    <string name="menu_download">Download</string>
     <string name="menu_open_in_browser">Open this page in browser</string>
     <string name="menu_share_url">Share URL of this page</string>
 
@@ -109,17 +116,29 @@
     <string name="title_surveys">Surveys</string>
     <string name="title_teachers_name">Teachers</string>
     <string name="title_tests">Tests</string>
+    <string name="title_task_file_download">Worker: File download</string>
     <string name="title_task_manager">Task Manager</string>
     <string name="title_task_pull_updates">Worker: Pull updates</string>
 
     <string name="toast_already_fetching">Already fetching another content.</string>
     <string name="toast_notify_not_found">Requested notify not found.</string>
 
+    <string name="notify_name_downloads">Downloads</string>
+    <string name="notify_desc_downloads">Notification about downloading files</string>
+    <string name="notify_text_downloading">Downloading file…</string>
+    <string name="notify_text_downloaded">Download completed</string>
     <string name="notify_name_errors">Errors</string>
-    <string name="notify_desc_errors">Errors happened while pulling updates</string>
+    <string name="notify_desc_errors">Errors happened while processing</string>
     <string name="notify_title_session_expired">LMS session is expired</string>
     <string name="notify_text_request_login">Please re-login to ITC-LMS by clicking this notification.</string>
+    <string name="notify_title_permission_required">Required permission is not granted</string>
+    <string name="notify_text_request_permission">Please grant permission by clicking this notification and retry.</string>
     <string name="notify_name_lms_updates">Updates</string>
     <string name="notify_desc_lms_updates">Unread updates from ITC-LMS</string>
+
+    <string name="text_permission_used_to">Will be used to</string>
+    <string name="button_grant_permission">Grant permission</string>
+    <string name="text_permission_name_write_external_storage">Access to storage</string>
+    <string name="text_permission_usage_write_external_storage">* Download attachment files to the storage</string>
 
 </resources>

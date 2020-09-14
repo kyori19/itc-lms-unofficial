@@ -35,7 +35,7 @@ class WorkersAdapter(items: List<WorkInfo>) :
                             WorkInfo.State.ENQUEUED -> R.attr.colorWarning
                             WorkInfo.State.RUNNING -> R.attr.colorSuccess
                             WorkInfo.State.CANCELLED -> R.attr.colorError
-                            else -> android.R.attr.textColor
+                            else -> android.R.attr.colorForeground
                         }
                     )
                 )
@@ -44,7 +44,11 @@ class WorkersAdapter(items: List<WorkInfo>) :
             textWorkerId.text = item.id.toString()
 
             textWorkerMessage.apply {
-                val message = item.outputData.getString(DATA_MESSAGE)
+                val message = if (item.state == WorkInfo.State.RUNNING) {
+                    item.progress.getString(DATA_MESSAGE)
+                } else {
+                    item.outputData.getString(DATA_MESSAGE)
+                }
 
                 visibility = if (message.isNullOrEmpty()) {
                     GONE

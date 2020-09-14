@@ -3,14 +3,13 @@ package net.accelf.itc_lms_unofficial.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.lifecycle.Observer
+import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.view_task_worker.view.*
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.util.set
 
 class TaskWorkerView(context: Context, attrs: AttributeSet?) : MaterialCardView(context, attrs) {
@@ -22,7 +21,7 @@ class TaskWorkerView(context: Context, attrs: AttributeSet?) : MaterialCardView(
             field = value
 
             workManager.getWorkInfosByTagLiveData(tag)
-                .observe(findViewTreeLifecycleOwner()!!, Observer {
+                .observe(findViewTreeLifecycleOwner()!!, {
                     @Suppress("UNCHECKED_CAST")
                     listWorkers.set(
                         it,
@@ -52,12 +51,15 @@ class TaskWorkerView(context: Context, attrs: AttributeSet?) : MaterialCardView(
 
         titleTask.text = title
 
-        buttonEnqueue.setOnClickListener {
-            PullUpdatesWorker.enqueue(context, true)
-        }
-
         buttonDeleteAll.setOnClickListener {
             workManager.cancelAllWorkByTag(tag)
+        }
+    }
+
+    fun setOnEnqueueClickListener(listener: (View) -> Unit) {
+        buttonEnqueue.apply {
+            visibility = VISIBLE
+            setOnClickListener(listener)
         }
     }
 }

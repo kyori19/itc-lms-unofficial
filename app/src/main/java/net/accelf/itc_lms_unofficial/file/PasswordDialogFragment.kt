@@ -1,24 +1,22 @@
-package net.accelf.itc_lms_unofficial
+package net.accelf.itc_lms_unofficial.file
 
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import kotlinx.android.synthetic.main.dialog_password.view.*
+import net.accelf.itc_lms_unofficial.R
 
 @SuppressLint("InflateParams")
 class PasswordDialogFragment : DialogFragment() {
 
     private val layout by lazy {
         layoutInflater.inflate(R.layout.dialog_password, null)
-    }
-
-    private val listener by lazy {
-        targetFragment as PasswordDialogListener
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -29,15 +27,21 @@ class PasswordDialogFragment : DialogFragment() {
 
                 setPositiveButton(R.string.button_dialog_open) { _, _ -> }
                 setNegativeButton(R.string.button_dialog_cancel) { _, _ ->
-                    listener.onPasswordCancel()
+                    setFragmentResult(
+                        this@PasswordDialogFragment::class.java.simpleName,
+                        bundleOf(BUNDLE_RESULT_CODE to RESULT_CANCEL)
+                    )
                 }
             }.create().apply {
                 setOnShowListener { dialog ->
                     (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE)
                         .setOnClickListener {
-                            listener.onPasswordSubmit(
-                                dialog,
-                                layout.editTextDialogPassword.text.toString()
+                            setFragmentResult(
+                                this@PasswordDialogFragment::class.java.simpleName,
+                                bundleOf(
+                                    BUNDLE_RESULT_CODE to RESULT_SUCCESS,
+                                    BUNDLE_PASSWORD to layout.editTextDialogPassword.text.toString(),
+                                )
                             )
                         }
                 }
@@ -64,18 +68,19 @@ class PasswordDialogFragment : DialogFragment() {
         }
     }
 
-    interface PasswordDialogListener {
-        fun onPasswordSubmit(dialog: DialogInterface, password: String)
-        fun onPasswordCancel()
+    fun dismissDialog() {
+        dismiss()
     }
 
     companion object {
         private const val DIALOG_TAG = "pdf_password"
+        const val BUNDLE_RESULT_CODE = "result_code"
+        const val BUNDLE_PASSWORD = "password"
+        const val RESULT_SUCCESS = 0
+        const val RESULT_CANCEL = 1
 
-        fun <T> newInstance(listener: T): PasswordDialogFragment where T : Fragment, T : PasswordDialogListener {
-            return PasswordDialogFragment().apply {
-                setTargetFragment(listener, 0)
-            }
+        fun newInstance(): PasswordDialogFragment {
+            return PasswordDialogFragment()
         }
     }
 }

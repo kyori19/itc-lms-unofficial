@@ -11,6 +11,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 import com.tingyik90.snackprogressbar.SnackProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +37,9 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
 
     @Inject
     lateinit var lms: LMS
+
+    @Inject
+    lateinit var gson: Gson
 
     private val snackProgressBarManager by lazy {
         SnackProgressBarManager(requireView(), this)
@@ -202,7 +206,7 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
 
     override fun openFile(material: Material) {
         val downloadable = Downloadable.materialFile(courseDetail.id, material)
-        downloadable.open(requireContext())
+        downloadable.open(this, gson)
     }
 
     override fun openLink(url: String) {

@@ -4,6 +4,7 @@
     package="net.accelf.itc_lms_unofficial">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".di.App"
@@ -29,6 +30,7 @@
             android:label="@string/title_task_manager" />
         <activity android:name=".file.PdfActivity" />
         <activity android:name=".reportdetail.ReportDetailActivity" />
+        <activity android:name=".permission.RequestPermissionActivity" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
