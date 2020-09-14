@@ -86,6 +86,7 @@
 
     <string name="menu_copy_url">Copy URL</string>
     <string name="menu_download">Download</string>
+    <string name="menu_flush_tasks">Flush tasks</string>
     <string name="menu_open_in_browser">Open this page in browser</string>
     <string name="menu_share_url">Share URL of this page</string>
 

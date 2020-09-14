@@ -114,4 +114,5 @@
     <string name="button_dialog_download">ダウンロード</string>
     <string name="menu_download">ダウンロード</string>
     <string name="notify_text_downloaded">ダウンロードが完了しました</string>
+    <string name="menu_flush_tasks">タスクを全て消去</string>
 </resources>

@@ -37,6 +37,13 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/actionFlush"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/menu_flush_tasks"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/openAbout"
         android:icon="@drawable/ic_info"
         android:title="@string/title_about"
