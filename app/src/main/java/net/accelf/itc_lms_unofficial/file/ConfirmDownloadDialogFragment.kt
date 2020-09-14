@@ -12,9 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
-import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.dialog_confirm_download.view.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.util.defaultSharedPreference
 
 @SuppressLint("InflateParams")
 class ConfirmDownloadDialogFragment : DialogFragment() {
@@ -59,7 +59,7 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
                         (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE)
                     positiveButton.isEnabled = false
 
-                    preferences = PreferenceManager.getDefaultSharedPreferences(activity)
+                    preferences = activity.defaultSharedPreference
                     preferences.getString(PREF_LAST_DOWNLOADED_URI, null)?.let {
                         updateDirectory(Uri.parse(it), positiveButton)
                     }
