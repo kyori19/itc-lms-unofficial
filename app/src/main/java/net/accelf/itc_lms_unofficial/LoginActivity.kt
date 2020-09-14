@@ -74,7 +74,6 @@ class LoginActivity : BaseActivity() {
             loadUrl("https://itc-lms.ecc.u-tokyo.ac.jp/saml/login?disco=true")
         }
     }
-    private var clicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +112,6 @@ class LoginActivity : BaseActivity() {
                         evaluateJavascript("document.getElementById('submitButton').click()", null)
                     }
                 }
-                clicked = true
             }
         }
     }
