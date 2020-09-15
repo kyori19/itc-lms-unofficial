@@ -11,7 +11,6 @@ import android.view.View
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.github.polesapart.pdfviewer.PDFView
@@ -19,13 +18,10 @@ import com.shockwave.pdfium.PdfPasswordException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_pdf.*
 import net.accelf.itc_lms_unofficial.CHANNEL_ID_DOWNLOADS
-import net.accelf.itc_lms_unofficial.NOTIFICATION_ID_DOWNLOAD_PROGRESS
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.PasswordDialogFragment.Companion.BUNDLE_PASSWORD
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.util.readWithProgress
-import net.accelf.itc_lms_unofficial.util.withResponse
-import net.accelf.itc_lms_unofficial.util.writeToFile
+import net.accelf.itc_lms_unofficial.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
@@ -153,8 +149,7 @@ class PdfFragment : Fragment(R.layout.fragment_pdf) {
                                             PendingIntent.getActivity(context, id, chooser, 0)
                                         setContentIntent(pendingIntent)
                                     }.build()
-                            NotificationManagerCompat.from(requireContext())
-                                .notify(id, notification)
+                            requireContext().notify(id, notification)
                         }
                     }
                 }

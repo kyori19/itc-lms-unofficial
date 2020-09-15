@@ -50,6 +50,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha07'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha02'
     implementation 'androidx.work:work-runtime-ktx:2.4.0'
     implementation 'androidx.work:work-rxjava2:2.4.0'
     implementation 'com.github.polesapart:AndroidPdfViewer:3.2.2'

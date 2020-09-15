@@ -31,6 +31,9 @@
         <activity android:name=".file.PdfActivity" />
         <activity android:name=".reportdetail.ReportDetailActivity" />
         <activity android:name=".permission.RequestPermissionActivity" />
+        <activity
+            android:name=".settings.PreferenceActivity"
+            android:label="@string/title_settings" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

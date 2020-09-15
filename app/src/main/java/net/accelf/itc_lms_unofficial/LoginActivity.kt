@@ -1,7 +1,6 @@
 package net.accelf.itc_lms_unofficial
 
 import android.annotation.SuppressLint
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,10 +8,7 @@ import android.webkit.*
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.di.SavedCookieJar
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.util.defaultSharedPreference
-import net.accelf.itc_lms_unofficial.util.replaceErrorFragment
-import net.accelf.itc_lms_unofficial.util.replaceFragment
-import net.accelf.itc_lms_unofficial.util.withResponse
+import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.util.concurrent.locks.ReentrantLock
 import javax.inject.Inject
@@ -132,8 +128,7 @@ class LoginActivity : BaseActivity() {
 
         lms.getLog()
             .withResponse(this) {
-                (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-                    .cancel(NOTIFICATION_ID_SESSION_EXPIRED)
+                cancelExpiredNotification()
 
                 startActivity(MainActivity.intent(this))
                 finish()

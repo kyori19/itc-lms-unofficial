@@ -9,8 +9,8 @@ import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.CHANNEL_ID_ERRORS
-import net.accelf.itc_lms_unofficial.NOTIFICATION_ID_PERMISSION_REQUIRED
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_PERMISSION_REQUIRED
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 
 class RequestPermissionActivity : BaseActivity() {

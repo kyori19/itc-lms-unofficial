@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.aboutlibraries.LibsBuilder
 import kotlinx.android.synthetic.main.activity_base.*
+import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
 import okhttp3.HttpUrl
@@ -26,10 +27,6 @@ import okhttp3.HttpUrl
 const val CHANNEL_ID_LMS_UPDATES = "lms_updates"
 const val CHANNEL_ID_ERRORS = "errors"
 const val CHANNEL_ID_DOWNLOADS = "downloads"
-
-const val NOTIFICATION_ID_SESSION_EXPIRED = 10000001
-const val NOTIFICATION_ID_PERMISSION_REQUIRED = 20000000
-const val NOTIFICATION_ID_DOWNLOAD_PROGRESS = 30000001
 
 open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
 
@@ -95,6 +92,10 @@ open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.actionSettings -> {
+                startActivity(PreferenceActivity.intent(this))
+                true
+            }
             R.id.actionOpenTaskManager -> {
                 startActivity(TaskManagerActivity.intent(this))
                 true

@@ -1,7 +1,6 @@
 package net.accelf.itc_lms_unofficial.file
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.google.gson.Gson
@@ -17,6 +16,7 @@ import net.accelf.itc_lms_unofficial.permission.Permission
 import net.accelf.itc_lms_unofficial.permission.RequestPermissionActivity
 import net.accelf.itc_lms_unofficial.task.FileDownloadWorker
 import net.accelf.itc_lms_unofficial.util.TIME_SECONDS_FORMAT
+import net.accelf.itc_lms_unofficial.util.notify
 import okhttp3.ResponseBody
 import java.io.Serializable
 import java.util.*
@@ -58,8 +58,7 @@ data class Downloadable(
                 val (id, notification) = RequestPermissionActivity.permissionRequiredNotification(
                     context,
                     permission)
-                NotificationManagerCompat.from(context)
-                    .notify(id, notification)
+                context.notify(id, notification)
             }
             return
         }

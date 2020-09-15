@@ -90,6 +90,10 @@
     <string name="menu_open_in_browser">Open this page in browser</string>
     <string name="menu_share_url">Share URL of this page</string>
 
+    <string name="pref_category_login">Login</string>
+    <string name="pref_title_automate_login">Automate login</string>
+    <string name="pref_text_automate_login">This feature is NOT REQUIRED to use this application.\nWith this option enabled, this app will try to login using username/password when it loses the access to the server.\nYou should aware that there\'s a risk of your username/password stolen by malicious person, especially on rooted devices.\nUsername/password will be removed when this option is disabled.</string>
+
     <string name="text_period" translatable="false">%s / %s %d</string>
     <string name="text_time_span_multi_lines" translatable="false">%s\n~ %s</string>
 
@@ -114,6 +118,7 @@
     <string name="title_report_submit_files">Submit files</string>
     <string name="title_report_submit_text">Submit text</string>
     <string name="title_reports">Reports</string>
+    <string name="title_settings">Settings</string>
     <string name="title_surveys">Surveys</string>
     <string name="title_teachers_name">Teachers</string>
     <string name="title_tests">Tests</string>
@@ -132,6 +137,8 @@
     <string name="notify_desc_errors">Errors happened while processing</string>
     <string name="notify_title_session_expired">LMS session is expired</string>
     <string name="notify_text_request_login">Please re-login to ITC-LMS by clicking this notification.</string>
+    <string name="notify_title_wrong_credentials">Given username/password is wrong</string>
+    <string name="notify_text_wrong_credentials">Please fix them on preferences by clicking this notification.</string>
     <string name="notify_title_permission_required">Required permission is not granted</string>
     <string name="notify_text_request_permission">Please grant permission by clicking this notification and retry.</string>
     <string name="notify_name_lms_updates">Updates</string>

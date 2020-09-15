@@ -12,12 +12,13 @@ import androidx.work.*
 import com.google.gson.Gson
 import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.CHANNEL_ID_DOWNLOADS
-import net.accelf.itc_lms_unofficial.NOTIFICATION_ID_DOWNLOAD_PROGRESS
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.Downloadable
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.permission.Permission
 import net.accelf.itc_lms_unofficial.permission.RequestPermissionActivity
+import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_DOWNLOAD_PROGRESS
+import net.accelf.itc_lms_unofficial.util.notify
 import net.accelf.itc_lms_unofficial.util.readWithProgress
 import net.accelf.itc_lms_unofficial.util.writeToFile
 import net.accelf.itc_lms_unofficial.view.WorkersAdapter.Companion.DATA_MESSAGE
@@ -66,7 +67,7 @@ class FileDownloadWorker @WorkerInject constructor(
                     }
                 val downloadNotificationId =
                     NOTIFICATION_ID_DOWNLOAD_PROGRESS + notificationId.incrementAndGet()
-                notificationManager.notify(downloadNotificationId, builder.build())
+                context.notify(downloadNotificationId, builder.build())
 
                 val fullLength = it.contentLength()
                 val bytes = it.byteStream().readWithProgress { readBytes ->
@@ -78,11 +79,11 @@ class FileDownloadWorker @WorkerInject constructor(
                     setCompletableProgress(data).subscribe()
 
                     builder.setProgress(Int.MAX_VALUE, (progress * Int.MAX_VALUE).toInt(), false)
-                    notificationManager.notify(downloadNotificationId, builder.build())
+                    context.notify(downloadNotificationId, builder.build())
                 }
 
                 builder.setProgress(Int.MAX_VALUE, Int.MAX_VALUE, true)
-                notificationManager.notify(downloadNotificationId, builder.build())
+                context.notify(downloadNotificationId, builder.build())
 
                 val mime = "${it.contentType()?.type}/${it.contentType()?.subtype}"
                 val file = context.writeToFile(targetDirUri, targetFileName, mime, bytes)
@@ -107,7 +108,7 @@ class FileDownloadWorker @WorkerInject constructor(
                         PendingIntent.getActivity(context, downloadNotificationId, chooser, 0)
                     setContentIntent(pendingIntent)
                 }
-                notificationManager.notify(downloadNotificationId, builder.build())
+                context.notify(downloadNotificationId, builder.build())
 
                 Result.success(data)
             }
