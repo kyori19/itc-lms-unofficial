@@ -22,7 +22,10 @@ interface LMS {
     fun getCourseDetail(@Query("idnumber") idNumber: String): Single<CourseDetail>
 
     @GET("lms/coursetop/information/listdetail")
-    fun getNotifyDetail(@Query("informationId") notifyId: String): Single<NotifyDetail>
+    fun getNotifyDetail(
+        @Query("idnumber") courseId: String,
+        @Query("informationId") notifyId: String,
+    ): Single<NotifyDetail>
 
     @GET("lms/course/material/tempfile")
     fun getFileId(

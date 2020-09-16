@@ -193,7 +193,7 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             notifySnackProgressBar,
             SnackProgressBarManager.LENGTH_INDEFINITE
         )
-        lms.getNotifyDetail(notifyId)
+        lms.getNotifyDetail(courseDetail.id, notifyId)
             .withResponse(activity as AppCompatActivity) {
                 fetching = false
                 snackProgressBarManager.dismiss()
