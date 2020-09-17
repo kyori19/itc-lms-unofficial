@@ -31,6 +31,7 @@ data class Update(
     }
 
     enum class ContentType(private val text: String) {
+        UNKNOWN("unknown"),
         NOTIFY("information"),
         REPORT("report"),
         ONLINE_INFO("online_course"),
@@ -38,7 +39,7 @@ data class Update(
 
         companion object {
             fun String.toContentType(): ContentType {
-                return values().first { this == it.text }
+                return values().firstOrNull { this == it.text } ?: UNKNOWN
             }
         }
     }
