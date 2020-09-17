@@ -10,12 +10,11 @@ data class Update(
     val url: String,
     val courseId: String,
     val courseName: String,
-    val dow: TimeTable.DayOfWeek,
-    val period: Int,
+    val periods: List<Pair<TimeTable.DayOfWeek, Int>>,
     val text: String,
     val contentId: String,
     val contentType: ContentType,
-    val actionType: ActionType
+    val actionType: ActionType,
 ) : Serializable {
 
     val targetId = "${role.idPrefix}-${id}"

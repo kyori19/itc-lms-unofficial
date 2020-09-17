@@ -10,11 +10,13 @@ import net.accelf.itc_lms_unofficial.util.toDateTime
 import okhttp3.ResponseBody
 import java.io.Serializable
 
-private val COURSE_NAME_REGEX = Regex("""\[(Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])([\d０-９])\s(.+)]""")
+private val PERIOD_REGEX = Regex("""(Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])([\d０-９])""")
+private val COURSE_NAME_REGEX =
+    Regex("""\[((?:Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])[\d０-９](?:・(?:Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])[\d０-９])*)\s(.+)]""")
 
 data class Updates(
     val updates: List<Update>,
-    val throwable: Throwable?
+    val throwable: Throwable?,
 ) : Serializable {
 
     class Converter(baseUrl: String) :
@@ -26,16 +28,18 @@ data class Updates(
                         .map { row ->
                             lateinit var url: String
                             lateinit var courseName: String
-                            lateinit var dow: TimeTable.DayOfWeek
-                            var period = 0
+                            val periods = mutableListOf<Pair<TimeTable.DayOfWeek, Int>>()
                             lateinit var text: String
                             row.select(".message_link button").first().let { element ->
                                 url = element.`val`()
                                 COURSE_NAME_REGEX.matchEntire(element.select("span").first().text())
                                     ?.let {
-                                        dow = it.groupValues[1].toDow()
-                                        period = it.groupValues[2].toInt()
-                                        courseName = it.groupValues[3]
+                                        it.groupValues[1].split("・").forEach { periodText ->
+                                            PERIOD_REGEX.matchEntire(periodText)?.let { result ->
+                                                periods.add(result.groupValues[1].toDow() to result.groupValues[2].toInt())
+                                            }
+                                        }
+                                        courseName = it.groupValues[2]
                                     }
                                 text = element.select("span").second().text()
                             }
@@ -47,8 +51,7 @@ data class Updates(
                                 url,
                                 row.select("input#idnumber").first().`val`(),
                                 courseName,
-                                dow,
-                                period,
+                                periods,
                                 text,
                                 row.select("input#contentId").first().`val`(),
                                 row.select("input#module").first().`val`().toContentType(),
