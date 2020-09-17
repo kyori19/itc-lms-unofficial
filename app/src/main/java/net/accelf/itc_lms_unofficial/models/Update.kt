@@ -32,7 +32,9 @@ data class Update(
 
     enum class ContentType(private val text: String) {
         NOTIFY("information"),
-        REPORT("report");
+        REPORT("report"),
+        ONLINE_INFO("online_course"),
+        ;
 
         companion object {
             fun String.toContentType(): ContentType {
