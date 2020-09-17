@@ -110,7 +110,9 @@ class PullUpdatesWorker @WorkerInject constructor(
                         }
 
                         context.notify(NOTIFICATION_ID_SESSION_EXPIRED, expiredNotification())
+                        return@map Result.failure()
                     }
+                    printStackTrace()
                     return@map Result.failure()
                 }
 
