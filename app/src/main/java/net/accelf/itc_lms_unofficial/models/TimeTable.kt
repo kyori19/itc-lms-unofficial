@@ -6,7 +6,7 @@ import java.io.Serializable
 
 data class TimeTable(
     val name: String,
-    val courses: List<List<Course?>>
+    val courses: List<List<List<Course>>>,
 ) : Serializable {
     enum class DayOfWeek(val index: Int, val texts: Set<String>) {
         MON(0, setOf("Monday", "月曜日", "Mon", "月")),
@@ -36,7 +36,7 @@ data class TimeTable(
                     it.select("#page_contents .divTable:not(.otherCourse) .divTableBody .divTableRow.data")
                         .map { period ->
                             period.select(".divTableCell").map { cell ->
-                                cell.select(".divTableCellRow").first()?.let { row ->
+                                cell.select(".divTableCellRow").map { row ->
                                     row.select(".divTableCellHeader").first().let { header ->
                                         Course(
                                             header.id(),

@@ -6,7 +6,7 @@ import net.accelf.itc_lms_unofficial.models.Course
 
 class TimeLinesAdapter(
     fragment: Fragment,
-    private val items: List<List<Course?>>
+    private val items: List<List<List<Course?>>>,
 ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = items.size

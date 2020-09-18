@@ -15,13 +15,13 @@ const val ARG_TIME_LINE = "time_line"
 
 class TimeLineFragment : Fragment() {
 
-    private lateinit var timeLine: List<Course?>
+    private lateinit var timeLine: List<List<Course>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             @Suppress("UNCHECKED_CAST")
-            timeLine = it.getSerializable(ARG_TIME_LINE) as List<Course?>
+            timeLine = it.getSerializable(ARG_TIME_LINE) as List<List<Course>>
         }
     }
 
@@ -34,7 +34,7 @@ class TimeLineFragment : Fragment() {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = CoursesAdapter(timeLine)
+                adapter = TimeLineAdapter(timeLine)
             }
         }
         return view
@@ -42,7 +42,7 @@ class TimeLineFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(timeLine: List<Course?>): TimeLineFragment {
+        fun newInstance(timeLine: List<List<Course?>>): TimeLineFragment {
             return TimeLineFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_TIME_LINE, timeLine as Serializable)
