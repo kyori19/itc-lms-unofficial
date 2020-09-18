@@ -10,7 +10,9 @@ import java.io.Serializable
 import java.util.*
 
 private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
-private val SEMESTER_REGEX = Regex("""(.+)/(.+)/.*(\d).*""")
+private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９])[^,/]*""")
+private val SEMESTER_REGEX =
+    Regex("""([^,/]+)/([^,/]+/[^,/]*[\d０-９][^,/]*(?:,[^,/]+/[^,/]*[\d０-９][^,/]*)*)""")
 
 data class CourseDetail(
     val id: String,
@@ -19,8 +21,7 @@ data class CourseDetail(
     val name: String,
     val teachers: List<String>,
     val semester: String,
-    val dow: TimeTable.DayOfWeek,
-    val period: Int,
+    val periods: List<Pair<TimeTable.DayOfWeek, Int>>,
     val summary: String,
     val onlineInfoUpdatedAt: Date?,
     val onlineInfo: CharSequence,
@@ -49,7 +50,8 @@ data class CourseDetail(
                 }
 
                 var teachers: List<String>
-                var (semester, dow, period) = Triple("", TimeTable.DayOfWeek.MON, 0)
+                var semester = ""
+                val periods = mutableListOf<Pair<TimeTable.DayOfWeek, Int>>()
                 document.select("#syllabusSupplement .page_supple_title").let { syllabus ->
                     teachers = syllabus.first().select("span").last().text().split(",")
                     SEMESTER_REGEX.matchEntire(
@@ -57,8 +59,11 @@ data class CourseDetail(
                             .first().text()
                     )?.let {
                         semester = it.groupValues[1]
-                        dow = it.groupValues[2].toDow()
-                        period = it.groupValues[3].toInt()
+                        it.groupValues[2].split(",").forEach { periodStr ->
+                            PERIOD_REGEX.matchEntire(periodStr)?.let { result ->
+                                periods.add(result.groupValues[1].toDow() to result.groupValues[2].toInt())
+                            }
+                        }
                     }
                 }
 
@@ -69,8 +74,7 @@ data class CourseDetail(
                     name,
                     teachers,
                     semester,
-                    dow,
-                    period,
+                    periods,
                     document.select("#syllabusSupplement .page_supple_txt p").first().html(),
                     document.select("#syllabusSupplement .page_online_date").firstOrNull()?.text()
                         ?.substringAfter(":")?.toDateTime(),

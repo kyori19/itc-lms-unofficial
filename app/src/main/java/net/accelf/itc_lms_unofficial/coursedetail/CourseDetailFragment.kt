@@ -99,10 +99,17 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         textDepartment.text = courseDetail.department
         textCourseName.text = courseDetail.name
         textCourseCode.text = courseDetail.courseCode
-        textPeriod.text = getString(
+        textPeriod.text = StringBuilder(getString(
             R.string.text_period,
-            courseDetail.semester, courseDetail.dow.toString(), courseDetail.period
-        )
+            courseDetail.semester,
+            courseDetail.periods.first().first,
+            courseDetail.periods.first().second
+        )).apply {
+            courseDetail.periods.filterIndexed { index, _ -> index != 0 }
+                .forEach {
+                    append(", ${it.first} ${it.second}")
+                }
+        }
 
         textTeachersName.text = courseDetail.teachers.joinToString(", ")
         textCourseSummary.apply {
