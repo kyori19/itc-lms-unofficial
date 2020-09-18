@@ -45,9 +45,6 @@ interface LMS {
         @Query("fileName") name: String = "file",
     ): Single<ResponseBody>
 
-    @GET("lms/timetable/log")
-    fun getLog(): Single<ResponseBody>
-
     @GET("updateinfo")
     fun getUpdates(): Single<Updates>
 

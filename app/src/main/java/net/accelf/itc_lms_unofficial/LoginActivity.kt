@@ -126,7 +126,7 @@ class LoginActivity : BaseActivity() {
             .apply()
         cookieJar.loadCookies()
 
-        lms.getLog()
+        lms.getTimeTable()
             .withResponse(this) {
                 cancelExpiredNotification()
 
