@@ -9,12 +9,13 @@ import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.item_courses.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Course
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.dp
 import net.accelf.itc_lms_unofficial.util.set
 
 class TimeLineAdapter(
-    private val items: List<List<Course>>,
-) : RecyclerView.Adapter<TimeLineAdapter.ViewHolder>() {
+    items: List<List<Course>>,
+) : UpdatableAdapter<List<Course>, TimeLineAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

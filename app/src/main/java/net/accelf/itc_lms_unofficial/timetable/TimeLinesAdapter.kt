@@ -12,6 +12,6 @@ class TimeLinesAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun createFragment(position: Int): Fragment {
-        return TimeLineFragment.newInstance(items[position])
+        return TimeLineFragment.newInstance(position)
     }
 }

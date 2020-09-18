@@ -5,47 +5,51 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.models.Course
-import java.io.Serializable
-
-const val ARG_TIME_LINE = "time_line"
+import net.accelf.itc_lms_unofficial.util.onSuccess
 
 class TimeLineFragment : Fragment() {
 
-    private lateinit var timeLine: List<List<Course>>
+    private val viewModel by activityViewModels<TimeTableViewModel>()
+    private var viewModelPosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            @Suppress("UNCHECKED_CAST")
-            timeLine = it.getSerializable(ARG_TIME_LINE) as List<List<Course>>
+            viewModelPosition = it.getInt(ARG_VIEW_MODEL_POSITION)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_time_line, container, false)
 
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = TimeLineAdapter(timeLine)
+        viewModel.timeTable.onSuccess(this) {
+            if ((view as RecyclerView).layoutManager == null) {
+                view.layoutManager = LinearLayoutManager(context)
+            }
+            if (view.adapter == null) {
+                view.adapter = TimeLineAdapter(it.courses[viewModelPosition])
+            } else {
+                (view.adapter as TimeLineAdapter).items = it.courses[viewModelPosition]
             }
         }
         return view
     }
 
     companion object {
+        private const val ARG_VIEW_MODEL_POSITION = "view_model_position"
+
         @JvmStatic
-        fun newInstance(timeLine: List<List<Course?>>): TimeLineFragment {
+        fun newInstance(viewModelPosition: Int): TimeLineFragment {
             return TimeLineFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_TIME_LINE, timeLine as Serializable)
+                    putInt(ARG_VIEW_MODEL_POSITION, viewModelPosition)
                 }
             }
         }
