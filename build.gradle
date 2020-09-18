@@ -2,7 +2,7 @@
 buildscript {
     ext.about_libs_version = '8.3.0'
     ext.dagger_version='2.28.3-alpha'
-    ext.kotlin_version = '1.4.0'
+    ext.kotlin_version = '1.4.10'
 
     repositories {
         google()
