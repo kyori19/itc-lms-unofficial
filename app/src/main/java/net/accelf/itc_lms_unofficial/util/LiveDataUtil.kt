@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.android.synthetic.main.activity_base.*
+import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.LoadingFragment
 import net.accelf.itc_lms_unofficial.StartLoginFragment
 import retrofit2.HttpException
@@ -18,19 +20,31 @@ fun <T> LiveData<Request<T>>.withResponse(
     @StringRes loadingText: Int? = null,
     onSuccess: (T) -> Unit,
 ) {
+    val swipeRefreshEnabled = activity is BaseActivity && activity.swipeRefreshEnabled
     val loadingFragment =
         LoadingFragment.newInstance(loadingText?.let { activity.getString(loadingText) })
     observe(activity) {
         when (it) {
-            is Success -> onSuccess(it.data)
+            is Success -> {
+                if (swipeRefreshEnabled) {
+                    activity.swipeRefresh.isRefreshing = false
+                }
+                onSuccess(it.data)
+            }
             is Loading -> {
-                activity.replaceFragment(loadingFragment)
+                if (!(swipeRefreshEnabled && activity.swipeRefresh.isRefreshing)) {
+                    activity.replaceFragment(loadingFragment)
+                }
             }
             is Error -> {
-                if (it.throwable is HttpException && it.throwable.code() == 302) {
-                    activity.replaceFragment(StartLoginFragment.newInstance())
+                if (!(swipeRefreshEnabled && activity.swipeRefresh.isRefreshing)) {
+                    if (it.throwable is HttpException && it.throwable.code() == 302) {
+                        activity.replaceFragment(StartLoginFragment.newInstance())
+                    } else {
+                        activity.replaceErrorFragment(it.throwable)
+                    }
                 } else {
-                    activity.replaceErrorFragment(it.throwable)
+                    activity.swipeRefresh.isRefreshing = false
                 }
             }
         }

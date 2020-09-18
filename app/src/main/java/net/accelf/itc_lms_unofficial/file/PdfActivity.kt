@@ -8,7 +8,7 @@ import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 
 @AndroidEntryPoint
-class PdfActivity : BaseActivity() {
+class PdfActivity : BaseActivity(false) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

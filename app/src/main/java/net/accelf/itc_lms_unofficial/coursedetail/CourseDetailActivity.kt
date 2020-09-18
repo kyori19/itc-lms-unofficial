@@ -15,7 +15,7 @@ import okhttp3.HttpUrl
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CourseDetailActivity : BaseActivity(), BaseActivity.ProvidesUrl {
+class CourseDetailActivity : BaseActivity(false), BaseActivity.ProvidesUrl {
 
     private lateinit var courseId: String
     private var notifyId: String? = null

@@ -28,7 +28,10 @@ const val CHANNEL_ID_LMS_UPDATES = "lms_updates"
 const val CHANNEL_ID_ERRORS = "errors"
 const val CHANNEL_ID_DOWNLOADS = "downloads"
 
-open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
+// FIXME: The base class of the @AndroidEntryPoint, contains a constructor with default parameters.
+//  This is currently not supported by the Hilt Gradle plugin.
+open class BaseActivity(val swipeRefreshEnabled: Boolean) :
+    AppCompatActivity(R.layout.activity_base) {
 
     private val customTabsIntent by lazy {
         CustomTabsIntent.Builder()
@@ -45,6 +48,8 @@ open class BaseActivity : AppCompatActivity(R.layout.activity_base) {
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(toolbar)
+
+        swipeRefresh.isEnabled = swipeRefreshEnabled
 
         ViewTreeLifecycleOwner.set(window.decorView, this)
 

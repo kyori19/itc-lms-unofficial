@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_base.*
 import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import net.accelf.itc_lms_unofficial.timetable.TimeTableFragment
 import net.accelf.itc_lms_unofficial.timetable.TimeTableViewModel
@@ -13,12 +14,16 @@ import net.accelf.itc_lms_unofficial.util.withResponse
 import okhttp3.HttpUrl
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), BaseActivity.ProvidesUrl {
+class MainActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
 
     private val viewModel by viewModels<TimeTableViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        swipeRefresh.setOnRefreshListener {
+            viewModel.load()
+        }
 
         val timeTableFragment = TimeTableFragment.newInstance()
 

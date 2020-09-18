@@ -18,7 +18,7 @@ import kotlin.concurrent.withLock
 const val PREF_COOKIE = "cookie"
 
 @AndroidEntryPoint
-class LoginActivity : BaseActivity() {
+class LoginActivity : BaseActivity(false) {
 
     @Inject
     lateinit var lms: LMS

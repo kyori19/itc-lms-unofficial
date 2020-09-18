@@ -13,7 +13,7 @@ import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_PERMISSION_REQUIRED
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 
-class RequestPermissionActivity : BaseActivity() {
+class RequestPermissionActivity : BaseActivity(false) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

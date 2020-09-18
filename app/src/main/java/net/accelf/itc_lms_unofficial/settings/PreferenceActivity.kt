@@ -10,7 +10,7 @@ import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 
 @AndroidEntryPoint
-class PreferenceActivity : BaseActivity() {
+class PreferenceActivity : BaseActivity(false) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

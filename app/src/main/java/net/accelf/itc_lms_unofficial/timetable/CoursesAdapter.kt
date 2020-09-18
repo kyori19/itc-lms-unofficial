@@ -11,10 +11,11 @@ import kotlinx.android.synthetic.main.item_course.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity
 import net.accelf.itc_lms_unofficial.models.Course
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 
 class CoursesAdapter(
-    private val items: List<Course>,
-) : RecyclerView.Adapter<CoursesAdapter.ViewHolder>() {
+    items: List<Course>,
+) : UpdatableAdapter<Course, CoursesAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
