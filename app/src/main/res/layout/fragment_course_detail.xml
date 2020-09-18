@@ -118,6 +118,38 @@
                 app:layout_constraintTop_toBottomOf="@id/titleCourseSummary"
                 tools:text="The summary of the course will be displayed here.\nIt can be multi lines." />
 
+            <TextView
+                android:id="@+id/titleOnlineInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_online_info"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textCourseSummary" />
+
+            <TextView
+                android:id="@+id/textOnlineInfoDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/titleOnlineInfo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/titleOnlineInfo"
+                app:layout_constraintTop_toTopOf="@id/titleOnlineInfo"
+                tools:text="2020/09/18 09:18:00" />
+
+            <TextView
+                android:id="@+id/textOnlineInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleOnlineInfo"
+                tools:text="The online info of the course will be displayed here.\nIt can be multi lines." />
+
         </net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout>
 
         <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView

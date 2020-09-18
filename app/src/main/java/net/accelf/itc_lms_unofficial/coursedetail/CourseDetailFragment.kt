@@ -21,10 +21,7 @@ import net.accelf.itc_lms_unofficial.file.Downloadable
 import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.util.fromHtml
-import net.accelf.itc_lms_unofficial.util.set
-import net.accelf.itc_lms_unofficial.util.setWithoutInitAdapter
-import net.accelf.itc_lms_unofficial.util.withResponse
+import net.accelf.itc_lms_unofficial.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -97,6 +94,8 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val linkMovementMethod = LinkMovementMethod.getInstance()
+
         textDepartment.text = courseDetail.department
         textCourseName.text = courseDetail.name
         textCourseCode.text = courseDetail.courseCode
@@ -108,7 +107,12 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         textTeachersName.text = courseDetail.teachers.joinToString(", ")
         textCourseSummary.apply {
             text = courseDetail.summary.fromHtml()
-            movementMethod = LinkMovementMethod.getInstance()
+            movementMethod = linkMovementMethod
+        }
+        textOnlineInfoDate.text = courseDetail.onlineInfoUpdatedAt?.let { TIME_FORMAT.format(it) }
+        textOnlineInfo.apply {
+            text = courseDetail.onlineInfo
+            movementMethod = linkMovementMethod
         }
 
         listNotifies.setWithoutInitAdapter(

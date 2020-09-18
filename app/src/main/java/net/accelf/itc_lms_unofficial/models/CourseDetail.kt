@@ -7,6 +7,7 @@ import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
 import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.ResponseBody
 import java.io.Serializable
+import java.util.*
 
 private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
 private val SEMESTER_REGEX = Regex("""(.+)/(.+)/.*(\d).*""")
@@ -21,6 +22,8 @@ data class CourseDetail(
     val dow: TimeTable.DayOfWeek,
     val period: Int,
     val summary: String,
+    val onlineInfoUpdatedAt: Date?,
+    val onlineInfo: CharSequence,
     val notifies: List<Notify>,
     val courseContents: List<CourseContent>,
     val reports: List<Report>,
@@ -28,7 +31,7 @@ data class CourseDetail(
     val attendances: List<Attendance>,
     val tests: List<Test>,
     val forums: List<Forum>,
-    val surveys: List<Survey>
+    val surveys: List<Survey>,
 ) : Serializable {
 
     class Converter(baseUrl: String) :
@@ -69,6 +72,9 @@ data class CourseDetail(
                     dow,
                     period,
                     document.select("#syllabusSupplement .page_supple_txt p").first().html(),
+                    document.select("#syllabusSupplement .page_online_date").first().text()
+                        .substringAfter(":").toDateTime(),
+                    document.select("#courseTopForm input#onlineText").first().`val`().parseQuill(),
                     document.select("#information .subblock_list_line").map { row ->
                         var (id, title) = Pair("", "")
                         row.select(".subblock_list_txt1 a").first()?.let {

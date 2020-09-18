@@ -121,4 +121,5 @@
     <string name="notify_title_wrong_credentials">入力されたユーザー名・パスワードが間違っています</string>
     <string name="notify_text_wrong_credentials">この通知をタップして、設定でログイン情報を修正してください</string>
     <string name="title_settings">設定</string>
+    <string name="title_online_info">オンライン授業コード</string>
 </resources>
