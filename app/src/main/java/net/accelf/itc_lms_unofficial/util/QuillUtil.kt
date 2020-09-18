@@ -25,7 +25,7 @@ data class QuillData(
 fun String.parseQuill(): CharSequence {
     val data = Gson().fromJson(this, QuillData::class.java)
     val builder = SpannableStringBuilder()
-    data.content.forEach {
+    data?.content?.forEach {
         val start = builder.length
         builder.append(it.text)
         val end = builder.length
