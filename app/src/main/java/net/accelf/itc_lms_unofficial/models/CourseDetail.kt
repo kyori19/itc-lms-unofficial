@@ -72,8 +72,8 @@ data class CourseDetail(
                     dow,
                     period,
                     document.select("#syllabusSupplement .page_supple_txt p").first().html(),
-                    document.select("#syllabusSupplement .page_online_date").first().text()
-                        .substringAfter(":").toDateTime(),
+                    document.select("#syllabusSupplement .page_online_date").firstOrNull()?.text()
+                        ?.substringAfter(":")?.toDateTime(),
                     document.select("#courseTopForm input#onlineText").first().`val`().parseQuill(),
                     document.select("#information .subblock_list_line").map { row ->
                         var (id, title) = Pair("", "")
