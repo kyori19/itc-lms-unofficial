@@ -21,6 +21,7 @@
             android:id="@+id/pickerYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:inputType="none"
             tools:ignore="LabelFor" />
 
@@ -41,6 +42,7 @@
             android:id="@+id/pickerTerm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:inputType="none"
             tools:ignore="LabelFor" />
 
