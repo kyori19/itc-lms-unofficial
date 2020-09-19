@@ -22,7 +22,7 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideLmsClient(cookieJar: SavedCookieJar): LMS {
+    fun provideLmsClient(cookieJar: SavedCookieJar, gson: Gson): LMS {
         val okHttpClient = OkHttpClient.Builder().apply {
             addInterceptor(
                 HttpLoggingInterceptor()
@@ -35,7 +35,7 @@ class ApplicationModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(lmsHostUrl)
-            .addConverterFactory(DocumentConverterFactory())
+            .addConverterFactory(DocumentConverterFactory(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
             .build()
             .create(LMS::class.java)

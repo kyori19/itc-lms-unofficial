@@ -22,8 +22,8 @@ data class QuillData(
     @SerializedName("ops") val content: List<QuillElement>,
 )
 
-fun String.parseQuill(): CharSequence {
-    val data = Gson().fromJson(this, QuillData::class.java)
+fun String.parseQuill(gson: Gson): CharSequence {
+    val data = gson.fromJson(this, QuillData::class.java)
     val builder = SpannableStringBuilder()
     data?.content?.forEach {
         val start = builder.length

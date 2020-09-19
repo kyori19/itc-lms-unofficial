@@ -1,5 +1,6 @@
 package net.accelf.itc_lms_unofficial.models
 
+import com.google.gson.Gson
 import net.accelf.itc_lms_unofficial.models.Attendance.AttendanceStatus.Companion.toAttendanceStatus
 import net.accelf.itc_lms_unofficial.models.Message.MessageStatus.Companion.toMessageStatus
 import net.accelf.itc_lms_unofficial.models.TimeTable.DayOfWeek.Companion.toDow
@@ -35,7 +36,7 @@ data class CourseDetail(
     val surveys: List<Survey>,
 ) : Serializable {
 
-    class Converter(baseUrl: String) :
+    class Converter(baseUrl: String, private val gson: Gson) :
         DocumentConverterFactory.DocumentConverter<CourseDetail>(baseUrl) {
         override fun convert(value: ResponseBody): CourseDetail? {
             document(value).let { document ->
@@ -78,7 +79,8 @@ data class CourseDetail(
                     document.select("#syllabusSupplement .page_supple_txt p").first().html(),
                     document.select("#syllabusSupplement .page_online_date").firstOrNull()?.text()
                         ?.substringAfter(":")?.toDateTime(),
-                    document.select("#courseTopForm input#onlineText").first().`val`().parseQuill(),
+                    document.select("#courseTopForm input#onlineText").first().`val`()
+                        .parseQuill(gson),
                     document.select("#information .subblock_list_line").map { row ->
                         var (id, title) = Pair("", "")
                         row.select(".subblock_list_txt1 a").first()?.let {

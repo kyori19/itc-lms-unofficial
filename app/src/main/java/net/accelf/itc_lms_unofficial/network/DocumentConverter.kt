@@ -1,5 +1,6 @@
 package net.accelf.itc_lms_unofficial.network
 
+import com.google.gson.Gson
 import net.accelf.itc_lms_unofficial.models.*
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
@@ -9,16 +10,16 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type
 
-class DocumentConverterFactory : Converter.Factory() {
+class DocumentConverterFactory(private val gson: Gson) : Converter.Factory() {
 
     override fun responseBodyConverter(
         type: Type,
         annotations: Array<Annotation>,
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): Converter<ResponseBody, *>? {
         val baseUri = retrofit.baseUrl().toString()
         return when (type) {
-            CourseDetail::class.java -> CourseDetail.Converter(baseUri)
+            CourseDetail::class.java -> CourseDetail.Converter(baseUri, gson)
             NotifyDetail::class.java -> NotifyDetail.Converter(baseUri)
             ReportDetail::class.java -> ReportDetail.Converter(baseUri)
             String::class.java -> StringConverter()
