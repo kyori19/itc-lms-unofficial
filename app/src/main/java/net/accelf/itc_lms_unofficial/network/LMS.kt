@@ -4,9 +4,7 @@ import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.models.*
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
-import retrofit2.http.GET
-import retrofit2.http.Query
-import retrofit2.http.Streaming
+import retrofit2.http.*
 
 val lmsHostUrl = HttpUrl.Builder()
     .scheme("https")
@@ -64,4 +62,19 @@ interface LMS {
         @Query("downloadFileName") name: String = "file",
     ): Single<ResponseBody>
 
+    @GET("settings")
+    fun getSettings(): Single<Settings>
+
+    @POST("settings")
+    @FormUrlEncoded
+    fun updateSettings(
+        @Field("_csrf") csrf: String,
+        @Field("langCd") language: String,
+        @Field("mailType") mailType: String,
+        @Field("mailAddress1") mailAddress1: String,
+        @Field("mailAddress2") mailAddress2: String,
+        @Field("forwardId11") notifyForward: String,
+        @Field("forwardId110") updateForward: String,
+        @Field("_method") method: String = "put",
+    ): Single<ResponseBody>
 }

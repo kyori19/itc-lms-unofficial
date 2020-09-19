@@ -26,12 +26,20 @@ data class SelectOption(
             )
         }
 
-        fun List<SelectOption>.toStrings(): List<String> {
+        fun List<SelectOption>.toTextStrings(): List<String> {
             return map { it.text }
         }
 
-        fun List<SelectOption>.selected(): String {
+        fun List<SelectOption>.toValueStrings(): List<String> {
+            return map { it.value }
+        }
+
+        fun List<SelectOption>.selectedText(): String {
             return firstOrNull { it.selected }?.text ?: ""
+        }
+
+        fun List<SelectOption>.selectedValue(): String {
+            return firstOrNull { it.selected }?.value ?: ""
         }
 
         fun List<SelectOption>.valueFor(text: String): String {

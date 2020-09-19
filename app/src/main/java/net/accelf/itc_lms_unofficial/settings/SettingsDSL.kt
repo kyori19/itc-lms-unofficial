@@ -16,6 +16,14 @@ class PreferenceParent(
     val applyToAll: Preference.() -> Unit,
 )
 
+inline fun PreferenceParent.listPreference(builder: ListPreference.() -> Unit): ListPreference {
+    val pref = ListPreference(context)
+    pref.apply(applyToAll)
+    builder(pref)
+    addPref(pref)
+    return pref
+}
+
 inline fun PreferenceParent.switchPreference(
     builder: SwitchPreference.() -> Unit,
 ): SwitchPreference {

@@ -13,7 +13,7 @@ open class RxAwareViewModel : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
-    private fun Disposable.autoDispose() = disposables.add(this)
+    fun Disposable.autoDispose() = disposables.add(this)
 
     fun <T> Single<T>.toLiveData(target: MutableLiveData<Request<T>>) {
         target.postValue(Loading())

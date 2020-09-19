@@ -22,6 +22,7 @@ class DocumentConverterFactory(private val gson: Gson) : Converter.Factory() {
             CourseDetail::class.java -> CourseDetail.Converter(baseUri, gson)
             NotifyDetail::class.java -> NotifyDetail.Converter(baseUri)
             ReportDetail::class.java -> ReportDetail.Converter(baseUri)
+            Settings::class.java -> Settings.Converter(baseUri)
             String::class.java -> StringConverter()
             TimeTable::class.java -> TimeTable.Converter(baseUri)
             Updates::class.java -> Updates.Converter(baseUri)

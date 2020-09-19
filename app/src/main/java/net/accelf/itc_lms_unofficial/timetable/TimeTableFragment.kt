@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.fragment_time_table.*
 import net.accelf.itc_lms_unofficial.MainActivity
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.selected
-import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toStrings
+import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.selectedText
+import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toTextStrings
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.valueFor
 import net.accelf.itc_lms_unofficial.models.TimeTable
 import net.accelf.itc_lms_unofficial.util.onSuccess
@@ -55,20 +55,20 @@ class TimeTableFragment : Fragment(R.layout.fragment_time_table) {
             if (pickerYear.adapter == null) {
                 pickerYear.setAdapter(ArrayAdapter(requireContext(),
                     R.layout.item_picker_text,
-                    it.years.toStrings()))
+                    it.years.toTextStrings()))
             } else {
                 @Suppress("UNCHECKED_CAST")
                 (pickerYear.adapter as ArrayAdapter<String>).apply {
                     clear()
-                    addAll(it.years.toStrings())
+                    addAll(it.years.toTextStrings())
                 }
             }
-            pickerYear.setText(it.years.selected(), false)
+            pickerYear.setText(it.years.selectedText(), false)
 
             if (pickerTerm.adapter == null) {
                 pickerTerm.setAdapter(ArrayAdapter(requireContext(),
                     R.layout.item_picker_text,
-                    it.terms.toStrings()))
+                    it.terms.toTextStrings()))
 
                 listOf(pickerYear, pickerTerm).forEach { picker ->
                     picker.setOnItemClickListener { _, _, _, _ ->
@@ -83,10 +83,10 @@ class TimeTableFragment : Fragment(R.layout.fragment_time_table) {
                 @Suppress("UNCHECKED_CAST")
                 (pickerTerm.adapter as ArrayAdapter<String>).apply {
                     clear()
-                    addAll(it.terms.toStrings())
+                    addAll(it.terms.toTextStrings())
                 }
             }
-            pickerTerm.setText(it.terms.selected(), false)
+            pickerTerm.setText(it.terms.selectedText(), false)
         }
     }
 
