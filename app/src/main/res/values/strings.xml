@@ -82,6 +82,8 @@
 
     <string name="input_hint_file_name">File name</string>
     <string name="input_hint_target_dir">Directory</string>
+    <string name="input_hint_term">Term</string>
+    <string name="input_hint_year">Year</string>
 
     <string name="menu_copy_url">Copy URL</string>
     <string name="menu_download">Download</string>

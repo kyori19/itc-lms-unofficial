@@ -1,5 +1,6 @@
 package net.accelf.itc_lms_unofficial.models
 
+import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toSelectOptions
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
 import okhttp3.ResponseBody
 import java.io.Serializable
@@ -7,6 +8,8 @@ import java.io.Serializable
 data class TimeTable(
     val name: String,
     val courses: List<List<List<Course>>>,
+    val years: List<SelectOption>,
+    val terms: List<SelectOption>,
 ) : Serializable {
     enum class DayOfWeek(val index: Int, val texts: Set<String>) {
         MON(0, setOf("Monday", "月曜日", "Mon", "月")),
@@ -56,7 +59,9 @@ data class TimeTable(
                                     period[dow.index]
                                 }
                             }
-                        }
+                        },
+                    it.select(".condition_select#nendo option").toSelectOptions(),
+                    it.select(".condition_select.term:not([disabled]) option").toSelectOptions(),
                 )
             }
         }

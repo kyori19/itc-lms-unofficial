@@ -16,7 +16,10 @@ val lmsHostUrl = HttpUrl.Builder()
 interface LMS {
 
     @GET("lms/timetable")
-    fun getTimeTable(): Single<TimeTable>
+    fun getTimeTable(
+        @Query("risyunen") year: String = "",
+        @Query("kikanCd") term: String = "",
+    ): Single<TimeTable>
 
     @GET("lms/course")
     fun getCourseDetail(@Query("idnumber") idNumber: String): Single<CourseDetail>
