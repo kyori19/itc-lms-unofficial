@@ -107,7 +107,6 @@
     <string name="button_grant_permission">権限を許可する</string>
     <string name="text_permission_name_write_external_storage">ストレージへのアクセス</string>
     <string name="text_permission_usage_write_external_storage">* 添付ファイルをストレージにダウンロードする</string>
-    <string name="hint_pick_directory">保存先のディレクトリを選択</string>
     <string name="input_hint_file_name">ファイル名</string>
     <string name="input_hint_target_dir">ディレクトリ</string>
     <string name="dialog_title_confirm_download">ファイルをダウンロード</string>

@@ -78,7 +78,6 @@
     <string name="hint_open_reports">Open reports</string>
     <string name="hint_open_surveys">Open surveys</string>
     <string name="hint_open_tests">Open tests</string>
-    <string name="hint_pick_directory">Pick target directory</string>
     <string name="hint_start_task_now">Start task immediately</string>
 
     <string name="input_hint_file_name">File name</string>
