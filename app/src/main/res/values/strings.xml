@@ -99,6 +99,7 @@
     <string name="pref_text_automate_login">This feature is NOT REQUIRED to use this application.\nWith this option enabled, this app will try to login using username/password when it loses the access to the server.\nYou should aware that there\'s a risk of your username/password stolen by malicious person, especially on rooted devices.\nUsername/password will be removed when this option is disabled.</string>
 
     <string name="text_period" translatable="false">%s / %s %d</string>
+    <string name="text_time_span_single_line" translatable="false">%s ~ %s</string>
     <string name="text_time_span_multi_lines" translatable="false">%s\n~ %s</string>
 
     <string name="text_message_completed_by">Marked as completed by %s</string>

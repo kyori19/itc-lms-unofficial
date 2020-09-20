@@ -15,7 +15,9 @@ import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.selectedText
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toTextStrings
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.valueFor
 import net.accelf.itc_lms_unofficial.models.TimeTable
+import net.accelf.itc_lms_unofficial.util.DATE_FORMAT
 import net.accelf.itc_lms_unofficial.util.onSuccess
+import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class TimeTableFragment : Fragment(R.layout.fragment_time_table) {
 
@@ -87,6 +89,11 @@ class TimeTableFragment : Fragment(R.layout.fragment_time_table) {
                 }
             }
             pickerTerm.setText(it.terms.selectedText(), false)
+
+            textTimeTableDate.text = when (it.until == null) {
+                true -> DATE_FORMAT.format(it.since)
+                false -> requireContext().timeSpanToString(it.since, it.until, false)
+            }
         }
     }
 

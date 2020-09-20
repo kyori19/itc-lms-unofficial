@@ -2,14 +2,20 @@ package net.accelf.itc_lms_unofficial.models
 
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toSelectOptions
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
+import net.accelf.itc_lms_unofficial.util.toDate
 import okhttp3.ResponseBody
 import java.io.Serializable
+import java.util.*
+
+private val DATE_OR_DATE_SPAN_REGEX = Regex("""([^～]+)(?:\s～\s([^～]+))?""")
 
 data class TimeTable(
     val name: String,
     val courses: List<List<List<Course>>>,
     val years: List<SelectOption>,
     val terms: List<SelectOption>,
+    val since: Date,
+    val until: Date?,
 ) : Serializable {
     enum class DayOfWeek(val index: Int, val texts: Set<String>) {
         MON(0, setOf("Monday", "月曜日", "Mon", "月")),
@@ -34,6 +40,15 @@ data class TimeTable(
         DocumentConverterFactory.DocumentConverter<TimeTable>(baseUrl) {
         override fun convert(value: ResponseBody): TimeTable? {
             document(value).let {
+                lateinit var since: Date
+                var until: Date? = null
+                it.select(".selectedDisplayDate").firstOrNull()?.text()?.let { dateStr ->
+                    DATE_OR_DATE_SPAN_REGEX.matchEntire(dateStr)?.let { result ->
+                        since = result.groupValues[1].toDate()!!
+                        until = result.groupValues[2].toDate()
+                    }
+                }
+
                 return TimeTable(
                     it.select("#page_contents .login_view_name").first().text(),
                     it.select("#page_contents .divTable:not(.otherCourse) .divTableBody .divTableRow.data")
@@ -62,6 +77,8 @@ data class TimeTable(
                         },
                     it.select(".condition_select#nendo option").toSelectOptions(),
                     it.select(".condition_select.term:not([disabled]) option").toSelectOptions(),
+                    since,
+                    until,
                 )
             }
         }
