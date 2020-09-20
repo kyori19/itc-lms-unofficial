@@ -43,7 +43,7 @@ data class SelectOption(
         }
 
         fun List<SelectOption>.valueFor(text: String): String {
-            return first { it.text == text }.value
+            return firstOrNull { it.text == text }?.value ?: ""
         }
     }
 }
