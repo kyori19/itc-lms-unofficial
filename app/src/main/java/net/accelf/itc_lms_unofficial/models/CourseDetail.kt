@@ -25,7 +25,7 @@ data class CourseDetail(
     val periods: List<Pair<TimeTable.DayOfWeek, Int>>,
     val summary: String,
     val onlineInfoUpdatedAt: Date?,
-    val onlineInfo: CharSequence,
+    val onlineInfo: String,
     val notifies: List<Notify>,
     val courseContents: List<CourseContent>,
     val reports: List<Report>,
