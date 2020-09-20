@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.di.SavedCookieJar
 import net.accelf.itc_lms_unofficial.network.LMS
@@ -71,8 +72,21 @@ class LoginActivity : BaseActivity(false) {
         }
     }
 
+    private val interceptedDialog by lazy {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.dialog_title_bug_notify)
+            .setMessage(R.string.dialog_message_bug_notify)
+            .setPositiveButton(R.string.button_dialog_close) { dialog, _ ->
+                dialog.dismiss()
+            }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (intent.getBooleanExtra(EXTRA_REQUEST_INTERCEPTED, false)) {
+            interceptedDialog.show()
+        }
 
         waitForScripting.lock()
         replaceFragment(loginRequestFragment)
@@ -140,8 +154,16 @@ class LoginActivity : BaseActivity(false) {
     }
 
     companion object {
-        fun intent(context: Context): Intent {
+        private const val EXTRA_REQUEST_INTERCEPTED = "request_intercepted"
+
+        fun intent(context: Context, intercepted: Boolean = false): Intent {
             return Intent(context, LoginActivity::class.java)
+                .apply {
+                    if (intercepted) {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        putExtra(EXTRA_REQUEST_INTERCEPTED, true)
+                    }
+                }
         }
     }
 }

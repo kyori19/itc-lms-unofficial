@@ -1,12 +1,15 @@
 package net.accelf.itc_lms_unofficial.di
 
+import android.content.Context
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import net.accelf.itc_lms_unofficial.BuildConfig
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
+import net.accelf.itc_lms_unofficial.network.EmptyResponseInterceptor
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import okhttp3.OkHttpClient
@@ -22,12 +25,17 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideLmsClient(cookieJar: SavedCookieJar, gson: Gson): LMS {
+    fun provideLmsClient(
+        @ApplicationContext context: Context,
+        cookieJar: SavedCookieJar,
+        gson: Gson,
+    ): LMS {
         val okHttpClient = OkHttpClient.Builder().apply {
             addInterceptor(
                 HttpLoggingInterceptor()
                     .setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE)
             )
+            addInterceptor(EmptyResponseInterceptor(context))
             cookieJar(cookieJar)
             followRedirects(false)
         }.build()
