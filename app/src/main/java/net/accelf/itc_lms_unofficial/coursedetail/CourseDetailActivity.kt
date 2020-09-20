@@ -57,5 +57,12 @@ class CourseDetailActivity : BaseActivity(false), BaseActivity.ProvidesUrl {
                 putExtra(EXTRA_NOTIFY_ID, notifyId)
             }
         }
+
+        fun Intent.putCourseId(courseId: String): Intent {
+            require(component?.shortClassName == ".coursedetail.CourseDetailActivity") { "Intent of CourseDetailActivity required" }
+            return apply {
+                putExtra(EXTRA_COURSE_ID, courseId)
+            }
+        }
     }
 }

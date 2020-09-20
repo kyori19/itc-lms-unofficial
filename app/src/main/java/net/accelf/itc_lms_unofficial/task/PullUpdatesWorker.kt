@@ -20,11 +20,13 @@ import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity
+import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.putCourseId
 import net.accelf.itc_lms_unofficial.di.EncryptedDataStore
 import net.accelf.itc_lms_unofficial.di.SavedCookieJar
 import net.accelf.itc_lms_unofficial.models.Update
 import net.accelf.itc_lms_unofficial.models.Updates
 import net.accelf.itc_lms_unofficial.network.LMS
+import net.accelf.itc_lms_unofficial.reportdetail.ReportDetailActivity
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_AUTOMATE_LOGIN
 import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_LOGIN_PASSWORD
@@ -139,19 +141,23 @@ class PullUpdatesWorker @WorkerInject constructor(
 
                 setAutoCancel(true)
 
-                val intent = CourseDetailActivity.intent(
-                    context,
-                    courseId,
-                    if (contentType == Update.ContentType.NOTIFY) {
-                        contentId
-                    } else {
-                        null
-                    }
-                )
+                val intent = when (contentType) {
+                    Update.ContentType.NOTIFY -> CourseDetailActivity.intent(context,
+                        courseId,
+                        contentId)
+                    Update.ContentType.REPORT -> ReportDetailActivity.intent(context,
+                        courseId,
+                        contentId)
+                    else -> CourseDetailActivity.intent(context, courseId)
+                }
                 val pendingIntent = TaskStackBuilder.create(context)
                     .run {
                         addNextIntentWithParentStack(intent)
-                        getPendingIntent(id.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
+                        if (contentType == Update.ContentType.REPORT) {
+                            editIntentAt(intents.indexOfFirst { it.component?.shortClassName == ".coursedetail.CourseDetailActivity" })
+                                ?.putCourseId(courseId)
+                        }
+                        getPendingIntent(id.toInt(), PendingIntent.FLAG_CANCEL_CURRENT)
                     }
                 setContentIntent(pendingIntent)
             }.build()

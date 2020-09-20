@@ -29,7 +29,9 @@
             android:name=".task.TaskManagerActivity"
             android:label="@string/title_task_manager" />
         <activity android:name=".file.PdfActivity" />
-        <activity android:name=".reportdetail.ReportDetailActivity" />
+        <activity
+            android:name=".reportdetail.ReportDetailActivity"
+            android:parentActivityName=".coursedetail.CourseDetailActivity" />
         <activity android:name=".permission.RequestPermissionActivity" />
         <activity
             android:name=".settings.PreferenceActivity"
