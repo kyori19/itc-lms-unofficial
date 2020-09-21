@@ -27,6 +27,7 @@ import net.accelf.itc_lms_unofficial.models.Update
 import net.accelf.itc_lms_unofficial.models.Updates
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.reportdetail.ReportDetailActivity
+import net.accelf.itc_lms_unofficial.services.NotificationService
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_AUTOMATE_LOGIN
 import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_LOGIN_PASSWORD
@@ -50,7 +51,7 @@ class PullUpdatesWorker @WorkerInject constructor(
     override fun createWork(): Single<Result> {
         return lms.getUpdates()
             .onErrorReturn {
-                Updates(listOf(), it)
+                Updates("", listOf(), it)
             }
             .map {
                 it.throwable?.run {
@@ -121,13 +122,13 @@ class PullUpdatesWorker @WorkerInject constructor(
                 afterLogin = false
 
                 it.updates.forEach { update ->
-                    context.notify(update.id.toInt(), update.toNotification())
+                    context.notify(update.id.toInt(), update.toNotification(it.csrf))
                 }
                 Result.success()
             }
     }
 
-    private fun Update.toNotification(): Notification {
+    private fun Update.toNotification(csrf: String): Notification {
         return NotificationCompat.Builder(context, CHANNEL_ID_LMS_UPDATES)
             .apply {
                 setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -141,7 +142,7 @@ class PullUpdatesWorker @WorkerInject constructor(
 
                 setAutoCancel(true)
 
-                val intent = when (contentType) {
+                val activityIntent = when (contentType) {
                     Update.ContentType.NOTIFY -> CourseDetailActivity.intent(context,
                         courseId,
                         contentId)
@@ -150,16 +151,30 @@ class PullUpdatesWorker @WorkerInject constructor(
                         contentId)
                     else -> CourseDetailActivity.intent(context, courseId)
                 }
-                val pendingIntent = TaskStackBuilder.create(context)
+                val stackedIntent = TaskStackBuilder.create(context)
                     .run {
-                        addNextIntentWithParentStack(intent)
+                        addNextIntentWithParentStack(activityIntent)
                         if (contentType == Update.ContentType.REPORT) {
                             editIntentAt(intents.indexOfFirst { it.component?.shortClassName == ".coursedetail.CourseDetailActivity" })
                                 ?.putCourseId(courseId)
                         }
                         getPendingIntent(id.toInt(), PendingIntent.FLAG_CANCEL_CURRENT)
                     }
-                setContentIntent(pendingIntent)
+
+                val openIntent =
+                    NotificationService.intent(context, csrf, targetId, stackedIntent!!)
+                val pendingOpenIntent = PendingIntent.getService(context,
+                    80000000 + id.toInt(),
+                    openIntent,
+                    PendingIntent.FLAG_CANCEL_CURRENT)
+                setContentIntent(pendingOpenIntent)
+
+                val cancelIntent = NotificationService.intent(context, csrf, targetId)
+                val pendingCancelIntent = PendingIntent.getService(context,
+                    90000000 + id.toInt(),
+                    cancelIntent,
+                    PendingIntent.FLAG_CANCEL_CURRENT)
+                setDeleteIntent(pendingCancelIntent)
             }.build()
     }
 

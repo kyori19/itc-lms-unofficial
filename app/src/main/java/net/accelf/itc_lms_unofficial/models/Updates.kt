@@ -15,6 +15,7 @@ private val COURSE_NAME_REGEX =
     Regex("""\[((?:Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])[\d０-９](?:・(?:Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])[\d０-９])*)\s(.+)]""")
 
 data class Updates(
+    val csrf: String,
     val updates: List<Update>,
     val throwable: Throwable?,
 ) : Serializable {
@@ -24,6 +25,7 @@ data class Updates(
         override fun convert(value: ResponseBody): Updates? {
             document(value).let { document ->
                 return Updates(
+                    document.select("input[name=_csrf]").first().`val`(),
                     document.select(".updateInfoTable .updateTableContents .updateInfoCell")
                         .map { row ->
                             lateinit var url: String

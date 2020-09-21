@@ -49,6 +49,14 @@ interface LMS {
     @GET("updateinfo")
     fun getUpdates(): Single<Updates>
 
+    @POST("updateinfo")
+    @FormUrlEncoded
+    fun deleteUpdates(
+        @Field("_csrf") csrf: String,
+        @Field("deleteUpdateInfoList") targetIds: List<String>,
+        @Field("_method") method: String = "delete",
+    ): Single<Updates>
+
     @GET("lms/course/report/submission")
     fun getReportDetail(
         @Query("idnumber") idNumber: String,
