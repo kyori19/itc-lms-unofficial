@@ -118,7 +118,7 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         }
         textOnlineInfoDate.text = courseDetail.onlineInfoUpdatedAt?.let { TIME_FORMAT.format(it) }
         textOnlineInfo.apply {
-            text = courseDetail.onlineInfo
+            text = courseDetail.onlineInfo.toSpanned()
             movementMethod = linkMovementMethod
         }
 

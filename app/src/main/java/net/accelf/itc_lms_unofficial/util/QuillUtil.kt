@@ -3,6 +3,7 @@ package net.accelf.itc_lms_unofficial.util
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.URLSpan
 import com.google.gson.Gson
@@ -20,26 +21,30 @@ data class QuillElement(
 
 data class QuillData(
     @SerializedName("ops") val content: List<QuillElement>,
-)
+) {
 
-fun String.parseQuill(gson: Gson): String {
-    val data = gson.fromJson(this, QuillData::class.java)
-    val builder = SpannableStringBuilder()
-    data?.content?.forEach {
-        val start = builder.length
-        builder.append(it.text)
-        val end = builder.length
-        it.attributes?.let { attrs ->
-            attrs.color?.let { color ->
-                builder.setSpan(ForegroundColorSpan(Color.parseColor(color)),
-                    start,
-                    end,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
-            attrs.link?.let { link ->
-                builder.setSpan(URLSpan(link), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    fun toSpanned(): Spanned {
+        val builder = SpannableStringBuilder()
+        content.forEach {
+            val start = builder.length
+            builder.append(it.text)
+            val end = builder.length
+            it.attributes?.let { attrs ->
+                attrs.color?.let { color ->
+                    builder.setSpan(ForegroundColorSpan(Color.parseColor(color)),
+                        start,
+                        end,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+                attrs.link?.let { link ->
+                    builder.setSpan(URLSpan(link), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
             }
         }
+        return builder
     }
-    return builder.toString()
+}
+
+fun String.parseQuill(gson: Gson): QuillData {
+    return gson.fromJson(this, QuillData::class.java)
 }
