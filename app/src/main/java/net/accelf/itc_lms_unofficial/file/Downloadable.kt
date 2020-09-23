@@ -33,6 +33,7 @@ data class Downloadable(
                 materialParams.resourceId, file.fileName, file.objectName)
                 .flatMap {
                     lms.downloadMaterialFile(it,
+                        materialParams.courseId,
                         materialParams.materialId,
                         TIME_SECONDS_FORMAT.format(materialParams.endDate))
                 }

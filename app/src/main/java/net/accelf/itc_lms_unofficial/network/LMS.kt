@@ -41,6 +41,7 @@ interface LMS {
     @GET("lms/course/material/setfiledown/download")
     fun downloadMaterialFile(
         @Query("fileId") fileId: String,
+        @Query("idnumber") courseId: String,
         @Query("contentId") materialId: String,
         @Query("endDate") endDate: String,
         @Query("fileName") name: String = "file",
