@@ -45,6 +45,6 @@ data class QuillData(
     }
 }
 
-fun String.parseQuill(gson: Gson): QuillData {
+fun String.parseQuill(gson: Gson): QuillData? {
     return gson.fromJson(this, QuillData::class.java)
 }

@@ -116,10 +116,16 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             text = courseDetail.summary.fromHtml()
             movementMethod = linkMovementMethod
         }
-        textOnlineInfoDate.text = courseDetail.onlineInfoUpdatedAt?.let { TIME_FORMAT.format(it) }
-        textOnlineInfo.apply {
-            text = courseDetail.onlineInfo.toSpanned()
-            movementMethod = linkMovementMethod
+        showViewsAndDoWhen(courseDetail.onlineInfo != null,
+            titleOnlineInfo,
+            textOnlineInfo,
+            textOnlineInfoDate) {
+            textOnlineInfoDate.text =
+                courseDetail.onlineInfoUpdatedAt?.let { TIME_FORMAT.format(it) }
+            textOnlineInfo.apply {
+                text = courseDetail.onlineInfo!!.toSpanned()
+                movementMethod = linkMovementMethod
+            }
         }
 
         listNotifies.setWithoutInitAdapter(
