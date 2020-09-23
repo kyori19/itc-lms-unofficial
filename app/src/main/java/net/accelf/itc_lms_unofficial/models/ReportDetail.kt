@@ -11,6 +11,7 @@ import java.util.*
 
 data class ReportDetail(
     val id: String,
+    val courseId: String,
     val title: String,
     val description: String,
     val attachmentFile: File?,
@@ -46,6 +47,7 @@ data class ReportDetail(
 
                 return ReportDetail(
                     document.select("#reportId").first().`val`(),
+                    document.select("input[name=idnumber]").first().`val`(),
                     details.first().text(),
                     details.second().text(),
                     document.select(".page_supple .downloadFile").firstOrNull()?.let {

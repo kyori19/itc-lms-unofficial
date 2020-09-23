@@ -103,7 +103,8 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail), Submitte
             textAttachmentFileName) {
             listOf(iconAttachmentFile, textAttachmentFileName).forEach {
                 it.setOnClickListener {
-                    val downloadable = Downloadable.reportFile(reportDetail.attachmentFile!!)
+                    val downloadable = Downloadable.reportFile(reportDetail.courseId,
+                        reportDetail.attachmentFile!!)
                     downloadable.open(this, gson)
                 }
             }
@@ -147,7 +148,8 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail), Submitte
                 textReportFeedbackFileName) {
                 listOf(iconReportFeedbackFile, textReportFeedbackFileName).forEach {
                     it.setOnClickListener {
-                        val downloadable = Downloadable.reportFile(reportDetail.feedbackFile!!)
+                        val downloadable = Downloadable.reportFile(reportDetail.courseId,
+                            reportDetail.feedbackFile!!)
                         downloadable.open(this, gson)
                     }
                 }
@@ -160,7 +162,7 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail), Submitte
     }
 
     override fun openFile(file: File) {
-        val downloadable = Downloadable.reportFile(file)
+        val downloadable = Downloadable.reportFile(reportDetail.courseId, file)
         downloadable.open(this, gson)
     }
 

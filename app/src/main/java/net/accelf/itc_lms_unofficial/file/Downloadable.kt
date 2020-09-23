@@ -24,20 +24,21 @@ import java.util.*
 data class Downloadable(
     val type: Type,
     val file: File,
+    val courseId: String,
     val materialParams: MaterialParams?,
 ) : Serializable {
 
     fun download(lms: LMS): Single<ResponseBody> {
         return when (type) {
-            Type.MATERIAL -> lms.getFileId(materialParams!!.courseId, materialParams.materialId,
+            Type.MATERIAL -> lms.getFileId(courseId, materialParams!!.materialId,
                 materialParams.resourceId, file.fileName, file.objectName)
                 .flatMap {
                     lms.downloadMaterialFile(it,
-                        materialParams.courseId,
+                        courseId,
                         materialParams.materialId,
                         TIME_SECONDS_FORMAT.format(materialParams.endDate))
                 }
-            Type.REPORT -> lms.downloadReportFile(file.objectName)
+            Type.REPORT -> lms.downloadReportFile(file.objectName, courseId)
         }
     }
 
@@ -92,8 +93,8 @@ data class Downloadable(
             return Downloadable(
                 Type.MATERIAL,
                 material.file!!,
+                courseId,
                 MaterialParams(
-                    courseId,
                     material.materialId,
                     material.resourceId,
                     material.until!!,
@@ -101,10 +102,11 @@ data class Downloadable(
             )
         }
 
-        fun reportFile(file: File): Downloadable {
+        fun reportFile(courseId: String, file: File): Downloadable {
             return Downloadable(
                 Type.REPORT,
                 file,
+                courseId,
                 null,
             )
         }
@@ -116,7 +118,6 @@ data class Downloadable(
     }
 
     data class MaterialParams(
-        val courseId: String,
         val materialId: String,
         val resourceId: String,
         val endDate: Date,

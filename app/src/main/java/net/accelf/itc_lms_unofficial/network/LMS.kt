@@ -68,6 +68,7 @@ interface LMS {
     @GET("lms/course/report/submission_download/download")
     fun downloadReportFile(
         @Query("objectName") objectName: String,
+        @Query("idnumber") courseId: String,
         @Query("downloadFileName") name: String = "file",
     ): Single<ResponseBody>
 
