@@ -56,7 +56,12 @@ class ExpandableConstraintLayout(context: Context, attrs: AttributeSet?) :
 
                 doOnStart {
                     isAnimating = true
-                    visibility = VISIBLE
+
+                    visibility = if (duration == 0L) {
+                        INVISIBLE
+                    } else {
+                        VISIBLE
+                    }
                 }
                 addUpdateListener {
                     layoutParams.height = it.animatedValue as Int
