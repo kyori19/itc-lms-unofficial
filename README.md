@@ -1,5 +1,7 @@
 # ITC-LMS Unofficial
 
+<a href="https://play.google.com/store/apps/details?id=net.accelf.itc_lms_unofficial"><img alt="Get it on Google Play" src="https://play.google.com/intl/ja/badges/static/images/badges/en_badge_web_generic.png" height="80px" /></a>
+
 <img src="https://github.com/kyori19/itc-lms-unofficial/raw/master/app/src/main/ic_launcher-playstore.png" width="320px" />
 
 ITC-LMSの非公式Androidクライアント
