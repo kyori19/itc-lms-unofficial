@@ -1,4 +1,4 @@
-package net.accelf.itc_lms_unofficial.util
+package net.accelf.itc_lms_unofficial.models
 
 import android.graphics.Color
 import android.text.Spannable
@@ -8,20 +8,11 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.URLSpan
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-
-data class QuillAttributes(
-    val color: String?,
-    val link: String?,
-)
-
-data class QuillElement(
-    @SerializedName("insert") val text: String,
-    val attributes: QuillAttributes?,
-)
+import java.io.Serializable
 
 data class QuillData(
     @SerializedName("ops") val content: List<QuillElement>,
-) {
+) : Serializable {
 
     fun toSpanned(): Spanned {
         val builder = SpannableStringBuilder()
@@ -43,8 +34,20 @@ data class QuillData(
         }
         return builder
     }
-}
 
-fun String.parseQuill(gson: Gson): QuillData? {
-    return gson.fromJson(this, QuillData::class.java)
+    data class QuillAttributes(
+        val color: String?,
+        val link: String?,
+    ) : Serializable
+
+    data class QuillElement(
+        @SerializedName("insert") val text: String,
+        val attributes: QuillAttributes?,
+    ) : Serializable
+
+    companion object {
+        fun String.parseQuill(gson: Gson): QuillData? {
+            return gson.fromJson(this, QuillData::class.java)
+        }
+    }
 }

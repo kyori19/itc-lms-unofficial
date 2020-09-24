@@ -3,6 +3,7 @@ package net.accelf.itc_lms_unofficial.models
 import com.google.gson.Gson
 import net.accelf.itc_lms_unofficial.models.Attendance.AttendanceStatus.Companion.toAttendanceStatus
 import net.accelf.itc_lms_unofficial.models.Message.MessageStatus.Companion.toMessageStatus
+import net.accelf.itc_lms_unofficial.models.QuillData.Companion.parseQuill
 import net.accelf.itc_lms_unofficial.models.TimeTable.DayOfWeek.Companion.toDow
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
 import net.accelf.itc_lms_unofficial.util.*
