@@ -12,9 +12,9 @@ import java.io.Serializable
 import java.util.*
 
 private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
-private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９])[^,/]*""")
+private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９他]|Other)[^,/]*""")
 private val SEMESTER_REGEX =
-    Regex("""([^,/]+)/([^,/]+/[^,/]*[\d０-９][^,/]*(?:,[^,/]+/[^,/]*[\d０-９][^,/]*)*)""")
+    Regex("""([^,/]+)/([^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*(?:,[^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*)*)""")
 
 data class CourseDetail(
     val id: String,
@@ -63,7 +63,8 @@ data class CourseDetail(
                         semester = it.groupValues[1]
                         it.groupValues[2].split(",").forEach { periodStr ->
                             PERIOD_REGEX.matchEntire(periodStr)?.let { result ->
-                                periods.add(result.groupValues[1].toDow() to result.groupValues[2].toInt())
+                                periods.add(result.groupValues[1].toDow() to (result.groupValues[2].toIntOrNull()
+                                    ?: -1))
                             }
                         }
                     }

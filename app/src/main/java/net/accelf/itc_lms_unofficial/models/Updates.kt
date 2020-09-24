@@ -10,9 +10,9 @@ import net.accelf.itc_lms_unofficial.util.toDateTime
 import okhttp3.ResponseBody
 import java.io.Serializable
 
-private val PERIOD_REGEX = Regex("""(Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])([\d０-９])""")
+private val PERIOD_REGEX = Regex("""(Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])([\d０-９他]|Other)""")
 private val COURSE_NAME_REGEX =
-    Regex("""\[((?:Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])[\d０-９](?:・(?:Mon|Tue|Wed|Thu|Fri|Sat|[月火水木金土])[\d０-９])*)\s(.+)]""")
+    Regex("""\[((?:Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])(?:[\d０-９他]|Other)(?:・(?:Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])(?:[\d０-９他]|Other))*)\s(.+)]""")
 
 data class Updates(
     val csrf: String,
@@ -38,7 +38,8 @@ data class Updates(
                                     ?.let {
                                         it.groupValues[1].split("・").forEach { periodText ->
                                             PERIOD_REGEX.matchEntire(periodText)?.let { result ->
-                                                periods.add(result.groupValues[1].toDow() to result.groupValues[2].toInt())
+                                                periods.add(result.groupValues[1].toDow() to (result.groupValues[2].toIntOrNull()
+                                                    ?: -1))
                                             }
                                         }
                                         courseName = it.groupValues[2]

@@ -18,14 +18,20 @@ data class TimeTable(
     val until: Date?,
 ) : Serializable {
     enum class DayOfWeek(val index: Int, val texts: Set<String>) {
+        OTHER(-1, setOf("Other", "その他", "Other", "他")),
         MON(0, setOf("Monday", "月曜日", "Mon", "月")),
         TUE(1, setOf("Tuesday", "火曜日", "Tue", "火")),
         WED(2, setOf("Wednesday", "水曜日", "Wed", "水")),
         THU(3, setOf("Thursday", "木曜日", "Thu", "木")),
         FRI(4, setOf("Friday", "金曜日", "Fri", "金")),
-        SAT(5, setOf("Saturday", "土曜日", "Sat", "土"));
+        SAT(5, setOf("Saturday", "土曜日", "Sat", "土")),
+        ;
 
         companion object {
+            fun week(): List<DayOfWeek> {
+                return values().filter { it.index > -1 }
+            }
+
             fun fromIndex(index: Int): DayOfWeek {
                 return values().first { it.index == index }
             }
@@ -69,7 +75,7 @@ data class TimeTable(
                                 }
                             }
                         }.let { list ->
-                            DayOfWeek.values().map { dow ->
+                            DayOfWeek.week().map { dow ->
                                 list.map { period ->
                                     period[dow.index]
                                 }
