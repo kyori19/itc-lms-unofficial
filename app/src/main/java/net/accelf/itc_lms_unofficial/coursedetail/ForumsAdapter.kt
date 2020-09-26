@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_forum.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Forum
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class ForumsAdapter(
-    private val items: List<Forum>
-) : RecyclerView.Adapter<ForumsAdapter.ViewHolder>() {
+    items: List<Forum>,
+) : UpdatableAdapter<Forum, ForumsAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

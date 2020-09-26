@@ -20,7 +20,7 @@ interface LMS {
     ): Single<TimeTable>
 
     @GET("lms/course")
-    fun getCourseDetail(@Query("idnumber") idNumber: String): Single<CourseDetail>
+    fun getCourseDetail(@Query("idnumber") courseId: String): Single<CourseDetail>
 
     @GET("lms/coursetop/information/listdetail")
     fun getNotifyDetail(

@@ -13,6 +13,8 @@ import retrofit2.HttpException
 
 fun <T> mutableRequestOf() = mutableLiveDataOf<Request<T>>()
 
+fun <T> mutableLiveDataOf(default: T) = MutableLiveData(default)
+
 fun <T> mutableLiveDataOf() = MutableLiveData<T>()
 
 fun <T> LiveData<Request<T>>.withResponse(

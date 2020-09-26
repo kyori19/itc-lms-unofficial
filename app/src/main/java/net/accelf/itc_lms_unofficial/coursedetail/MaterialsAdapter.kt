@@ -10,12 +10,13 @@ import kotlinx.android.synthetic.main.item_material.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.models.Material.MaterialType
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class MaterialsAdapter(
-    private val items: List<Material>,
-    private val listener: MaterialListener
-) : RecyclerView.Adapter<MaterialsAdapter.ViewHolder>() {
+    items: List<Material>,
+    private val listener: MaterialListener,
+) : UpdatableAdapter<Material, MaterialsAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

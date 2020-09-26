@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_test.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Test
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class TestsAdapter(
-    private val items: List<Test>
-) : RecyclerView.Adapter<TestsAdapter.ViewHolder>() {
+    items: List<Test>,
+) : UpdatableAdapter<Test, TestsAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

@@ -27,6 +27,19 @@ open class RxAwareViewModel : ViewModel() {
             .autoDispose()
     }
 
+    @JvmName("toLiveDataNullable")
+    fun <T> Single<T>.toLiveData(target: MutableLiveData<Request<T>?>) {
+        target.postValue(Loading())
+        subscribe(
+            {
+                target.postValue(Success(it))
+            }, {
+                target.postValue(Error(it))
+            }
+        )
+            .autoDispose()
+    }
+
     override fun onCleared() {
         super.onCleared()
         if (!disposables.isDisposed) {

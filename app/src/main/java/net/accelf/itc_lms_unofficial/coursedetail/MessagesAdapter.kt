@@ -10,10 +10,11 @@ import kotlinx.android.synthetic.main.item_message.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Message
 import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 
 class MessagesAdapter(
-    private val items: List<Message>
-) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
+    items: List<Message>,
+) : UpdatableAdapter<Message, MessagesAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

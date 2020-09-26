@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_course_detail.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.Downloadable
-import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.*
@@ -28,15 +27,15 @@ import javax.inject.Inject
 class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyListener,
     MaterialListener {
 
-    private lateinit var courseDetail: CourseDetail
-    private var notifyId: String? = null
-    private var fetching = false
+    private lateinit var courseId: String
 
     @Inject
     lateinit var lms: LMS
 
     @Inject
     lateinit var gson: Gson
+
+    private val viewModel by activityViewModels<CourseDetailViewModel>()
 
     private val snackProgressBarManager by lazy {
         SnackProgressBarManager(requireView(), this)
@@ -63,6 +62,7 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         MaterialAlertDialogBuilder(requireContext())
             .setPositiveButton(R.string.button_dialog_close) { dialog, _ ->
                 dialog.dismiss()
+                viewModel.closeNotify()
             }
     }
 
@@ -83,146 +83,135 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            courseDetail = it.getSerializable(ARG_COURSE_DETAIL) as CourseDetail
-            notifyId = it.getString(ARG_NOTIFY_ID)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val linkMovementMethod = LinkMovementMethod.getInstance()
 
-        textDepartment.text = courseDetail.department
-        textCourseName.text = courseDetail.name
-        textCourseCode.text = courseDetail.courseCode
-        textPeriod.text = StringBuilder(getString(
-            R.string.text_period,
-            courseDetail.semester,
-            courseDetail.periods.first().first,
-            courseDetail.periods.first().second
-        )).apply {
-            courseDetail.periods.filterIndexed { index, _ -> index != 0 }
-                .forEach {
-                    append(", ${it.first} ${it.second}")
-                }
-        }
+        viewModel.courseDetail.onSuccess(viewLifecycleOwner) { courseDetail ->
+            courseId = courseDetail.id
 
-        textTeachersName.text = courseDetail.teachers.joinToString(", ")
-        textCourseSummary.apply {
-            text = courseDetail.summary.fromHtml()
-            movementMethod = linkMovementMethod
-        }
-        showViewsAndDoWhen(courseDetail.onlineInfo != null,
-            titleOnlineInfo,
-            textOnlineInfo,
-            textOnlineInfoDate) {
-            textOnlineInfoDate.text =
-                courseDetail.onlineInfoUpdatedAt?.let { TIME_FORMAT.format(it) }
-            textOnlineInfo.apply {
-                text = courseDetail.onlineInfo!!.toSpanned()
+            textDepartment.text = courseDetail.department
+            textCourseName.text = courseDetail.name
+            textCourseCode.text = courseDetail.courseCode
+            textPeriod.text = StringBuilder(getString(
+                R.string.text_period,
+                courseDetail.semester,
+                courseDetail.periods.first().first,
+                courseDetail.periods.first().second
+            )).apply {
+                courseDetail.periods.filterIndexed { index, _ -> index != 0 }
+                    .forEach {
+                        append(", ${it.first} ${it.second}")
+                    }
+            }
+
+            textTeachersName.text = courseDetail.teachers.joinToString(", ")
+            textCourseSummary.apply {
+                text = courseDetail.summary.fromHtml()
                 movementMethod = linkMovementMethod
             }
+            showViewsAndDoWhen(courseDetail.onlineInfo != null,
+                titleOnlineInfo,
+                textOnlineInfo,
+                textOnlineInfoDate) {
+                textOnlineInfoDate.text =
+                    courseDetail.onlineInfoUpdatedAt?.let { TIME_FORMAT.format(it) }
+                textOnlineInfo.apply {
+                    text = courseDetail.onlineInfo!!.toSpanned()
+                    movementMethod = linkMovementMethod
+                }
+            }
+
+            listNotifies.setWithoutInitAdapter(
+                courseDetail.notifies,
+                headerNotifies
+            ) {
+                NotifiesAdapter(courseDetail.notifies, this)
+            }
+
+            listCourseContents.setWithoutInitAdapter(
+                courseDetail.courseContents,
+                headerCourseContents
+            ) {
+                CourseContentsAdapter(courseDetail.courseContents, this)
+            }
+
+            listReports.setWithoutInitAdapter(
+                courseDetail.reports,
+                headerReports
+            ) {
+                ReportsAdapter(courseDetail.id, courseDetail.reports)
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            listMessages.set(
+                courseDetail.messages,
+                MessagesAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
+                headerMessages
+            )
+
+            @Suppress("UNCHECKED_CAST")
+            listAttendances.set(
+                courseDetail.attendances,
+                AttendancesAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
+                headerAttendances
+            )
+
+            @Suppress("UNCHECKED_CAST")
+            listTests.set(
+                courseDetail.tests,
+                TestsAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
+                headerTests
+            )
+
+            @Suppress("UNCHECKED_CAST")
+            listForums.set(
+                courseDetail.forums,
+                ForumsAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
+                headerForums
+            )
+
+            @Suppress("UNCHECKED_CAST")
+            listSurveys.set(
+                courseDetail.surveys,
+                SurveysAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
+                headerSurveys
+            )
         }
 
-        listNotifies.setWithoutInitAdapter(
-            courseDetail.notifies,
-            headerNotifies
-        ) {
-            NotifiesAdapter(courseDetail.notifies, this)
-        }
+        viewModel.notifyDetail.observe(viewLifecycleOwner) {
+            if (it == null) {
+                return@observe
+            }
 
-        listCourseContents.setWithoutInitAdapter(
-            courseDetail.courseContents,
-            headerCourseContents
-        ) {
-            CourseContentsAdapter(courseDetail.courseContents, this)
-        }
+            when (it) {
+                is Loading -> {
+                    snackProgressBarManager.show(
+                        notifySnackProgressBar,
+                        SnackProgressBarManager.LENGTH_INDEFINITE
+                    )
+                }
+                is Success -> {
+                    snackProgressBarManager.dismiss()
 
-        listReports.setWithoutInitAdapter(
-            courseDetail.reports,
-            headerReports
-        ) {
-            ReportsAdapter(courseDetail.id, courseDetail.reports)
-        }
-
-        @Suppress("UNCHECKED_CAST")
-        listMessages.set(
-            courseDetail.messages,
-            MessagesAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
-            headerMessages
-        )
-
-        @Suppress("UNCHECKED_CAST")
-        listAttendances.set(
-            courseDetail.attendances,
-            AttendancesAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
-            headerAttendances
-        )
-
-        @Suppress("UNCHECKED_CAST")
-        listTests.set(
-            courseDetail.tests,
-            TestsAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
-            headerTests
-        )
-
-        @Suppress("UNCHECKED_CAST")
-        listForums.set(
-            courseDetail.forums,
-            ForumsAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
-            headerForums
-        )
-
-        @Suppress("UNCHECKED_CAST")
-        listSurveys.set(
-            courseDetail.surveys,
-            SurveysAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
-            headerSurveys
-        )
-
-        if (notifyId != null) {
-            if (courseDetail.notifies.any { it.id == notifyId }) {
-                openNotify(notifyId!!)
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    R.string.toast_notify_not_found,
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                    notifyDialog.setTitle(it.data.title)
+                        .setMessage(it.data.text.fromHtml())
+                        .show()
+                }
             }
         }
     }
 
     override fun openNotify(notifyId: String) {
-        if (fetching) {
+        if (!viewModel.loadNotify(courseId, notifyId)) {
             Toast.makeText(requireContext(), R.string.toast_already_fetching, Toast.LENGTH_SHORT)
                 .show()
-            return
         }
-
-        fetching = true
-        snackProgressBarManager.show(
-            notifySnackProgressBar,
-            SnackProgressBarManager.LENGTH_INDEFINITE
-        )
-        lms.getNotifyDetail(courseDetail.id, notifyId)
-            .withResponse(activity as AppCompatActivity) {
-                fetching = false
-                snackProgressBarManager.dismiss()
-
-                notifyDialog.setTitle(it.title)
-                    .setMessage(it.text.fromHtml())
-                    .show()
-            }
     }
 
     override fun openFile(material: Material) {
-        val downloadable = Downloadable.materialFile(courseDetail.id, material)
+        val downloadable = Downloadable.materialFile(courseId, material)
         downloadable.open(this, gson)
     }
 
@@ -239,19 +228,9 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
     }
 
     companion object {
-
-        private const val ARG_COURSE_DETAIL = "course_detail"
-        private const val ARG_NOTIFY_ID = "notify_id"
-
         @JvmStatic
-        fun newInstance(courseDetail: CourseDetail, notifyId: String?): CourseDetailFragment {
+        fun newInstance(): CourseDetailFragment {
             return CourseDetailFragment()
-                .apply {
-                    arguments = Bundle().apply {
-                        putSerializable(ARG_COURSE_DETAIL, courseDetail)
-                        putString(ARG_NOTIFY_ID, notifyId)
-                    }
-                }
         }
     }
 }

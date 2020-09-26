@@ -8,15 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_course_content.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.CourseContent
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.fromHtml
 import net.accelf.itc_lms_unofficial.util.setWithoutInitAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 import net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
 
 class CourseContentsAdapter(
-    private val items: List<CourseContent>,
-    private val listener: MaterialListener
-) : RecyclerView.Adapter<CourseContentsAdapter.ViewHolder>() {
+    items: List<CourseContent>,
+    private val listener: MaterialListener,
+) : UpdatableAdapter<CourseContent, CourseContentsAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

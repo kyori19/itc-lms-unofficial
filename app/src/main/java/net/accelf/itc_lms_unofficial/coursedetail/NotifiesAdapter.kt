@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_notify.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Notify
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class NotifiesAdapter(
-    private val items: List<Notify>,
-    private val listener: NotifyListener
-) : RecyclerView.Adapter<NotifiesAdapter.ViewHolder>() {
+    items: List<Notify>,
+    private val listener: NotifyListener,
+) : UpdatableAdapter<Notify, NotifiesAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

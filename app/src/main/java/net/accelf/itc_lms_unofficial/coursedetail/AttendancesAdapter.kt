@@ -10,10 +10,11 @@ import kotlinx.android.synthetic.main.item_attendance.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Attendance
 import net.accelf.itc_lms_unofficial.util.DATE_FORMAT
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 
 class AttendancesAdapter(
-    private val items: List<Attendance>
-) : RecyclerView.Adapter<AttendancesAdapter.ViewHolder>() {
+    items: List<Attendance>,
+) : UpdatableAdapter<Attendance, AttendancesAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

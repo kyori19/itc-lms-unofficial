@@ -10,12 +10,13 @@ import kotlinx.android.synthetic.main.item_report.view.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.models.Report
 import net.accelf.itc_lms_unofficial.reportdetail.ReportDetailActivity
+import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class ReportsAdapter(
     private val courseId: String,
-    private val items: List<Report>,
-) : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
+    items: List<Report>,
+) : UpdatableAdapter<Report, ReportsAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
