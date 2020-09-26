@@ -36,10 +36,8 @@ class TimeLineAdapter(
                 }
             }
 
-            @Suppress("UNCHECKED_CAST")
-            listCourses.set(
+            listCourses.set<Course, CoursesAdapter>(
                 item,
-                CoursesAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
                 true
             )
         }

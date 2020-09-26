@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.tingyik90.snackprogressbar.SnackProgressBar
@@ -18,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_course_detail.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.Downloadable
-import net.accelf.itc_lms_unofficial.models.Material
+import net.accelf.itc_lms_unofficial.models.*
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.*
 import javax.inject.Inject
@@ -144,38 +143,28 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
                 ReportsAdapter(courseDetail.id, courseDetail.reports)
             }
 
-            @Suppress("UNCHECKED_CAST")
-            listMessages.set(
+            listMessages.set<Message, MessagesAdapter>(
                 courseDetail.messages,
-                MessagesAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
                 headerMessages
             )
 
-            @Suppress("UNCHECKED_CAST")
-            listAttendances.set(
+            listAttendances.set<Attendance, AttendancesAdapter>(
                 courseDetail.attendances,
-                AttendancesAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
                 headerAttendances
             )
 
-            @Suppress("UNCHECKED_CAST")
-            listTests.set(
+            listTests.set<Test, TestsAdapter>(
                 courseDetail.tests,
-                TestsAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
                 headerTests
             )
 
-            @Suppress("UNCHECKED_CAST")
-            listForums.set(
+            listForums.set<Forum, ForumsAdapter>(
                 courseDetail.forums,
-                ForumsAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
                 headerForums
             )
 
-            @Suppress("UNCHECKED_CAST")
-            listSurveys.set(
+            listSurveys.set<Survey, SurveysAdapter>(
                 courseDetail.surveys,
-                SurveysAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
                 headerSurveys
             )
         }

@@ -6,22 +6,20 @@ import android.view.View.VISIBLE
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-fun <T> RecyclerView.set(
+inline fun <T, reified A> RecyclerView.set(
     items: List<T>,
-    adapterClass: Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
     vararg relatedView: View,
 ) {
-    set(items, adapterClass, false, *relatedView)
+    set<T, A>(items, false, *relatedView)
 }
 
-fun <T> RecyclerView.set(
+inline fun <T, reified A> RecyclerView.set(
     items: List<T>,
-    adapterClass: Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>,
     divider: Boolean = false,
     vararg relatedView: View,
 ) {
     setWithoutInitAdapter(items, *relatedView) {
-        adapterClass.constructors.first().newInstance(items) as RecyclerView.Adapter<*>
+        A::class.java.constructors.first().newInstance(items) as RecyclerView.Adapter<*>
     }
     if (divider) {
         addItemDecoration(BetweenDividerDecoration(context))

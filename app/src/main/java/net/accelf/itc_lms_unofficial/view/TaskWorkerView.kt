@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.view_task_worker.view.*
@@ -22,11 +22,7 @@ class TaskWorkerView(context: Context, attrs: AttributeSet?) : MaterialCardView(
 
             workManager.getWorkInfosByTagLiveData(tag)
                 .observe(findViewTreeLifecycleOwner()!!, {
-                    @Suppress("UNCHECKED_CAST")
-                    listWorkers.set(
-                        it,
-                        WorkersAdapter::class.java as Class<RecyclerView.Adapter<RecyclerView.ViewHolder>>
-                    )
+                    listWorkers.set<WorkInfo, WorkersAdapter>(it)
                 })
         }
 
