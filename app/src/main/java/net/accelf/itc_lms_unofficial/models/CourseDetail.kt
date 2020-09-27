@@ -229,11 +229,9 @@ data class CourseDetail(
                     document.select("#attendance .result_list_line").map { row ->
                         lateinit var id: String
                         lateinit var status: Attendance.AttendanceStatus
-                        row.select(".result_list_txt a").first().let {
-                            id =
-                                ATTENDANCE_ID_REGEX.matchEntire(it.attr("onclick"))?.groupValues?.get(
-                                    1
-                                ) ?: ""
+                        row.select(".result_list_txt").last().let {
+                            id = ATTENDANCE_ID_REGEX.matchEntire(it.attr("onclick"))
+                                ?.groupValues?.get(1) ?: ""
                             status = it.text().toAttendanceStatus()
                         }
 
