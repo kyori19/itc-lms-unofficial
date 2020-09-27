@@ -44,13 +44,15 @@ data class Update(
     }
 
     enum class ActionType(private val text: String) {
+        UNKNOWN("unknown"),
         ADD("add"),
         SUBMIT("submit"),
-        UPDATE("update");
+        UPDATE("update"),
+        ;
 
         companion object {
             fun String.toActionType(): ActionType {
-                return values().first { this == it.text }
+                return values().firstOrNull { this == it.text } ?: UNKNOWN
             }
         }
     }
