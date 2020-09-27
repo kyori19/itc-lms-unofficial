@@ -68,7 +68,13 @@ jobs:
             | xargs -I '{}' \
           curl -X DELETE -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/releases/{}
 
-      - run: echo "::set-env name=CHANGELOG_DIR::$(ls -td ./changelogs/*/ | head -1)"
+      - run: |
+          DIR_TIMESTAMP=$(git log -1 --pretty="format:%ct" ./changelogs/)
+          for d in ./changelogs/*/; do
+            if [ $(git log -1 --pretty="format:%ct" "$d") = $DIR_TIMESTAMP ]; then
+              echo "::set-env name=CHANGELOG_DIR::$d"
+            fi
+          done
 
       - uses: actions/create-release@v1
         id: draft
@@ -77,7 +83,7 @@ jobs:
         with:
           tag_name: draft
           release_name: draft
-          body_path: ${{ env.CHANGELOG_DIR }}/whatsnew-ja-JP
+          body_path: ${{ env.CHANGELOG_DIR }}whatsnew-ja-JP
           draft: true
 
       - uses: actions/download-artifact@v1
