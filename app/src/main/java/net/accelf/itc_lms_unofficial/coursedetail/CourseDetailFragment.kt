@@ -1,9 +1,10 @@
 package net.accelf.itc_lms_unofficial.coursedetail
 
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -16,6 +17,7 @@ import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_course_detail.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.file.Downloadable
 import net.accelf.itc_lms_unofficial.models.*
 import net.accelf.itc_lms_unofficial.network.LMS
@@ -33,6 +35,9 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
 
     @Inject
     lateinit var gson: Gson
+
+    @Inject
+    lateinit var linkMovementMethod: CustomLinkMovementMethod
 
     private val viewModel by activityViewModels<CourseDetailViewModel>()
 
@@ -65,6 +70,15 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             .setOnDismissListener {
                 viewModel.closeNotify()
             }
+            .create()
+            .apply {
+                setOnShowListener {
+                    (it as AlertDialog).findViewById<TextView>(android.R.id.message)
+                        ?.apply {
+                            movementMethod = linkMovementMethod
+                        }
+                }
+            }
     }
 
     private val openingLinkDialog by lazy {
@@ -86,8 +100,6 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val linkMovementMethod = LinkMovementMethod.getInstance()
 
         viewModel.courseDetail.onSuccess(viewLifecycleOwner) { courseDetail ->
             courseId = courseDetail.id
@@ -186,9 +198,11 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
                 is Success -> {
                     snackProgressBarManager.dismiss()
 
-                    notifyDialog.setTitle(it.data.title)
-                        .setMessage(it.data.text.fromHtml())
-                        .show()
+                    notifyDialog.apply {
+                        setTitle(it.data.title)
+                        setMessage(it.data.text.fromHtml().autoLink())
+                        show()
+                    }
                 }
             }
         }
