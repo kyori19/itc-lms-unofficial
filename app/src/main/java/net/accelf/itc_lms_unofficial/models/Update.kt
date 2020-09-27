@@ -33,9 +33,9 @@ data class Update(
         UNKNOWN("unknown"),
         FORUM("theme"),
         NOTIFY("information"),
+        ONLINE_INFO("online_course"),
         REPORT("report"),
         THREAD("thread"),
-        ONLINE_INFO("online_course"),
         ;
 
         companion object {
