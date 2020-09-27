@@ -34,6 +34,7 @@ data class Update(
         FORUM("theme"),
         NOTIFY("information"),
         REPORT("report"),
+        THREAD("thread"),
         ONLINE_INFO("online_course"),
         ;
 
