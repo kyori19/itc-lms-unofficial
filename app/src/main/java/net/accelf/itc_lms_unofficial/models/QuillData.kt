@@ -22,10 +22,13 @@ data class QuillData(
             val end = builder.length
             it.attributes?.let { attrs ->
                 attrs.color?.let { color ->
-                    builder.setSpan(ForegroundColorSpan(Color.parseColor(color)),
-                        start,
-                        end,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    kotlin.runCatching { Color.parseColor(color) }
+                        .onSuccess { parsedColor ->
+                            builder.setSpan(ForegroundColorSpan(parsedColor),
+                                start,
+                                end,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        }
                 }
                 attrs.link?.let { link ->
                     builder.setSpan(URLSpan(link), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
