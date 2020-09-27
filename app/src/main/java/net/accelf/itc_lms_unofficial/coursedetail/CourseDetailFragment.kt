@@ -61,6 +61,8 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         MaterialAlertDialogBuilder(requireContext())
             .setPositiveButton(R.string.button_dialog_close) { dialog, _ ->
                 dialog.dismiss()
+            }
+            .setOnDismissListener {
                 viewModel.closeNotify()
             }
     }
