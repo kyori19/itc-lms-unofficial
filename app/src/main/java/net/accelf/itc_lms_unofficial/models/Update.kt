@@ -46,6 +46,7 @@ data class Update(
     enum class ActionType(private val text: String) {
         UNKNOWN("unknown"),
         ADD("add"),
+        POST("post"),
         SUBMIT("submit"),
         UPDATE("update"),
         ;
