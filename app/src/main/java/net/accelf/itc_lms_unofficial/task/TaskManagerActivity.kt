@@ -1,7 +1,5 @@
 package net.accelf.itc_lms_unofficial.task
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -36,12 +34,6 @@ class TaskManagerActivity : BaseActivity(false) {
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    companion object {
-        fun intent(context: Context): Intent {
-            return Intent(context, TaskManagerActivity::class.java)
         }
     }
 }

@@ -144,7 +144,7 @@ class LoginActivity : BaseActivity(false) {
             .withResponse(this) {
                 cancelExpiredNotification()
 
-                startActivity(MainActivity.intent(this))
+                startActivity<MainActivity>()
                 finish()
             }
     }

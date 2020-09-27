@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_base.*
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
+import net.accelf.itc_lms_unofficial.util.startActivity
 import okhttp3.HttpUrl
 
 const val CHANNEL_ID_LMS_UPDATES = "lms_updates"
@@ -98,11 +99,11 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) :
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.actionSettings -> {
-                startActivity(PreferenceActivity.intent(this))
+                startActivity<PreferenceActivity>()
                 true
             }
             R.id.actionOpenTaskManager -> {
-                startActivity(TaskManagerActivity.intent(this))
+                startActivity<TaskManagerActivity>()
                 true
             }
             R.id.actionOpenInBrowser -> {

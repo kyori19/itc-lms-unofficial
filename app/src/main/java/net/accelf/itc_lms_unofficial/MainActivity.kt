@@ -1,7 +1,5 @@
 package net.accelf.itc_lms_unofficial
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,11 +36,5 @@ class MainActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
         return lmsHostUrl.newBuilder()
             .addPathSegments("lms/timetable")
             .build()
-    }
-
-    companion object {
-        fun intent(context: Context): Intent {
-            return Intent(context, MainActivity::class.java)
-        }
     }
 }

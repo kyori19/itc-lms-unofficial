@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
@@ -213,7 +214,7 @@ class PullUpdatesWorker @WorkerInject constructor(
 
                 setAutoCancel(true)
 
-                val intent = PreferenceActivity.intent(context)
+                val intent = Intent(context, PreferenceActivity::class.java)
                 val pendingIntent = PendingIntent.getActivity(
                     context, NOTIFICATION_ID_WRONG_CREDENTIALS,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT
