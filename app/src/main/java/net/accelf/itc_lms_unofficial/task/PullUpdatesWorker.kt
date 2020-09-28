@@ -33,10 +33,7 @@ import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_AUTOMATE_LOGIN
 import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_LOGIN_PASSWORD
 import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_LOGIN_USERNAME
-import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_SESSION_EXPIRED
-import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_WRONG_CREDENTIALS
-import net.accelf.itc_lms_unofficial.util.defaultSharedPreference
-import net.accelf.itc_lms_unofficial.util.notify
+import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.HttpException
 import java.util.concurrent.TimeUnit
@@ -121,6 +118,14 @@ class PullUpdatesWorker @WorkerInject constructor(
                 }
 
                 afterLogin = false
+
+                val updateIds = it.updates.map { update -> update.id.toInt() }
+                context.getNotifications()
+                    .forEach { sbn ->
+                        if (sbn.id < 1000000 && sbn.id !in updateIds) {
+                            context.cancelNotification(sbn.id)
+                        }
+                    }
 
                 it.updates.forEach { update ->
                     context.notify(update.id.toInt(), update.toNotification(it.csrf))

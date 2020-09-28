@@ -1,7 +1,9 @@
 package net.accelf.itc_lms_unofficial.util
 
 import android.app.Notification
+import android.app.NotificationManager
 import android.content.Context
+import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationManagerCompat
 
 const val NOTIFICATION_ID_SESSION_EXPIRED = 10000001
@@ -13,7 +15,11 @@ fun Context.notify(id: Int, notification: Notification) {
     NotificationManagerCompat.from(this).notify(id, notification)
 }
 
-private fun Context.cancelNotification(id: Int) {
+fun Context.getNotifications(): Array<StatusBarNotification> {
+    return getSystemService(NotificationManager::class.java)!!.activeNotifications
+}
+
+fun Context.cancelNotification(id: Int) {
     NotificationManagerCompat.from(this).cancel(id)
 }
 
