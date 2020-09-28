@@ -128,4 +128,5 @@
     <string name="pref_text_lms_language">ITC-LMS内の言語設定です。\nこの設定は他のブラウザでの設定に影響を与える、またはその影響を受ける可能性があります。</string>
     <string name="dialog_title_bug_notify">読込中に問題が発生しました</string>
     <string name="dialog_message_bug_notify">ご迷惑をおかけし申し訳ありません。ITC-LMSのバグにより、再度ログインが必要です。現在この問題の修正を試みておりますので、しばらくお待ち下さい。</string>
+    <string name="hint_icon_temporarily_saved">一時保存済</string>
 </resources>

@@ -50,6 +50,7 @@
     <string name="hint_icon_not_submitted">Not submitted</string>
     <string name="hint_icon_submitted_after_deadline">Submitted after deadline</string>
     <string name="hint_icon_submitted_in_time">Submitted in time</string>
+    <string name="hint_icon_temporarily_saved">Temporarily saved</string>
 
     <string name="hint_icon_completed">Completed</string>
     <string name="hint_icon_has_answer">Has answer</string>

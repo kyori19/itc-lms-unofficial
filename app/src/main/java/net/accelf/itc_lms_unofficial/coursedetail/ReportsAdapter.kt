@@ -38,6 +38,7 @@ class ReportsAdapter(
                         Report.ReportStatus.NOT_SUBMITTED -> R.drawable.ic_cancel
                         Report.ReportStatus.SUBMITTED_IN_TIME -> R.drawable.ic_check
                         Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.drawable.ic_time
+                        Report.ReportStatus.TEMPORARILY_SAVED -> R.drawable.ic_save
                     }
                 )
                 contentDescription = context.getString(
@@ -45,6 +46,7 @@ class ReportsAdapter(
                         Report.ReportStatus.NOT_SUBMITTED -> R.string.hint_icon_not_submitted
                         Report.ReportStatus.SUBMITTED_IN_TIME -> R.string.hint_icon_submitted_in_time
                         Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.string.hint_icon_submitted_after_deadline
+                        Report.ReportStatus.TEMPORARILY_SAVED -> R.string.hint_icon_temporarily_saved
                     }
                 )
             }
