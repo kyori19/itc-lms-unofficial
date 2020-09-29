@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_task_manager.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.file.download.FileDownloadWorker
 
 class TaskManagerFragment : Fragment(R.layout.fragment_task_manager) {
 

@@ -1,10 +1,11 @@
-package net.accelf.itc_lms_unofficial.file
+package net.accelf.itc_lms_unofficial.file.pdf
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.BaseActivity
+import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 
 @AndroidEntryPoint

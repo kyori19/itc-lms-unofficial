@@ -1,7 +1,9 @@
 package net.accelf.itc_lms_unofficial.di
 
 import android.content.Context
+import android.net.Uri
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,7 +54,9 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideGson(): Gson {
-        return Gson()
+        return GsonBuilder()
+            .registerTypeAdapter(Uri::class.java, JsonUriAdapter())
+            .create()
     }
 
     @Provides

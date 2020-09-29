@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_course_detail.*
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
-import net.accelf.itc_lms_unofficial.file.Downloadable
+import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.models.*
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.*

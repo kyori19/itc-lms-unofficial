@@ -1,20 +1,17 @@
-package net.accelf.itc_lms_unofficial.file
+package net.accelf.itc_lms_unofficial.file.download
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.google.gson.Gson
 import io.reactivex.Single
-import net.accelf.itc_lms_unofficial.file.ConfirmDownloadDialogFragment.Companion.BUNDLE_RESULT_CODE
-import net.accelf.itc_lms_unofficial.file.ConfirmDownloadDialogFragment.Companion.BUNDLE_RESULT_FILE_NAME
-import net.accelf.itc_lms_unofficial.file.ConfirmDownloadDialogFragment.Companion.BUNDLE_RESULT_TARGET_DIR
-import net.accelf.itc_lms_unofficial.file.ConfirmDownloadDialogFragment.Companion.RESULT_SUCCESS
+import net.accelf.itc_lms_unofficial.file.download.ConfirmDownloadDialogFragment.Companion.BUNDLE_RESULT
+import net.accelf.itc_lms_unofficial.file.pdf.PdfActivity
 import net.accelf.itc_lms_unofficial.models.File
 import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.permission.Permission
 import net.accelf.itc_lms_unofficial.permission.RequestPermissionActivity
-import net.accelf.itc_lms_unofficial.task.FileDownloadWorker
 import net.accelf.itc_lms_unofficial.util.TIME_SECONDS_FORMAT
 import net.accelf.itc_lms_unofficial.util.notify
 import okhttp3.ResponseBody
@@ -71,16 +68,9 @@ data class Downloadable(
     private fun downloadWithDialog(fragment: Fragment, gson: Gson) {
         val confirmDownloadDialog = ConfirmDownloadDialogFragment.newInstance(file.fileName)
         fragment.setFragmentResultListener(ConfirmDownloadDialogFragment::class.java.simpleName) { _, it ->
-            when (it.getInt(BUNDLE_RESULT_CODE)) {
-                RESULT_SUCCESS -> {
-                    FileDownloadWorker.enqueue(
-                        fragment.requireContext(),
-                        this,
-                        gson,
-                        it.getString(BUNDLE_RESULT_TARGET_DIR, ""),
-                        it.getString(BUNDLE_RESULT_FILE_NAME, "")
-                    )
-                }
+            @Suppress("UNCHECKED_CAST")
+            (it.getSerializable(BUNDLE_RESULT) as Result<DownloadDialogResult>).onSuccess {
+                FileDownloadWorker.enqueue(fragment.requireContext(), gson, this, it)
             }
         }
         confirmDownloadDialog.show(fragment.parentFragmentManager,

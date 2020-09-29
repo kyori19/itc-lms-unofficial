@@ -7,7 +7,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_report_detail.*
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.file.Downloadable
+import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.models.File
 import net.accelf.itc_lms_unofficial.models.Report
 import net.accelf.itc_lms_unofficial.models.ReportDetail

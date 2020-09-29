@@ -1,4 +1,4 @@
-package net.accelf.itc_lms_unofficial.file
+package net.accelf.itc_lms_unofficial.file.pdf
 
 import android.annotation.SuppressLint
 import android.app.Dialog

@@ -129,4 +129,7 @@
     <string name="dialog_title_bug_notify">読込中に問題が発生しました</string>
     <string name="dialog_message_bug_notify">ご迷惑をおかけし申し訳ありません。ITC-LMSのバグにより、再度ログインが必要です。現在この問題の修正を試みておりますので、しばらくお待ち下さい。</string>
     <string name="hint_icon_temporarily_saved">一時保存済</string>
+    <string name="input_hint_target_doc">ファイルのパス</string>
+    <string name="dialog_tab_title_download_tree">ディレクトリ + ファイル名</string>
+    <string name="dialog_tab_title_download_doc">ドキュメント</string>
 </resources>

@@ -1,9 +1,8 @@
-package net.accelf.itc_lms_unofficial.task
+package net.accelf.itc_lms_unofficial.file.download
 
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.core.app.NotificationCompat.*
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.Assisted
@@ -13,14 +12,14 @@ import com.google.gson.Gson
 import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.CHANNEL_ID_DOWNLOADS
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.file.Downloadable
+import net.accelf.itc_lms_unofficial.file.download.DownloadDialogResult.Companion.fromJsonToResult
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.permission.Permission
 import net.accelf.itc_lms_unofficial.permission.RequestPermissionActivity
 import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_DOWNLOAD_PROGRESS
+import net.accelf.itc_lms_unofficial.util.fromJson
 import net.accelf.itc_lms_unofficial.util.notify
 import net.accelf.itc_lms_unofficial.util.readWithProgress
-import net.accelf.itc_lms_unofficial.util.writeToFile
 import net.accelf.itc_lms_unofficial.view.WorkersAdapter.Companion.DATA_MESSAGE
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -34,9 +33,8 @@ class FileDownloadWorker @WorkerInject constructor(
 
     override fun createWork(): Single<Result> {
         val downloadable =
-            gson.fromJson(inputData.getString(DATA_DOWNLOADABLE), Downloadable::class.java)
-        val targetDirUri = Uri.parse(inputData.getString(DATA_TARGET_DIR))
-        val targetFileName = inputData.getString(DATA_TARGET_FILE_NAME)!!
+            gson.fromJson<Downloadable>(inputData.getString(DATA_DOWNLOADABLE))
+        val dialogResult = gson.fromJsonToResult(inputData.getString(DATA_DIALOG_RESULT))
         val notificationManager = NotificationManagerCompat.from(context)
 
         return downloadable.download(lms)
@@ -59,7 +57,7 @@ class FileDownloadWorker @WorkerInject constructor(
                 val builder = Builder(context, CHANNEL_ID_DOWNLOADS)
                     .apply {
                         setSmallIcon(R.drawable.ic_download)
-                        setContentTitle(targetFileName)
+                        setContentTitle(downloadable.file.fileName)
 
                         priority = PRIORITY_LOW
                         setVisibility(VISIBILITY_PUBLIC)
@@ -86,7 +84,7 @@ class FileDownloadWorker @WorkerInject constructor(
                 context.notify(downloadNotificationId, builder.build())
 
                 val mime = "${it.contentType()?.type}/${it.contentType()?.subtype}"
-                val file = context.writeToFile(targetDirUri, targetFileName, mime, bytes)
+                val file = dialogResult.writeToFile(context, mime, bytes)
 
                 val data = Data.Builder()
                     .putString(DATA_MESSAGE, "Downloaded ${file.name}")
@@ -116,8 +114,7 @@ class FileDownloadWorker @WorkerInject constructor(
 
     companion object {
         private const val DATA_DOWNLOADABLE = "downloadable"
-        private const val DATA_TARGET_DIR = "target_dir"
-        private const val DATA_TARGET_FILE_NAME = "target_file_name"
+        private const val DATA_DIALOG_RESULT = "dialog_result"
 
         private fun enqueue(context: Context, data: Data) {
             val request = OneTimeWorkRequestBuilder<FileDownloadWorker>()
@@ -128,13 +125,12 @@ class FileDownloadWorker @WorkerInject constructor(
         }
 
         fun enqueue(
-            context: Context, downloadable: Downloadable, gson: Gson,
-            targetDir: String, targetFileName: String,
+            context: Context, gson: Gson, downloadable: Downloadable,
+            dialogResult: DownloadDialogResult,
         ) {
             val data = Data.Builder()
                 .putString(DATA_DOWNLOADABLE, gson.toJson(downloadable))
-                .putString(DATA_TARGET_DIR, targetDir)
-                .putString(DATA_TARGET_FILE_NAME, targetFileName)
+                .putString(DATA_DIALOG_RESULT, gson.toJson(dialogResult))
                 .build()
 
             enqueue(context, data)
