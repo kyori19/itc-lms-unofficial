@@ -1,6 +1,7 @@
 package net.accelf.itc_lms_unofficial.models
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import net.accelf.itc_lms_unofficial.models.Attendance.AttendanceStatus.Companion.toAttendanceStatus
 import net.accelf.itc_lms_unofficial.models.Message.MessageStatus.Companion.toMessageStatus
 import net.accelf.itc_lms_unofficial.models.QuillData.Companion.parseQuill
@@ -15,6 +16,7 @@ private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
 private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９他]|Other)[^,/]*""")
 private val SEMESTER_REGEX =
     Regex("""([^,/]+)/([^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*(?:,[^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*)*)""")
+private val SCRIPT_QUILL_REGEX = Regex("""QuillUtil\.setJsonData\(("[^\n]+"), 'reference'\);""")
 
 data class CourseDetail(
     val id: String,
@@ -81,8 +83,13 @@ data class CourseDetail(
                     document.select("#syllabusSupplement .page_supple_txt p").first().html(),
                     document.select("#syllabusSupplement .page_online_date").firstOrNull()?.text()
                         ?.substringAfter(":")?.toDateTime(),
-                    document.select("#courseTopForm input#onlineText").first().`val`()
-                        .parseQuill(gson),
+                    document.select("head script:not([src])").last().html().let {
+                        val jsonEscaped =
+                            "{\"data\": ${SCRIPT_QUILL_REGEX.find(it)?.groupValues?.get(1)}}"
+                        gson.fromJson<JsonObject>(jsonEscaped)
+                            .get("data").takeUnless { data -> data.isJsonNull }?.asString
+                            ?.parseQuill(gson)
+                    },
                     document.select("#information .subblock_list_line").map { row ->
                         var (id, title) = Pair("", "")
                         row.select(".subblock_list_txt1 a").first()?.let {
