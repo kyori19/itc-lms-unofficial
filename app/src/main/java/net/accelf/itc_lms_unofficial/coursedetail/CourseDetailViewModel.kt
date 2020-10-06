@@ -1,7 +1,11 @@
 package net.accelf.itc_lms_unofficial.coursedetail
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
+import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_ID
+import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_NOTIFY_ID
 import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.NotifyDetail
 import net.accelf.itc_lms_unofficial.network.LMS
@@ -12,7 +16,10 @@ import net.accelf.itc_lms_unofficial.util.mutableRequestOf
 
 class CourseDetailViewModel @ViewModelInject constructor(
     private val lms: LMS,
+    @Assisted private val savedState: SavedStateHandle,
 ) : RxAwareViewModel() {
+
+    val courseId = savedState.get<String>(EXTRA_COURSE_ID)!!
 
     private val mutableCourseDetail = mutableRequestOf<CourseDetail>()
     val courseDetail: LiveData<Request<CourseDetail>> = mutableCourseDetail
@@ -20,16 +27,26 @@ class CourseDetailViewModel @ViewModelInject constructor(
     private val mutableNotifyDetail = mutableLiveDataOf<Request<NotifyDetail>?>(null)
     val notifyDetail: LiveData<Request<NotifyDetail>?> = mutableNotifyDetail
 
-    fun load(courseId: String) {
+    init {
+        load()
+
+        savedState.get<String>(EXTRA_NOTIFY_ID)?.let {
+            loadNotify(it)
+            savedState.set(EXTRA_NOTIFY_ID, null)
+        }
+    }
+
+    fun load() {
         lms.getCourseDetail(courseId)
             .toLiveData(mutableCourseDetail)
     }
 
-    fun loadNotify(courseId: String, notifyId: String): Boolean {
+    fun loadNotify(notifyId: String): Boolean {
         if (mutableNotifyDetail.value != null) {
             return false
         }
 
+        savedState.set(EXTRA_NOTIFY_ID, notifyId)
         lms.getNotifyDetail(courseId, notifyId)
             .toLiveData(mutableNotifyDetail)
         return true
@@ -37,5 +54,6 @@ class CourseDetailViewModel @ViewModelInject constructor(
 
     fun closeNotify() {
         mutableNotifyDetail.postValue(null)
+        savedState.set(EXTRA_NOTIFY_ID, null)
     }
 }

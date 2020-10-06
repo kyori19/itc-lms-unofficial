@@ -2,7 +2,7 @@ package net.accelf.itc_lms_unofficial.settings
 
 import android.os.Bundle
 import android.text.InputType
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +20,7 @@ class PreferenceFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var encryptedDataStore: EncryptedDataStore
 
-    private val viewModel by viewModels<PreferenceViewModel>()
+    private val viewModel by activityViewModels<PreferenceViewModel>()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         makePreferenceScreen {
@@ -44,7 +44,6 @@ class PreferenceFragment : PreferenceFragmentCompat() {
                         value = it.languages.selectedValue()
                         isEnabled = true
                     }
-                    viewModel.load()
                 }
             }
 

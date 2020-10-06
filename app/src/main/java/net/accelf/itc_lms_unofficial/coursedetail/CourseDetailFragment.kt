@@ -20,18 +20,12 @@ import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.models.*
-import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyListener,
     MaterialListener {
-
-    private lateinit var courseId: String
-
-    @Inject
-    lateinit var lms: LMS
 
     @Inject
     lateinit var gson: Gson
@@ -102,8 +96,6 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.courseDetail.onSuccess(viewLifecycleOwner) { courseDetail ->
-            courseId = courseDetail.id
-
             textDepartment.text = courseDetail.department
             textCourseName.text = courseDetail.name
             textCourseCode.text = courseDetail.courseCode
@@ -209,14 +201,14 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
     }
 
     override fun openNotify(notifyId: String) {
-        if (!viewModel.loadNotify(courseId, notifyId)) {
+        if (!viewModel.loadNotify(notifyId)) {
             Toast.makeText(requireContext(), R.string.toast_already_fetching, Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
     override fun openFile(material: Material) {
-        val downloadable = Downloadable.materialFile(courseId, material)
+        val downloadable = Downloadable.materialFile(viewModel.courseId, material)
         downloadable.open(this, gson)
     }
 

@@ -17,7 +17,11 @@ class PreferenceViewModel @ViewModelInject constructor(
     private val mutableSettings = mutableRequestOf<Settings>()
     val settings: LiveData<Request<Settings>> = mutableSettings
 
-    fun load() {
+    init {
+        load()
+    }
+
+    private fun load() {
         lms.getSettings()
             .toLiveData(mutableSettings)
     }

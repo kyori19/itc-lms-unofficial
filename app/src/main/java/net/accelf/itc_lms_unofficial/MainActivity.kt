@@ -28,8 +28,6 @@ class MainActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
         viewModel.timeTable.withResponse(this, R.string.loading_time_table) {
             replaceFragment(timeTableFragment)
         }
-
-        viewModel.load()
     }
 
     override fun url(): HttpUrl {

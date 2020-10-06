@@ -15,6 +15,10 @@ class TimeTableViewModel @ViewModelInject constructor(
     private val mutableTimeTable = mutableRequestOf<TimeTable>()
     val timeTable: LiveData<Request<TimeTable>> = mutableTimeTable
 
+    init {
+        load()
+    }
+
     fun load(year: String = "", term: String = "") {
         lms.getTimeTable(year, term)
             .toLiveData(mutableTimeTable)

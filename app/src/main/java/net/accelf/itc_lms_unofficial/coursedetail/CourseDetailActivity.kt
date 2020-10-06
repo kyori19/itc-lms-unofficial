@@ -8,32 +8,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_base.*
 import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 import net.accelf.itc_lms_unofficial.util.withResponse
 import okhttp3.HttpUrl
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CourseDetailActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
-
-    private lateinit var courseId: String
-    private var notifyId: String? = null
-
-    @Inject
-    lateinit var lms: LMS
 
     private val viewModel by viewModels<CourseDetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        courseId = intent.getStringExtra(EXTRA_COURSE_ID)!!
-        notifyId = intent.getStringExtra(EXTRA_NOTIFY_ID)
-
         swipeRefresh.setOnRefreshListener {
-            viewModel.load(courseId)
+            viewModel.load()
         }
 
         val courseDetailFragment = CourseDetailFragment.newInstance()
@@ -41,23 +30,18 @@ class CourseDetailActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
         viewModel.courseDetail.withResponse(this, R.string.loading_course_detail) {
             replaceFragment(courseDetailFragment)
         }
-
-        viewModel.load(courseId)
-        notifyId?.let {
-            viewModel.loadNotify(courseId, it)
-        }
     }
 
     override fun url(): HttpUrl {
         return lmsHostUrl.newBuilder()
             .addPathSegments("lms/course")
-            .addQueryParameter("idnumber", courseId)
+            .addQueryParameter("idnumber", viewModel.courseId)
             .build()
     }
 
     companion object {
-        private const val EXTRA_COURSE_ID = "course_id"
-        private const val EXTRA_NOTIFY_ID = "notify_id"
+        const val EXTRA_COURSE_ID = "course_id"
+        const val EXTRA_NOTIFY_ID = "notify_id"
 
         fun intent(context: Context, courseId: String, notifyId: String? = null): Intent {
             return Intent(context, CourseDetailActivity::class.java).apply {
