@@ -15,6 +15,11 @@ class PdfViewModel @ViewModelInject constructor(
 ) : RxAwareViewModel() {
 
     val downloadable = savedState.get<Downloadable>(EXTRA_DOWNLOADABLE)!!
+    var openingPage: Int
+        get() = savedState.get<Int>(STATE_OPEN_PAGE) ?: 0
+        set(value) {
+            savedState.set(STATE_OPEN_PAGE, value)
+        }
 
     private val mutablePdfFile = mutableRequestOf<ByteArray>()
     val pdfFile: LiveData<Request<ByteArray>> = mutablePdfFile
@@ -31,5 +36,9 @@ class PdfViewModel @ViewModelInject constructor(
                     mutablePdfFile.postValue(Progress(readBytes.toFloat() / fullLength))
                 }
             }.toLiveData(mutablePdfFile)
+    }
+
+    companion object {
+        private const val STATE_OPEN_PAGE = "open_page"
     }
 }

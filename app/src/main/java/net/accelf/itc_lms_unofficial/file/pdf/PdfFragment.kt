@@ -77,6 +77,10 @@ class PdfFragment : Fragment(R.layout.fragment_pdf) {
     private fun PDFView.Configurator.setDefaults(): PDFView.Configurator {
         return spacing(1)
             .enableAnnotationRendering(true)
+            .defaultPage(viewModel.openingPage)
+            .onPageChange { page, _ ->
+                viewModel.openingPage = page
+            }
             .onError {
                 if (it is PdfPasswordException) {
                     passwordDialog.display(parentFragmentManager)
