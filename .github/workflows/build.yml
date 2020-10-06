@@ -72,8 +72,8 @@ jobs:
           DIR_TIMESTAMP=$(git log -1 --pretty="format:%ct" ./changelogs/)
           for d in ./changelogs/*/; do
             if [ $(git log -1 --pretty="format:%ct" "$d") = $DIR_TIMESTAMP ]; then
-              echo "::set-env name=CHANGELOG_DIR::$d"
-              echo "::set-env name=CHANGELOG_VERSION::$(basename -as / "$d")"
+              echo "CHANGELOG_DIR=$d" >> $GITHUB_ENV
+              echo "CHANGELOG_VERSION=$(basename -as / "$d")" >> $GITHUB_ENV
             fi
           done
 
@@ -93,7 +93,7 @@ jobs:
 
       - run: |
           cd ./built-app
-          echo "::set-env name=ARTIFACT_FILE::$(find . -type f -name "*.apk" | head -1 | gawk -F/ '{print $NF}')"
+          echo "ARTIFACT_FILE=$(find . -type f -name "*.apk" | head -1 | gawk -F/ '{print $NF}')" >> $GITHUB_ENV
 
       - uses: actions/upload-release-asset@v1
         env:
