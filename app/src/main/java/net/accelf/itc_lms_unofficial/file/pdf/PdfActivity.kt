@@ -3,26 +3,43 @@ package net.accelf.itc_lms_unofficial.file.pdf
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
-import net.accelf.itc_lms_unofficial.util.replaceFragment
+import net.accelf.itc_lms_unofficial.util.*
 
 @AndroidEntryPoint
 class PdfActivity : BaseActivity(false) {
 
+    private val viewModel by viewModels<PdfViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (intent.hasExtra(EXTRA_DOWNLOADABLE)) {
-            val downloadable = intent.getSerializableExtra(EXTRA_DOWNLOADABLE) as Downloadable
+        val pdfFragment = PdfFragment.newInstance()
+        val loadingFragment = LoadingProgressFragment.newInstance()
 
-            replaceFragment(PdfFragment.newInstance(downloadable))
+        viewModel.pdfFile.observe(this) {
+            when (it) {
+                is Success -> {
+                    replaceFragment(pdfFragment)
+                    invalidateOptionsMenu()
+                }
+                is Loading -> {
+                    replaceFragment(loadingFragment)
+                    invalidateOptionsMenu()
+                }
+                is Error -> {
+                    replaceErrorFragment(it.throwable)
+                    invalidateOptionsMenu()
+                }
+            }
         }
     }
 
     companion object {
-        private const val EXTRA_DOWNLOADABLE = "downloadable"
+        const val EXTRA_DOWNLOADABLE = "downloadable"
 
         fun intent(context: Context, downloadable: Downloadable): Intent {
             return Intent(context, PdfActivity::class.java).apply {

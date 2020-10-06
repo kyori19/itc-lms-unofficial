@@ -11,3 +11,7 @@ class Loading<T> : Request<T>()
 class Error<T>(
     val throwable: Throwable,
 ) : Request<T>()
+
+class Progress<T>(
+    val progress: Float,
+) : Request<T>()

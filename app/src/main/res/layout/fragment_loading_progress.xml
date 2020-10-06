@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.github.polesapart.pdfviewer.PDFView
-        android:id="@+id/pdfView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?android:attr/colorBackground"
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/progressDownload"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        app:cpb_background_progressbar_width="8dp"
+        app:cpb_progressbar_color="@color/colorAccent"
+        app:cpb_progressbar_width="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
