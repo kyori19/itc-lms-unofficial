@@ -80,6 +80,9 @@ class PdfFragment : Fragment(R.layout.fragment_pdf) {
         return spacing(1)
             .enableAnnotationRendering(true)
             .defaultPage(viewModel.openingPage)
+            .onLoad { _, _, _ ->
+                viewModel.pdfTitle.postValue(pdfView.documentMeta.title)
+            }
             .onPageChange { page, _ ->
                 viewModel.openingPage = page
             }

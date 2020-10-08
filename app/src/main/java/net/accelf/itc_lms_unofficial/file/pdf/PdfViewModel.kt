@@ -24,6 +24,8 @@ class PdfViewModel @ViewModelInject constructor(
     private val mutablePdfFile = mutableRequestOf<ByteArray>()
     val pdfFile: LiveData<Request<ByteArray>> = mutablePdfFile
 
+    val pdfTitle = mutableLiveDataOf("")
+
     init {
         load()
     }

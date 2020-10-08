@@ -36,6 +36,20 @@ class PdfActivity : BaseActivity(false) {
                 }
             }
         }
+
+        viewModel.pdfTitle.observe(this) {
+            setTitle(it)
+        }
+
+        setTitle()
+    }
+
+    private fun setTitle(pdfTitle: String = viewModel.pdfTitle.value.toString()) {
+        title = if (pdfTitle.isNotEmpty()) {
+            "$pdfTitle - ${viewModel.downloadable.file.fileName}"
+        } else {
+            viewModel.downloadable.file.fileName
+        }
     }
 
     companion object {
