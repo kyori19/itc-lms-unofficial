@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.github.polesapart.pdfviewer.PDFView
 import com.shockwave.pdfium.PdfPasswordException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_pdf.*
 import net.accelf.itc_lms_unofficial.CHANNEL_ID_DOWNLOADS
 import net.accelf.itc_lms_unofficial.R
@@ -25,6 +26,7 @@ import net.accelf.itc_lms_unofficial.util.notify
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class PdfFragment : Fragment(R.layout.fragment_pdf) {
 
     private val passwordDialog by lazy {

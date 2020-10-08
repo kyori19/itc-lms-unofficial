@@ -3,6 +3,7 @@ package net.accelf.itc_lms_unofficial.file.download
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -28,6 +29,17 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
         private val viewModel by activityViewModels<DownloadDialogViewModel>()
 
+        private lateinit var launcher: ActivityResultLauncher<Uri>
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+            launcher =
+                registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+                    viewModel.targetDirectoryUri.postValue(uri)
+                }
+        }
+
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             viewModel.targetDirectoryUri.observe(viewLifecycleOwner) {
                 if (textTargetDir.text.toString() != it?.path) {
@@ -36,10 +48,7 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
             }
 
             textTargetDir.setOnClickListener {
-                activity?.registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
-                    viewModel.targetDirectoryUri.postValue(uri)
-                }
-                    ?.launch(viewModel.targetDirectoryUri.value ?: Uri.EMPTY)
+                launcher.launch(viewModel.targetDirectoryUri.value ?: Uri.EMPTY)
             }
 
             viewModel.fileName.observe(viewLifecycleOwner) {
@@ -58,6 +67,16 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
         private val viewModel by activityViewModels<DownloadDialogViewModel>()
 
+        private lateinit var launcher: ActivityResultLauncher<String>
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+            launcher = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+                viewModel.targetDocumentUri.postValue(uri)
+            }
+        }
+
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             viewModel.targetDocumentUri.observe(viewLifecycleOwner) {
                 if (textTargetDoc.text.toString() != it?.path) {
@@ -66,10 +85,7 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
             }
 
             textTargetDoc.setOnClickListener {
-                activity?.registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
-                    viewModel.targetDocumentUri.postValue(uri)
-                }
-                    ?.launch(viewModel.defaultFileName)
+                launcher.launch(viewModel.defaultFileName)
             }
         }
     }
