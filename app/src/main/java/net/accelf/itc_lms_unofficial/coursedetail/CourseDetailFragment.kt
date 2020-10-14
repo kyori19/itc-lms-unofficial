@@ -196,6 +196,8 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
                         show()
                     }
                 }
+                else -> {
+                }
             }
         }
     }
