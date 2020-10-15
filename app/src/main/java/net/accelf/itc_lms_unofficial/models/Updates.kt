@@ -10,10 +10,6 @@ import net.accelf.itc_lms_unofficial.util.toDateTime
 import okhttp3.ResponseBody
 import java.io.Serializable
 
-private val PERIOD_REGEX = Regex("""(Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])([\d０-９他]|Other)""")
-private val COURSE_NAME_REGEX =
-    Regex("""\[((?:Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])(?:[\d０-９他]|Other)(?:・(?:Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])(?:[\d０-９他]|Other))*)\s(.+)]""")
-
 data class Updates(
     val csrf: String,
     val updates: List<Update>,
@@ -65,5 +61,12 @@ data class Updates(
                 )
             }
         }
+    }
+
+    companion object {
+        private val PERIOD_REGEX =
+            Regex("""(Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])([\d０-９他]|Other)""")
+        private val COURSE_NAME_REGEX =
+            Regex("""\[((?:Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])(?:[\d０-９他]|Other)(?:・(?:Mon|Tue|Wed|Thu|Fri|Sat|Other|[月火水木金土他])(?:[\d０-９他]|Other))*)\s(.+)]""")
     }
 }

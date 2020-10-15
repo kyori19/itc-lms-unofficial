@@ -4,14 +4,6 @@ import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import java.io.Serializable
 import java.util.*
 
-val MESSAGE_STATUS_REGEX = Regex("""(.+)\((.+)\)""")
-
-fun String.getMessageId(): String {
-    return lmsHostUrl.newBuilder(this)!!
-        .build()
-        .queryParameter("inquiryId")!!
-}
-
 data class Message(
     val id: String,
     val title: String,
@@ -29,6 +21,16 @@ data class Message(
             fun String.toMessageStatus(): MessageStatus {
                 return values().first { this in it.texts }
             }
+        }
+    }
+
+    companion object {
+        val MESSAGE_STATUS_REGEX = Regex("""(.+)\((.+)\)""")
+
+        fun String.getMessageId(): String {
+            return lmsHostUrl.newBuilder(this)!!
+                .build()
+                .queryParameter("inquiryId")!!
         }
     }
 }

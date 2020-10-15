@@ -3,8 +3,6 @@ package net.accelf.itc_lms_unofficial.models
 import java.io.Serializable
 import java.util.*
 
-val ATTENDANCE_ID_REGEX = Regex("""attendanceDetail\('\d+[A-Z]\d+,(\d+)'\);""")
-
 data class Attendance(
     val id: String,
     val date: Date?,
@@ -19,5 +17,9 @@ data class Attendance(
                 return values().first { this in it.texts }
             }
         }
+    }
+
+    companion object {
+        val ATTENDANCE_ID_REGEX = Regex("""attendanceDetail\('\d+[A-Z]\d+,(\d+)'\);""")
     }
 }

@@ -3,20 +3,21 @@ package net.accelf.itc_lms_unofficial.models
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import net.accelf.itc_lms_unofficial.models.Attendance.AttendanceStatus.Companion.toAttendanceStatus
+import net.accelf.itc_lms_unofficial.models.Attendance.Companion.ATTENDANCE_ID_REGEX
+import net.accelf.itc_lms_unofficial.models.Forum.Companion.getForumId
+import net.accelf.itc_lms_unofficial.models.Message.Companion.MESSAGE_STATUS_REGEX
+import net.accelf.itc_lms_unofficial.models.Message.Companion.getMessageId
 import net.accelf.itc_lms_unofficial.models.Message.MessageStatus.Companion.toMessageStatus
+import net.accelf.itc_lms_unofficial.models.Notify.Companion.NOTIFY_ID_REGEX
 import net.accelf.itc_lms_unofficial.models.QuillData.Companion.parseQuill
+import net.accelf.itc_lms_unofficial.models.Survey.Companion.getSurveyId
+import net.accelf.itc_lms_unofficial.models.Test.Companion.getTestParams
 import net.accelf.itc_lms_unofficial.models.TimeTable.DayOfWeek.Companion.toDow
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
 import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.ResponseBody
 import java.io.Serializable
 import java.util.*
-
-private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
-private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９他]|Other)[^,/]*""")
-private val SEMESTER_REGEX =
-    Regex("""([^,/]+)/([^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*(?:,[^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*)*)""")
-private val SCRIPT_QUILL_REGEX = Regex("""QuillUtil\.setJsonData\(("[^\n]+"), 'reference'\);""")
 
 data class CourseDetail(
     val id: String,
@@ -313,5 +314,14 @@ data class CourseDetail(
                 )
             }
         }
+    }
+
+    companion object {
+        private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
+        private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９他]|Other)[^,/]*""")
+        private val SEMESTER_REGEX =
+            Regex("""([^,/]+)/([^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*(?:,[^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*)*)""")
+        private val SCRIPT_QUILL_REGEX =
+            Regex("""QuillUtil\.setJsonData\(("[^\n]+"), 'reference'\);""")
     }
 }

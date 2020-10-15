@@ -4,17 +4,6 @@ import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import java.io.Serializable
 import java.util.*
 
-fun String.getTestParams(): Pair<String, Test.TestStatus> {
-    return lmsHostUrl.newBuilder(this)!!
-        .build()
-        .let {
-            Pair(
-                it.queryParameter("examinationId")!!,
-                if (it.pathSegments.last() == "takeresult") Test.TestStatus.TAKEN else Test.TestStatus.NOT_TAKEN
-            )
-        }
-}
-
 class Test(
     val id: String?,
     val title: String,
@@ -26,5 +15,19 @@ class Test(
         TAKEN,
         NOT_TAKEN,
         UNKNOWN
+    }
+
+    companion object {
+
+        fun String.getTestParams(): Pair<String, TestStatus> {
+            return lmsHostUrl.newBuilder(this)!!
+                .build()
+                .let {
+                    Pair(
+                        it.queryParameter("examinationId")!!,
+                        if (it.pathSegments.last() == "takeresult") TestStatus.TAKEN else TestStatus.NOT_TAKEN
+                    )
+                }
+        }
     }
 }

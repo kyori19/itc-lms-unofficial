@@ -7,8 +7,6 @@ import okhttp3.ResponseBody
 import java.io.Serializable
 import java.util.*
 
-private val DATE_OR_DATE_SPAN_REGEX = Regex("""([^～]+)(?:\s～\s([^～]+))?""")
-
 data class TimeTable(
     val name: String,
     val courses: List<List<List<Course>>>,
@@ -88,5 +86,9 @@ data class TimeTable(
                 )
             }
         }
+    }
+
+    companion object {
+        private val DATE_OR_DATE_SPAN_REGEX = Regex("""([^～]+)(?:\s～\s([^～]+))?""")
     }
 }
