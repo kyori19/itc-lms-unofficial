@@ -18,10 +18,10 @@ import androidx.hilt.Assisted
 import androidx.hilt.work.WorkerInject
 import androidx.work.*
 import io.reactivex.Single
-import net.accelf.itc_lms_unofficial.CHANNEL_ID_ERRORS
-import net.accelf.itc_lms_unofficial.CHANNEL_ID_LMS_UPDATES
 import net.accelf.itc_lms_unofficial.LoginActivity
+import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.PREF_COOKIE
+import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.putCourseId
 import net.accelf.itc_lms_unofficial.di.EncryptedDataStore
@@ -39,8 +39,6 @@ import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.HttpException
 import java.util.concurrent.TimeUnit
-// FIXME: Keeping this in order to avoid import statement placed for conflicted wildcard imports removed by import optimizer
-import net.accelf.itc_lms_unofficial.R as AppR
 
 class PullUpdatesWorker @WorkerInject constructor(
     @Assisted private val context: Context,
@@ -59,7 +57,7 @@ class PullUpdatesWorker @WorkerInject constructor(
                 it.throwable?.run {
                     if (this is HttpException && code() == 302) {
                         if (afterLogin) {
-                            context.notify(NOTIFICATION_ID_WRONG_CREDENTIALS,
+                            context.notify(Notifications.Ids.WRONG_CREDENTIALS,
                                 wrongCredentialsNotification())
                             return@map Result.failure()
                         }
@@ -114,7 +112,7 @@ class PullUpdatesWorker @WorkerInject constructor(
                             return@map Result.success()
                         }
 
-                        context.notify(NOTIFICATION_ID_SESSION_EXPIRED, expiredNotification())
+                        context.notify(Notifications.Ids.SESSION_EXPIRED, expiredNotification())
                         return@map Result.failure()
                     }
                     printStackTrace()
@@ -140,9 +138,9 @@ class PullUpdatesWorker @WorkerInject constructor(
     }
 
     private fun Update.toNotification(csrf: String): Notification {
-        return NotificationCompat.Builder(context, CHANNEL_ID_LMS_UPDATES)
+        return NotificationCompat.Builder(context, Notifications.Channels.LMS_UPDATES)
             .apply {
-                setSmallIcon(AppR.drawable.ic_launcher_foreground)
+                setSmallIcon(R.drawable.ic_launcher_foreground)
                 setContentTitle(courseName)
                 setContentText(text)
                 createdAt?.let { setWhen(it.time) }
@@ -193,11 +191,11 @@ class PullUpdatesWorker @WorkerInject constructor(
     }
 
     private fun expiredNotification(): Notification {
-        return NotificationCompat.Builder(context, CHANNEL_ID_ERRORS)
+        return NotificationCompat.Builder(context, Notifications.Channels.ERRORS)
             .apply {
-                setSmallIcon(AppR.drawable.ic_launcher_foreground)
-                setContentTitle(context.getString(AppR.string.notify_title_session_expired))
-                setContentText(context.getString(AppR.string.notify_text_request_login))
+                setSmallIcon(R.drawable.ic_launcher_foreground)
+                setContentTitle(context.getString(R.string.notify_title_session_expired))
+                setContentText(context.getString(R.string.notify_text_request_login))
 
                 priority = PRIORITY_DEFAULT
                 setVisibility(VISIBILITY_PUBLIC)
@@ -207,7 +205,7 @@ class PullUpdatesWorker @WorkerInject constructor(
 
                 val intent = LoginActivity.intent(context)
                 val pendingIntent = PendingIntent.getActivity(
-                    context, NOTIFICATION_ID_SESSION_EXPIRED,
+                    context, Notifications.Ids.SESSION_EXPIRED,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT
                 )
                 setContentIntent(pendingIntent)
@@ -215,11 +213,11 @@ class PullUpdatesWorker @WorkerInject constructor(
     }
 
     private fun wrongCredentialsNotification(): Notification {
-        return NotificationCompat.Builder(context, CHANNEL_ID_ERRORS)
+        return NotificationCompat.Builder(context, Notifications.Channels.ERRORS)
             .apply {
-                setSmallIcon(AppR.drawable.ic_launcher_foreground)
-                setContentTitle(context.getString(AppR.string.notify_title_wrong_credentials))
-                setContentText(context.getString(AppR.string.notify_text_wrong_credentials))
+                setSmallIcon(R.drawable.ic_launcher_foreground)
+                setContentTitle(context.getString(R.string.notify_title_wrong_credentials))
+                setContentText(context.getString(R.string.notify_text_wrong_credentials))
 
                 priority = PRIORITY_DEFAULT
                 setVisibility(VISIBILITY_PUBLIC)
@@ -229,7 +227,7 @@ class PullUpdatesWorker @WorkerInject constructor(
 
                 val intent = Intent(context, PreferenceActivity::class.java)
                 val pendingIntent = PendingIntent.getActivity(
-                    context, NOTIFICATION_ID_WRONG_CREDENTIALS,
+                    context, Notifications.Ids.WRONG_CREDENTIALS,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT
                 )
                 setContentIntent(pendingIntent)

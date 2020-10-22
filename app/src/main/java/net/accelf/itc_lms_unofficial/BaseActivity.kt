@@ -25,10 +25,6 @@ import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
 import net.accelf.itc_lms_unofficial.util.startActivity
 import okhttp3.HttpUrl
 
-const val CHANNEL_ID_LMS_UPDATES = "lms_updates"
-const val CHANNEL_ID_ERRORS = "errors"
-const val CHANNEL_ID_DOWNLOADS = "downloads"
-
 // FIXME: The base class of the @AndroidEntryPoint, contains a constructor with default parameters.
 //  This is currently not supported by the Hilt Gradle plugin.
 open class BaseActivity(val swipeRefreshEnabled: Boolean) :
@@ -59,21 +55,21 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) :
                 .createNotificationChannels(
                     listOf(
                         NotificationChannel(
-                            CHANNEL_ID_LMS_UPDATES,
+                            Notifications.Channels.LMS_UPDATES,
                             getString(R.string.notify_name_lms_updates),
                             NotificationManager.IMPORTANCE_HIGH
                         ).apply {
                             description = getString(R.string.notify_desc_lms_updates)
                         },
                         NotificationChannel(
-                            CHANNEL_ID_ERRORS,
+                            Notifications.Channels.ERRORS,
                             getString(R.string.notify_name_errors),
                             NotificationManager.IMPORTANCE_DEFAULT
                         ).apply {
                             description = getString(R.string.notify_desc_errors)
                         },
                         NotificationChannel(
-                            CHANNEL_ID_DOWNLOADS,
+                            Notifications.Channels.DOWNLOADS,
                             getString(R.string.notify_name_downloads),
                             NotificationManager.IMPORTANCE_LOW
                         ).apply {

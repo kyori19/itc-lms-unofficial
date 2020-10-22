@@ -15,12 +15,11 @@ import com.github.polesapart.pdfviewer.PDFView
 import com.shockwave.pdfium.PdfPasswordException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_pdf.*
-import net.accelf.itc_lms_unofficial.CHANNEL_ID_DOWNLOADS
+import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.download.ConfirmDownloadDialogFragment
 import net.accelf.itc_lms_unofficial.file.download.DownloadDialogResult
 import net.accelf.itc_lms_unofficial.file.pdf.PasswordDialogFragment.Companion.BUNDLE_PASSWORD
-import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_DOWNLOAD_PROGRESS
 import net.accelf.itc_lms_unofficial.util.Success
 import net.accelf.itc_lms_unofficial.util.notify
 import java.util.concurrent.atomic.AtomicInteger
@@ -112,9 +111,10 @@ class PdfFragment : Fragment(R.layout.fragment_pdf) {
                             (viewModel.pdfFile.value as Success).data)
 
                         val id =
-                            NOTIFICATION_ID_DOWNLOAD_PROGRESS + notificationId.incrementAndGet()
+                            Notifications.Ids.DOWNLOAD_PROGRESS + notificationId.incrementAndGet()
                         val notification =
-                            NotificationCompat.Builder(requireContext(), CHANNEL_ID_DOWNLOADS)
+                            NotificationCompat.Builder(requireContext(),
+                                Notifications.Channels.DOWNLOADS)
                                 .apply {
                                     setSmallIcon(R.drawable.ic_download)
                                     setContentTitle(viewModel.downloadable.file.fileName)

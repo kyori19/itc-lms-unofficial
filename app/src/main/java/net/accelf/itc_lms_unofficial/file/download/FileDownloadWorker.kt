@@ -10,13 +10,12 @@ import androidx.hilt.work.WorkerInject
 import androidx.work.*
 import com.google.gson.Gson
 import io.reactivex.Single
-import net.accelf.itc_lms_unofficial.CHANNEL_ID_DOWNLOADS
+import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.download.DownloadDialogResult.Companion.fromJsonToResult
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.permission.Permission
 import net.accelf.itc_lms_unofficial.permission.RequestPermissionActivity
-import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_DOWNLOAD_PROGRESS
 import net.accelf.itc_lms_unofficial.util.fromJson
 import net.accelf.itc_lms_unofficial.util.notify
 import net.accelf.itc_lms_unofficial.util.readWithProgress
@@ -54,7 +53,7 @@ class FileDownloadWorker @WorkerInject constructor(
                     return@map Result.failure(data)
                 }
 
-                val builder = Builder(context, CHANNEL_ID_DOWNLOADS)
+                val builder = Builder(context, Notifications.Channels.DOWNLOADS)
                     .apply {
                         setSmallIcon(R.drawable.ic_download)
                         setContentTitle(downloadable.file.fileName)
@@ -64,7 +63,7 @@ class FileDownloadWorker @WorkerInject constructor(
                         setOngoing(true)
                     }
                 val downloadNotificationId =
-                    NOTIFICATION_ID_DOWNLOAD_PROGRESS + notificationId.incrementAndGet()
+                    Notifications.Ids.DOWNLOAD_PROGRESS + notificationId.incrementAndGet()
                 context.notify(downloadNotificationId, builder.build())
 
                 val fullLength = it.contentLength()

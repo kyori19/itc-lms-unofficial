@@ -8,9 +8,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import net.accelf.itc_lms_unofficial.BaseActivity
-import net.accelf.itc_lms_unofficial.CHANNEL_ID_ERRORS
+import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.util.NOTIFICATION_ID_PERMISSION_REQUIRED
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 
 class RequestPermissionActivity : BaseActivity(false) {
@@ -52,8 +51,8 @@ class RequestPermissionActivity : BaseActivity(false) {
             context: Context,
             permission: Permission,
         ): Pair<Int, Notification> {
-            val id = NOTIFICATION_ID_PERMISSION_REQUIRED + permission.id
-            return id to NotificationCompat.Builder(context, CHANNEL_ID_ERRORS)
+            val id = Notifications.Ids.PERMISSION_REQUIRED + permission.id
+            return id to NotificationCompat.Builder(context, Notifications.Channels.ERRORS)
                 .apply {
                     setSmallIcon(R.drawable.ic_info)
                     setContentTitle(context.getString(R.string.notify_title_permission_required))
