@@ -12,11 +12,13 @@ import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.fromHtml
 import net.accelf.itc_lms_unofficial.util.setWithoutInitAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
+import net.accelf.itc_lms_unofficial.view.ExpandableConstraintLayout
 import net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
 
 class CourseContentsAdapter(
     items: List<CourseContent>,
     private val listener: MaterialListener,
+    private val viewModel: CourseDetailViewModel,
 ) : UpdatableAdapter<CourseContent, CourseContentsAdapter.ViewHolder>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,7 +39,13 @@ class CourseContentsAdapter(
 
             listMaterials.adapter = null
             listMaterials.setWithoutInitAdapter(item.materials, headerMaterials) {
-                MaterialsAdapter(item.materials, listener)
+                MaterialsAdapter(item.materials, listener, viewModel)
+            }
+
+            viewModel.focusCourseContentResourceId?.let { id ->
+                item.materials.firstOrNull { it.materialId == id }?.let {
+                    holder.expandableMaterials.isExpanded = true
+                }
             }
         }
     }
@@ -49,6 +57,7 @@ class CourseContentsAdapter(
         val textCourseContentDate: TextView = view.textCourseContentDate
         val textCourseContentSummary: TextView = view.textCourseContentSummary
         val headerMaterials: ExpandableHeaderView = view.headerMaterials
+        val expandableMaterials: ExpandableConstraintLayout = view.expandableMaterials
         val listMaterials: RecyclerView = view.listMaterials
     }
 }

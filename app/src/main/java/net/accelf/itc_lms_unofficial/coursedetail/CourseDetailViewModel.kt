@@ -4,6 +4,7 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
+import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_CONTENT_MATERIAL_ID
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_ID
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_NOTIFY_ID
 import net.accelf.itc_lms_unofficial.models.CourseDetail
@@ -26,6 +27,12 @@ class CourseDetailViewModel @ViewModelInject constructor(
 
     private val mutableNotifyDetail = mutableLiveDataOf<Request<NotifyDetail>?>(null)
     val notifyDetail: LiveData<Request<NotifyDetail>?> = mutableNotifyDetail
+
+    var focusCourseContentResourceId: String?
+        get() = savedState.get(EXTRA_COURSE_CONTENT_MATERIAL_ID)
+        private set(value) {
+            savedState.set(EXTRA_COURSE_CONTENT_MATERIAL_ID, value)
+        }
 
     init {
         load()
@@ -55,5 +62,9 @@ class CourseDetailViewModel @ViewModelInject constructor(
     fun closeNotify() {
         mutableNotifyDetail.postValue(null)
         savedState.set(EXTRA_NOTIFY_ID, null)
+    }
+
+    fun onCourseContentOpened() {
+        focusCourseContentResourceId = null
     }
 }

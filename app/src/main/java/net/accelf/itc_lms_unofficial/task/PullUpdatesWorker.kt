@@ -18,8 +18,10 @@ import androidx.hilt.Assisted
 import androidx.hilt.work.WorkerInject
 import androidx.work.*
 import io.reactivex.Single
-import net.accelf.itc_lms_unofficial.*
-import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.CHANNEL_ID_ERRORS
+import net.accelf.itc_lms_unofficial.CHANNEL_ID_LMS_UPDATES
+import net.accelf.itc_lms_unofficial.LoginActivity
+import net.accelf.itc_lms_unofficial.PREF_COOKIE
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.putCourseId
 import net.accelf.itc_lms_unofficial.di.EncryptedDataStore
@@ -37,6 +39,8 @@ import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.HttpException
 import java.util.concurrent.TimeUnit
+// FIXME: Keeping this in order to avoid import statement placed for conflicted wildcard imports removed by import optimizer
+import net.accelf.itc_lms_unofficial.R as AppR
 
 class PullUpdatesWorker @WorkerInject constructor(
     @Assisted private val context: Context,
@@ -137,7 +141,7 @@ class PullUpdatesWorker @WorkerInject constructor(
     private fun Update.toNotification(csrf: String): Notification {
         return NotificationCompat.Builder(context, CHANNEL_ID_LMS_UPDATES)
             .apply {
-                setSmallIcon(R.drawable.ic_launcher_foreground)
+                setSmallIcon(AppR.drawable.ic_launcher_foreground)
                 setContentTitle(courseName)
                 setContentText(text)
                 createdAt?.let { setWhen(it.time) }
@@ -151,7 +155,10 @@ class PullUpdatesWorker @WorkerInject constructor(
                 val activityIntent = when (contentType) {
                     Update.ContentType.NOTIFY -> CourseDetailActivity.intent(context,
                         courseId,
-                        contentId)
+                        notifyId = contentId)
+                    Update.ContentType.MATERIAL -> CourseDetailActivity.intent(context,
+                        courseId,
+                        materialId = contentId)
                     Update.ContentType.REPORT -> ReportDetailActivity.intent(context,
                         courseId,
                         contentId)
@@ -187,9 +194,9 @@ class PullUpdatesWorker @WorkerInject constructor(
     private fun expiredNotification(): Notification {
         return NotificationCompat.Builder(context, CHANNEL_ID_ERRORS)
             .apply {
-                setSmallIcon(R.drawable.ic_launcher_foreground)
-                setContentTitle(context.getString(R.string.notify_title_session_expired))
-                setContentText(context.getString(R.string.notify_text_request_login))
+                setSmallIcon(AppR.drawable.ic_launcher_foreground)
+                setContentTitle(context.getString(AppR.string.notify_title_session_expired))
+                setContentText(context.getString(AppR.string.notify_text_request_login))
 
                 priority = PRIORITY_DEFAULT
                 setVisibility(VISIBILITY_PUBLIC)
@@ -209,9 +216,9 @@ class PullUpdatesWorker @WorkerInject constructor(
     private fun wrongCredentialsNotification(): Notification {
         return NotificationCompat.Builder(context, CHANNEL_ID_ERRORS)
             .apply {
-                setSmallIcon(R.drawable.ic_launcher_foreground)
-                setContentTitle(context.getString(R.string.notify_title_wrong_credentials))
-                setContentText(context.getString(R.string.notify_text_wrong_credentials))
+                setSmallIcon(AppR.drawable.ic_launcher_foreground)
+                setContentTitle(context.getString(AppR.string.notify_title_wrong_credentials))
+                setContentText(context.getString(AppR.string.notify_text_wrong_credentials))
 
                 priority = PRIORITY_DEFAULT
                 setVisibility(VISIBILITY_PUBLIC)

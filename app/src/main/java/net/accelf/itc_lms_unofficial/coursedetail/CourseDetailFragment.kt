@@ -135,11 +135,14 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
                 NotifiesAdapter(courseDetail.notifies, this)
             }
 
+            viewModel.focusCourseContentResourceId?.let {
+                expandableCourseContents.isExpanded = true
+            }
             listCourseContents.setWithoutInitAdapter(
                 courseDetail.courseContents,
                 headerCourseContents
             ) {
-                CourseContentsAdapter(courseDetail.courseContents, this)
+                CourseContentsAdapter(courseDetail.courseContents, this, viewModel)
             }
 
             listReports.setWithoutInitAdapter(

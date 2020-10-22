@@ -42,11 +42,18 @@ class CourseDetailActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
     companion object {
         const val EXTRA_COURSE_ID = "course_id"
         const val EXTRA_NOTIFY_ID = "notify_id"
+        const val EXTRA_COURSE_CONTENT_MATERIAL_ID = "course_content_material_id"
 
-        fun intent(context: Context, courseId: String, notifyId: String? = null): Intent {
+        fun intent(
+            context: Context,
+            courseId: String,
+            notifyId: String? = null,
+            materialId: String? = null,
+        ): Intent {
             return Intent(context, CourseDetailActivity::class.java).apply {
                 putExtra(EXTRA_COURSE_ID, courseId)
                 putExtra(EXTRA_NOTIFY_ID, notifyId)
+                putExtra(EXTRA_COURSE_CONTENT_MATERIAL_ID, materialId)
             }
         }
 

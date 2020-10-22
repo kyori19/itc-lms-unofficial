@@ -32,6 +32,7 @@ data class Update(
     enum class ContentType(private val text: String) {
         UNKNOWN("unknown"),
         FORUM("theme"),
+        MATERIAL("material"),
         NOTIFY("information"),
         ONLINE_INFO("online_course"),
         REPORT("report"),
