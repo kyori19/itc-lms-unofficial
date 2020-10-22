@@ -142,7 +142,7 @@ class LoginActivity : BaseActivity(false) {
 
         lms.getTimeTable()
             .withResponse(this) {
-                cancelExpiredNotification()
+                cancelNotificationsWhichShouldBeCanceledAfterLogin()
 
                 startActivity<MainActivity>()
                 finish()

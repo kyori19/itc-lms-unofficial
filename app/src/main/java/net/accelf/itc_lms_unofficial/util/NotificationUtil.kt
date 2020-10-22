@@ -23,6 +23,9 @@ fun Context.cancelNotification(id: Int) {
     NotificationManagerCompat.from(this).cancel(id)
 }
 
-fun Context.cancelExpiredNotification() {
-    cancelNotification(NOTIFICATION_ID_SESSION_EXPIRED)
+fun Context.cancelNotificationsWhichShouldBeCanceledAfterLogin() {
+    NotificationManagerCompat.from(this).apply {
+        cancel(NOTIFICATION_ID_SESSION_EXPIRED)
+        cancel(NOTIFICATION_ID_WRONG_CREDENTIALS)
+    }
 }

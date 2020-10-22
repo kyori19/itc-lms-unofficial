@@ -120,6 +120,7 @@ class PullUpdatesWorker @WorkerInject constructor(
                     printStackTrace()
                     return@map Result.failure()
                 }
+                context.cancelNotificationsWhichShouldBeCanceledAfterLogin()
 
                 afterLogin = false
 
