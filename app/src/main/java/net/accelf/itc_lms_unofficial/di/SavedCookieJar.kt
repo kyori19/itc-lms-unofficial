@@ -2,7 +2,7 @@ package net.accelf.itc_lms_unofficial.di
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import net.accelf.itc_lms_unofficial.PREF_COOKIE
+import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import net.accelf.itc_lms_unofficial.util.defaultSharedPreference
 import okhttp3.Cookie
@@ -31,7 +31,7 @@ class SavedCookieJar @Inject constructor(@ApplicationContext private val context
         }.toSet()
         context.defaultSharedPreference
             .edit()
-            .putStringSet(PREF_COOKIE, cookieSet)
+            .putStringSet(Prefs.Keys.COOKIE, cookieSet)
             .apply()
     }
 
@@ -41,7 +41,7 @@ class SavedCookieJar @Inject constructor(@ApplicationContext private val context
 
     fun loadCookies() {
         this.cookies = context.defaultSharedPreference
-            .getStringSet(PREF_COOKIE, setOf())?.mapNotNull {
+            .getStringSet(Prefs.Keys.COOKIE, setOf())?.mapNotNull {
                 Cookie.parse(lmsHostUrl, it)
             } ?: listOf()
     }

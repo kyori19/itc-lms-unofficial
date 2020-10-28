@@ -13,6 +13,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.dialog_download_frame.view.*
+import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.util.defaultSharedPreference
 
@@ -43,7 +44,7 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
                             val dirUri = viewModel.targetDirectoryUri.value!!
 
                             preferences.edit()
-                                .putString(PREF_LAST_DOWNLOADED_URI, dirUri.toString())
+                                .putString(Prefs.Keys.LAST_DOWNLOADED_URI, dirUri.toString())
                                 .apply()
 
                             setFragmentResult(
@@ -124,7 +125,7 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
                     }
 
                     viewModel.init(
-                        preferences.getString(PREF_LAST_DOWNLOADED_URI, null)
+                        preferences.getString(Prefs.Keys.LAST_DOWNLOADED_URI, null)
                             ?.let { Uri.parse(it) },
                         arguments?.getString(ARG_FILE_NAME, null) ?: "",
                     )
@@ -136,7 +137,6 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
     companion object {
         private const val ARG_FILE_NAME = "file_name"
         const val BUNDLE_RESULT = "result"
-        private const val PREF_LAST_DOWNLOADED_URI = "last_downloaded_uri"
 
         fun newInstance(fileName: String): ConfirmDownloadDialogFragment {
             return ConfirmDownloadDialogFragment().apply {

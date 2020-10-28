@@ -6,6 +6,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
+import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.di.EncryptedDataStore
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.selectedValue
@@ -26,7 +27,7 @@ class PreferenceFragment : PreferenceFragmentCompat() {
         makePreferenceScreen {
             preferenceCategory(R.string.pref_category_language) {
                 listPreference {
-                    key = PREF_LMS_LANGUAGE
+                    key = Prefs.Keys.LMS_LANGUAGE
                     setTitle(R.string.pref_title_lms_language)
                     setSummary(R.string.pref_text_lms_language)
                     isPersistent = false
@@ -50,7 +51,7 @@ class PreferenceFragment : PreferenceFragmentCompat() {
             val automateLoginDependents = mutableListOf<EditTextPreference>()
             preferenceCategory(R.string.pref_category_login) {
                 switchPreference {
-                    key = PREF_AUTOMATE_LOGIN
+                    key = Prefs.Keys.AUTOMATE_LOGIN
                     setTitle(R.string.pref_title_automate_login)
                     setSummary(R.string.pref_text_automate_login)
                     setOnPreferenceClickListener {
@@ -63,7 +64,7 @@ class PreferenceFragment : PreferenceFragmentCompat() {
                     }
                 }
                 editTextPreference {
-                    key = PREF_LOGIN_USERNAME
+                    key = Prefs.Keys.LOGIN_USERNAME
                     setTitle(R.string.login_hint_user_name)
                     preferenceDataStore = encryptedDataStore
                     automateLoginDependents.add(this)
@@ -74,7 +75,7 @@ class PreferenceFragment : PreferenceFragmentCompat() {
                     }
                 }
                 editTextPreference {
-                    key = PREF_LOGIN_PASSWORD
+                    key = Prefs.Keys.LOGIN_PASSWORD
                     setTitle(R.string.input_hint_password)
                     preferenceDataStore = encryptedDataStore
                     automateLoginDependents.add(this)
@@ -86,17 +87,12 @@ class PreferenceFragment : PreferenceFragmentCompat() {
                 }
             }
             automateLoginDependents.forEach {
-                it.dependency = PREF_AUTOMATE_LOGIN
+                it.dependency = Prefs.Keys.AUTOMATE_LOGIN
             }
         }
     }
 
     companion object {
-        const val PREF_LMS_LANGUAGE = "lms_language"
-
-        const val PREF_AUTOMATE_LOGIN = "automate_login"
-        const val PREF_LOGIN_USERNAME = "login_username"
-        const val PREF_LOGIN_PASSWORD = "login_password"
 
         fun newInstance(): PreferenceFragment {
             return PreferenceFragment()

@@ -16,8 +16,6 @@ import javax.inject.Inject
 import kotlin.concurrent.thread
 import kotlin.concurrent.withLock
 
-const val PREF_COOKIE = "cookie"
-
 @AndroidEntryPoint
 class LoginActivity : BaseActivity(false) {
 
@@ -136,7 +134,7 @@ class LoginActivity : BaseActivity(false) {
 
     private fun finishLogin(cookie: String) {
         defaultSharedPreference.edit()
-            .putStringSet(PREF_COOKIE, cookie.split(";").toSet())
+            .putStringSet(Prefs.Keys.COOKIE, cookie.split(";").toSet())
             .apply()
         cookieJar.loadCookies()
 

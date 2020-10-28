@@ -20,7 +20,7 @@ import androidx.work.*
 import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.LoginActivity
 import net.accelf.itc_lms_unofficial.Notifications
-import net.accelf.itc_lms_unofficial.PREF_COOKIE
+import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.putCourseId
@@ -32,9 +32,6 @@ import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.reportdetail.ReportDetailActivity
 import net.accelf.itc_lms_unofficial.services.NotificationService
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
-import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_AUTOMATE_LOGIN
-import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_LOGIN_PASSWORD
-import net.accelf.itc_lms_unofficial.settings.PreferenceFragment.Companion.PREF_LOGIN_USERNAME
 import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.HttpException
@@ -62,7 +59,7 @@ class PullUpdatesWorker @WorkerInject constructor(
                             return@map Result.failure()
                         }
 
-                        if (context.defaultSharedPreference.getBoolean(PREF_AUTOMATE_LOGIN,
+                        if (context.defaultSharedPreference.getBoolean(Prefs.Keys.AUTOMATE_LOGIN,
                                 false)
                         ) {
                             Handler(context.mainLooper).post {
@@ -75,11 +72,11 @@ class PullUpdatesWorker @WorkerInject constructor(
                                             if (url?.toHttpUrl()?.host == "sts.adm.u-tokyo.ac.jp") {
                                                 evaluateJavascript("document.getElementById('userNameInput').value = '${
                                                     encryptedDataStore.getString(
-                                                        PREF_LOGIN_USERNAME, "")
+                                                        Prefs.Keys.LOGIN_USERNAME, "")
                                                 }'", null)
                                                 evaluateJavascript("document.getElementById('passwordInput').value = '${
                                                     encryptedDataStore.getString(
-                                                        PREF_LOGIN_PASSWORD, "")
+                                                        Prefs.Keys.LOGIN_PASSWORD, "")
                                                 }'", null)
                                                 evaluateJavascript("document.getElementById('submitButton').click()",
                                                     null)
@@ -92,7 +89,7 @@ class PullUpdatesWorker @WorkerInject constructor(
                                         ): Boolean {
                                             if (request?.url?.path.equals("/lms/timetable")) {
                                                 context.defaultSharedPreference.edit()
-                                                    .putStringSet(PREF_COOKIE,
+                                                    .putStringSet(Prefs.Keys.COOKIE,
                                                         CookieManager.getInstance()
                                                             .getCookie(request?.url.toString())
                                                             .split(";").toSet())
