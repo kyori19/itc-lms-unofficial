@@ -54,6 +54,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="S / MON 4" />
 
+        <Button
+            android:id="@+id/buttonSendAttendance"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="@string/button_send_attendance"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/headerCourseDetails"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textCourseName"
+            tools:visibility="visible" />
+
         <net.accelf.itc_lms_unofficial.view.ExpandableHeaderView
             android:id="@+id/headerCourseDetails"
             android:layout_width="0dp"
@@ -63,7 +77,7 @@
             app:iconContentDescription="@string/hint_open_course_details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textCourseName"
+            app:layout_constraintTop_toBottomOf="@id/buttonSendAttendance"
             app:targetLayout="@id/expandableCourseDetails"
             app:text="@string/title_course_details" />
 

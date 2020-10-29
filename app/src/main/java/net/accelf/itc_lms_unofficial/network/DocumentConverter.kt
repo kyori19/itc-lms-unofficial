@@ -19,6 +19,7 @@ class DocumentConverterFactory(private val gson: Gson) : Converter.Factory() {
     ): Converter<ResponseBody, *>? {
         val baseUri = retrofit.baseUrl().toString()
         return when (type) {
+            AttendanceSend::class.java -> AttendanceSend.Converter(baseUri)
             CourseDetail::class.java -> CourseDetail.Converter(baseUri, gson)
             NotifyDetail::class.java -> NotifyDetail.Converter(baseUri)
             ReportDetail::class.java -> ReportDetail.Converter(baseUri)

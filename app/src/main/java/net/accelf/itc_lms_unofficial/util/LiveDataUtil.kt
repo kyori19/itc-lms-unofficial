@@ -6,6 +6,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
+import com.tingyik90.snackprogressbar.SnackProgressBar
+import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import kotlinx.android.synthetic.main.activity_base.*
 import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.LoadingFragment
@@ -50,6 +52,8 @@ fun <T> LiveData<Request<T>>.withResponse(
                     activity.swipeRefresh.isRefreshing = false
                 }
             }
+            else -> {
+            }
         }
     }
 }
@@ -58,6 +62,8 @@ fun <T> LiveData<Request<T>>.onSuccess(owner: LifecycleOwner, onSuccess: (T) -> 
     observe(owner) {
         when (it) {
             is Success -> onSuccess(it.data)
+            else -> {
+            }
         }
     }
 }
@@ -70,6 +76,39 @@ fun <T> LiveData<Request<T>>.setProgressBar(
         when (it) {
             is Loading -> progressBar.progressMax = 1f
             is Progress -> progressBar.progress = it.progress
+            else -> {
+            }
+        }
+    }
+}
+
+fun <T> LiveData<Request<T>?>.withSnackProgressBar(
+    owner: LifecycleOwner,
+    snackProgressBar: SnackProgressBar,
+    snackProgressBarManager: SnackProgressBarManager,
+    onError: (Throwable) -> Unit,
+    onSuccess: (T) -> Unit,
+) {
+    observe(owner) {
+        if (it == null) {
+            return@observe
+        }
+
+        when (it) {
+            is Loading -> {
+                snackProgressBarManager.show(snackProgressBar,
+                    SnackProgressBarManager.LENGTH_INDEFINITE)
+            }
+            is Success -> {
+                snackProgressBarManager.dismiss()
+                onSuccess(it.data)
+            }
+            is Error -> {
+                snackProgressBarManager.dismiss()
+                onError(it.throwable)
+            }
+            else -> {
+            }
         }
     }
 }

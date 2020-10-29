@@ -18,6 +18,8 @@
     <string name="snackbar_button_restart">Restart</string>
     <string name="snackbar_hint_re_login">If this loading screen won\'t close for a long time, maybe id or password is wrong.</string>
     <string name="snackbar_button_re_login">Retry</string>
+    <string name="snackbar_fetching_attendance_send">Preparing for sending attendance…</string>
+    <string name="snackbar_sending_attendance">Sending attendance…</string>
     <string name="snackbar_fetching_notify">Fetching notify…</string>
     <string name="snackbar_copied">URL copied!</string>
 
@@ -25,6 +27,7 @@
     <string name="button_dialog_close">Close</string>
     <string name="button_dialog_download">Download</string>
     <string name="button_dialog_open">Open</string>
+    <string name="button_dialog_send">Send</string>
 
     <string name="login_instruction">This application saves only cookies and won\'t save passwords.</string>
     <string name="login_hint_user_name">Username</string>
@@ -34,9 +37,18 @@
 
     <string name="course_temp">TEMP</string>
 
+    <string name="button_send_attendance">Send attendance</string>
+
+    <string name="dialog_title_send_attendance">Send attendance</string>
+    <string name="input_hint_attendance_password">Attendance password</string>
+    <string name="input_hint_attendance_comment">Comment</string>
+    <string name="text_attendance_already_sent">The attendance for this class is already sent.</string>
+    <string name="text_attendance_error">Some errors found.</string>
+
     <string name="dialog_message_bug_notify">Sorry for inconvenience. Because of the bug of ITC-LMS, you have to re-login to ITC-LMS. Currently we are trying to fix this issue, so please hold on.</string>
     <string name="dialog_message_open_link">Open this link?\n%s</string>
     <string name="dialog_message_open_video_unsupported">Sorry, watching video is not supported now.</string>
+    <string name="dialog_message_send_attendance_success">Completed sending attendance. Now updating data…</string>
     <string name="dialog_tab_title_download_doc">Document</string>
     <string name="dialog_tab_title_download_tree">Dir &amp; File Name</string>
     <string name="dialog_title_bug_notify">Sorry! Problem happened while loading!</string>
@@ -44,6 +56,7 @@
     <string name="dialog_title_open_link">Open link</string>
     <string name="dialog_title_open_video">Watch video</string>
     <string name="dialog_title_pdf_require_password">This PDF requires password</string>
+    <string name="dialog_title_send_attendance_success">Success</string>
 
     <string name="hint_icon_file">File</string>
     <string name="hint_icon_link">Link</string>

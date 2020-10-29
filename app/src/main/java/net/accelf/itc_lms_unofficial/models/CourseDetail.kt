@@ -38,6 +38,7 @@ data class CourseDetail(
     val tests: List<Test>,
     val forums: List<Forum>,
     val surveys: List<Survey>,
+    val sendAttendanceId: String?,
 ) : Serializable {
 
     class Converter(baseUrl: String, private val gson: Gson) :
@@ -310,18 +311,25 @@ data class CourseDetail(
                             times[0],
                             times[1]
                         )
-                    }
+                    },
+                    document.select("#courseName a[onclick^=attendancesSend]").firstOrNull()
+                        ?.attr("onclick")?.toAttendanceSendId(),
                 )
             }
         }
     }
 
     companion object {
+        private val ATTENDANCE_SEND_ID_REGEX = Regex("""attendancesSend\('\d+[A-Z]\d+,(\d+)'\);""")
         private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
         private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９他]|Other)[^,/]*""")
         private val SEMESTER_REGEX =
             Regex("""([^,/]+)/([^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*(?:,[^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*)*)""")
         private val SCRIPT_QUILL_REGEX =
             Regex("""QuillUtil\.setJsonData\(("[^\n]+"), 'reference'\);""")
+
+        private fun String.toAttendanceSendId(): String? {
+            return ATTENDANCE_SEND_ID_REGEX.matchEntire(this)?.groupValues?.get(1)
+        }
     }
 }

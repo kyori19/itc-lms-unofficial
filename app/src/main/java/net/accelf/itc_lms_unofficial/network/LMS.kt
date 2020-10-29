@@ -28,6 +28,23 @@ interface LMS {
         @Query("informationId") notifyId: String,
     ): Single<NotifyDetail>
 
+    @GET("lms/course/attendances/send")
+    fun getAttendanceSend(
+        @Query("idnumber") courseId: String,
+        @Query("attendanceId") attendanceId: String,
+    ): Single<AttendanceSend>
+
+    @POST("lms/course/attendances/send")
+    @FormUrlEncoded
+    fun sendAttendance(
+        @Field("_csrf") csrf: String,
+        @Field("idnumber") courseId: String,
+        @Field("attendanceId") attendanceId: String,
+        @Field("isSent") sent: Boolean,
+        @Field("oneTimePass") password: String,
+        @Field("comment") comment: String,
+    ): Single<AttendanceSend>
+
     @GET("lms/course/material/tempfile")
     fun getFileId(
         @Query("idnumber") courseId: String,

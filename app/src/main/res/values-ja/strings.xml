@@ -132,4 +132,15 @@
     <string name="input_hint_target_doc">ファイルのパス</string>
     <string name="dialog_tab_title_download_tree">ディレクトリ + ファイル名</string>
     <string name="dialog_tab_title_download_doc">ドキュメント</string>
+    <string name="button_send_attendance">出席送信</string>
+    <string name="button_dialog_send">送信</string>
+    <string name="input_hint_attendance_password">出席パスワード</string>
+    <string name="input_hint_attendance_comment">コメント</string>
+    <string name="dialog_title_send_attendance">出席送信</string>
+    <string name="snackbar_fetching_attendance_send">出席送信の準備中…</string>
+    <string name="snackbar_sending_attendance">出席を送信中…</string>
+    <string name="dialog_message_send_attendance_success">出席が登録されました。表示を更新します。</string>
+    <string name="dialog_title_send_attendance_success">送信完了</string>
+    <string name="text_attendance_already_sent">この講義の出席は既に送信済みです。</string>
+    <string name="text_attendance_error">エラーが発見されました。</string>
 </resources>

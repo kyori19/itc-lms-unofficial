@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.tingyik90.snackprogressbar.SnackProgressBar
@@ -17,6 +18,7 @@ import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_course_detail.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.coursedetail.SendAttendanceDialogFragment.Companion.BUNDLE_RESULT
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.models.*
@@ -44,6 +46,15 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         SnackProgressBar(
             SnackProgressBar.TYPE_HORIZONTAL,
             getString(R.string.snackbar_fetching_notify)
+        )
+            .setIsIndeterminate(true)
+            .setAllowUserInput(true)
+    }
+
+    private val attendanceSendSnackProgressBar by lazy {
+        SnackProgressBar(
+            SnackProgressBar.TYPE_HORIZONTAL,
+            getString(R.string.snackbar_fetching_attendance_send)
         )
             .setIsIndeterminate(true)
             .setAllowUserInput(true)
@@ -92,6 +103,19 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             }
     }
 
+    private val sendAttendanceSuccessDialog by lazy {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.dialog_title_send_attendance_success)
+            .setMessage(R.string.dialog_message_send_attendance_success)
+            .setPositiveButton(R.string.button_dialog_close) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setOnDismissListener {
+                viewModel.closeSendAttendance()
+                viewModel.load()
+            }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -109,6 +133,17 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
                     .forEach {
                         append(", ${it.first} ${it.second}")
                     }
+            }
+
+            showViewsAndDoWhen(courseDetail.sendAttendanceId != null, buttonSendAttendance) {
+                buttonSendAttendance.setOnClickListener {
+                    if (!viewModel.prepareForSendingAttendance(courseDetail.sendAttendanceId!!)) {
+                        Toast.makeText(requireContext(),
+                            R.string.toast_already_fetching,
+                            Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
             }
 
             textTeachersName.text = courseDetail.teachers.joinToString(", ")
@@ -178,28 +213,38 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
             )
         }
 
-        viewModel.notifyDetail.observe(viewLifecycleOwner) {
-            if (it == null) {
-                return@observe
+        viewModel.notifyDetail.withSnackProgressBar(viewLifecycleOwner,
+            notifySnackProgressBar,
+            snackProgressBarManager,
+            { viewModel.closeNotify() }) {
+            notifyDialog.apply {
+                setTitle(it.title)
+                setMessage(it.text.fromHtml().autoLink())
+                show()
+            }
+        }
+
+        viewModel.attendanceSend.withSnackProgressBar(viewLifecycleOwner,
+            attendanceSendSnackProgressBar,
+            snackProgressBarManager,
+            { viewModel.closeSendAttendance() }) {
+            if (it.success) {
+                sendAttendanceSuccessDialog.show()
+                return@withSnackProgressBar
             }
 
-            when (it) {
-                is Loading -> {
-                    snackProgressBarManager.show(
-                        notifySnackProgressBar,
-                        SnackProgressBarManager.LENGTH_INDEFINITE
-                    )
-                }
-                is Success -> {
-                    snackProgressBarManager.dismiss()
+            SendAttendanceDialogFragment.newInstance()
+                .show(parentFragmentManager, SendAttendanceDialogFragment::class.java.simpleName)
+        }
 
-                    notifyDialog.apply {
-                        setTitle(it.data.title)
-                        setMessage(it.data.text.fromHtml().autoLink())
-                        show()
-                    }
-                }
-                else -> {
+        setFragmentResultListener(SendAttendanceDialogFragment::class.java.simpleName) { _, it ->
+            @Suppress("UNCHECKED_CAST")
+            (it.getSerializable(BUNDLE_RESULT) as Result<SendAttendanceDialogResult>).onSuccess {
+                if (!viewModel.sendAttendance(it.attendancePassword, it.attendanceComment)) {
+                    Toast.makeText(requireContext(),
+                        R.string.toast_already_fetching,
+                        Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }

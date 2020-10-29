@@ -7,13 +7,11 @@ import androidx.lifecycle.SavedStateHandle
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_CONTENT_MATERIAL_ID
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_ID
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_NOTIFY_ID
+import net.accelf.itc_lms_unofficial.models.AttendanceSend
 import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.NotifyDetail
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.util.Request
-import net.accelf.itc_lms_unofficial.util.RxAwareViewModel
-import net.accelf.itc_lms_unofficial.util.mutableLiveDataOf
-import net.accelf.itc_lms_unofficial.util.mutableRequestOf
+import net.accelf.itc_lms_unofficial.util.*
 
 class CourseDetailViewModel @ViewModelInject constructor(
     private val lms: LMS,
@@ -34,6 +32,9 @@ class CourseDetailViewModel @ViewModelInject constructor(
             savedState.set(EXTRA_COURSE_CONTENT_MATERIAL_ID, value)
         }
 
+    private val mutableAttendanceSend = mutableLiveDataOf<Request<AttendanceSend>?>(null)
+    val attendanceSend: LiveData<Request<AttendanceSend>?> = mutableAttendanceSend
+
     init {
         load()
 
@@ -48,8 +49,13 @@ class CourseDetailViewModel @ViewModelInject constructor(
             .toLiveData(mutableCourseDetail)
     }
 
+    private fun usingSnackbar(ignoreAttendance: Boolean = false): Boolean {
+        return mutableNotifyDetail.value != null
+                || !(ignoreAttendance || mutableAttendanceSend.value == null)
+    }
+
     fun loadNotify(notifyId: String): Boolean {
-        if (mutableNotifyDetail.value != null) {
+        if (usingSnackbar()) {
             return false
         }
 
@@ -66,5 +72,34 @@ class CourseDetailViewModel @ViewModelInject constructor(
 
     fun onCourseContentOpened() {
         focusCourseContentResourceId = null
+    }
+
+    fun prepareForSendingAttendance(attendanceId: String): Boolean {
+        if (usingSnackbar()) {
+            return false
+        }
+
+        lms.getAttendanceSend(courseId, attendanceId)
+            .toLiveData(mutableAttendanceSend)
+        return true
+    }
+
+    fun sendAttendance(password: String, comment: String): Boolean {
+        if (usingSnackbar(true)) {
+            return false
+        }
+
+        val form = (mutableAttendanceSend.value as Success).data
+        lms.sendAttendance(form.csrf, courseId, form.id, form.sent, password, comment)
+            .toLiveData(mutableAttendanceSend)
+        return true
+    }
+
+    fun closeSendAttendance() {
+        if (mutableAttendanceSend.value !is Success) {
+            return
+        }
+
+        mutableAttendanceSend.postValue(null)
     }
 }
