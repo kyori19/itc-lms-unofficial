@@ -35,6 +35,7 @@ open class RxAwareViewModel : ViewModel() {
                 target.postValue(Success(it))
             }, {
                 target.postValue(Error(it))
+                it.printStackTrace()
             }
         )
             .autoDispose()
