@@ -49,7 +49,7 @@ data class ReportDetail(
                     document.select("#reportId").first().`val`(),
                     document.select("input[name=idnumber]").first().`val`(),
                     details.first().text(),
-                    details.second().text(),
+                    details.second().html(),
                     document.select(".page_supple .downloadFile").firstOrNull()?.let {
                         File(
                             document.select(".page_supple .objectName").first().text(),

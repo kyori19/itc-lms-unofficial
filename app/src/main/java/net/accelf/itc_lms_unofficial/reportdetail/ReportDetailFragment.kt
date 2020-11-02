@@ -11,10 +11,7 @@ import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.models.File
 import net.accelf.itc_lms_unofficial.models.Report
 import net.accelf.itc_lms_unofficial.models.ReportDetail
-import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
-import net.accelf.itc_lms_unofficial.util.setWithoutInitAdapter
-import net.accelf.itc_lms_unofficial.util.showViewsAndDoWhen
-import net.accelf.itc_lms_unofficial.util.timeSpanToString
+import net.accelf.itc_lms_unofficial.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -98,7 +95,7 @@ class ReportDetailFragment : Fragment(R.layout.fragment_report_detail), Submitte
         }
 
         showViewsAndDoWhen(reportDetail.description.isNotEmpty(), textReportDescription) {
-            textReportDescription.text = reportDetail.description
+            textReportDescription.text = reportDetail.description.fromHtml()
         }
 
         showViewsAndDoWhen(reportDetail.attachmentFile != null,
