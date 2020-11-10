@@ -321,7 +321,7 @@ data class CourseDetail(
 
     companion object {
         private val ATTENDANCE_SEND_ID_REGEX = Regex("""attendancesSend\('\d+[A-Z]\d+,(\d+)'\);""")
-        private val COURSE_NAME_REGEX = Regex("""(.+)\s(\d+)\s(.+)""")
+        private val COURSE_NAME_REGEX = Regex("""(.+)\s([A-Z\d]+)\s(.+)""")
         private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９他]|Other)[^,/]*""")
         private val SEMESTER_REGEX =
             Regex("""([^,/]+)/([^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*(?:,[^,/]+/[^,/]*(?:[\d０-９他]|Other)[^,/]*)*)""")
