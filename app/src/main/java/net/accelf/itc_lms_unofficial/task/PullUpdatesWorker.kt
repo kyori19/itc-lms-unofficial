@@ -140,6 +140,7 @@ class PullUpdatesWorker @WorkerInject constructor(
                 setSmallIcon(R.drawable.ic_launcher_foreground)
                 setContentTitle(courseName)
                 setContentText(text)
+                setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 createdAt?.let { setWhen(it.time) }
 
                 priority = NotificationCompat.PRIORITY_HIGH
