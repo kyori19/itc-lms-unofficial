@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -64,7 +65,11 @@ class CourseDetailFragment :
     private val customTabsIntent by lazy {
         CustomTabsIntent.Builder()
             .setShowTitle(true)
-            .setToolbarColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            .setDefaultColorSchemeParams(
+                CustomTabColorSchemeParams.Builder()
+                    .setToolbarColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                    .build()
+            )
             .build()
     }
 

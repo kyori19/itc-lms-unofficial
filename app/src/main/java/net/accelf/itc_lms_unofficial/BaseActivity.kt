@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewTreeLifecycleOwner
@@ -34,7 +35,11 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() 
     private val customTabsIntent by lazy {
         CustomTabsIntent.Builder()
             .setShowTitle(true)
-            .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            .setDefaultColorSchemeParams(
+                CustomTabColorSchemeParams.Builder()
+                    .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                    .build()
+            )
             .build()
     }
 
