@@ -2,17 +2,12 @@ package net.accelf.itc_lms_unofficial.coursedetail
 
 import android.os.Handler
 import android.os.SystemClock
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_material.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.ItemMaterialBinding
 import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.models.Material.MaterialType
 import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
@@ -22,18 +17,13 @@ class MaterialsAdapter(
     items: List<Material>,
     private val listener: MaterialListener,
     private val viewModel: CourseDetailViewModel,
-) : UpdatableAdapter<Material, MaterialsAdapter.ViewHolder>(items), CoroutineScope by MainScope() {
+) : UpdatableAdapter<Material, ItemMaterialBinding>(items, ItemMaterialBinding::class.java),
+    CoroutineScope by MainScope() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_material, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<ItemMaterialBinding>, position: Int) {
         val item = items[position]
 
-        holder.apply {
+        holder.binding.apply {
             root.apply {
                 setOnClickListener {
                     when (item.type) {
@@ -88,15 +78,6 @@ class MaterialsAdapter(
                 text = context.timeSpanToString(item.createdAt, item.until)
             }
         }
-    }
-
-    override fun getItemCount(): Int = items.size
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val root = view
-        val iconMaterialType: ImageView = view.iconMaterialType
-        val textMaterialName: TextView = view.textMaterialName
-        val textMaterialDate: TextView = view.textMaterialDate
     }
 
     companion object {

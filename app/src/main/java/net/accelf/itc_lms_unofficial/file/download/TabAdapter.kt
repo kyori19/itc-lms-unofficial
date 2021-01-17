@@ -9,9 +9,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import kotlinx.android.synthetic.main.dialog_download_doc.*
-import kotlinx.android.synthetic.main.dialog_download_tree.*
-import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.BaseFragment
+import net.accelf.itc_lms_unofficial.databinding.DialogDownloadDocBinding
+import net.accelf.itc_lms_unofficial.databinding.DialogDownloadTreeBinding
 
 class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
@@ -25,7 +25,8 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
 
-    class TreeFragment : Fragment(R.layout.dialog_download_tree) {
+    class TreeFragment :
+        BaseFragment<DialogDownloadTreeBinding>(DialogDownloadTreeBinding::class.java) {
 
         private val viewModel by activityViewModels<DownloadDialogViewModel>()
 
@@ -42,28 +43,29 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             viewModel.targetDirectoryUri.observe(viewLifecycleOwner) {
-                if (textTargetDir.text.toString() != it?.path) {
-                    textTargetDir.setText(it?.path)
+                if (binding.textTargetDir.text.toString() != it?.path) {
+                    binding.textTargetDir.setText(it?.path)
                 }
             }
 
-            textTargetDir.setOnClickListener {
+            binding.textTargetDir.setOnClickListener {
                 launcher.launch(viewModel.targetDirectoryUri.value ?: Uri.EMPTY)
             }
 
             viewModel.fileName.observe(viewLifecycleOwner) {
-                if (editTextFileName.text.toString() != it) {
-                    editTextFileName.setText(it)
+                if (binding.editTextFileName.text.toString() != it) {
+                    binding.editTextFileName.setText(it)
                 }
             }
 
-            editTextFileName.addTextChangedListener {
+            binding.editTextFileName.addTextChangedListener {
                 viewModel.fileName.postValue(it.toString())
             }
         }
     }
 
-    class DocFragment : Fragment(R.layout.dialog_download_doc) {
+    class DocFragment :
+        BaseFragment<DialogDownloadDocBinding>(DialogDownloadDocBinding::class.java) {
 
         private val viewModel by activityViewModels<DownloadDialogViewModel>()
 
@@ -79,12 +81,12 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             viewModel.targetDocumentUri.observe(viewLifecycleOwner) {
-                if (textTargetDoc.text.toString() != it?.path) {
-                    textTargetDoc.setText(it?.path)
+                if (binding.textTargetDoc.text.toString() != it?.path) {
+                    binding.textTargetDoc.setText(it?.path)
                 }
             }
 
-            textTargetDoc.setOnClickListener {
+            binding.textTargetDoc.setOnClickListener {
                 launcher.launch(viewModel.defaultFileName)
             }
         }

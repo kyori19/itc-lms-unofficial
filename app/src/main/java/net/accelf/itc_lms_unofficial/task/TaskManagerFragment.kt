@@ -2,17 +2,17 @@ package net.accelf.itc_lms_unofficial.task
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_task_manager.*
-import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.BaseFragment
+import net.accelf.itc_lms_unofficial.databinding.FragmentTaskManagerBinding
 import net.accelf.itc_lms_unofficial.file.download.FileDownloadWorker
 
-class TaskManagerFragment : Fragment(R.layout.fragment_task_manager) {
+class TaskManagerFragment :
+    BaseFragment<FragmentTaskManagerBinding>(FragmentTaskManagerBinding::class.java) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewWorkerPullUpdates.apply {
+        binding.viewWorkerPullUpdates.apply {
             tag = PullUpdatesWorker::class.java.name
 
             setOnEnqueueClickListener {
@@ -20,7 +20,7 @@ class TaskManagerFragment : Fragment(R.layout.fragment_task_manager) {
             }
         }
 
-        viewWorkerFileDownload.tag = FileDownloadWorker::class.java.name
+        binding.viewWorkerFileDownload.tag = FileDownloadWorker::class.java.name
     }
 
     companion object {

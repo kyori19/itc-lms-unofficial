@@ -3,14 +3,18 @@ package net.accelf.itc_lms_unofficial
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_start_login.*
+import net.accelf.itc_lms_unofficial.databinding.FragmentStartLoginBinding
 
 class StartLoginFragment : Fragment(R.layout.fragment_start_login) {
 
+    private var _binding: FragmentStartLoginBinding? = null
+    private val binding get() = _binding!!
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentStartLoginBinding.bind(view)
 
-        buttonStartLogin.setOnClickListener {
+        binding.buttonStartLogin.setOnClickListener {
             startActivity(LoginActivity.intent(requireContext()))
             activity?.finish()
         }

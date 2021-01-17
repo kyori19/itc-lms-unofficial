@@ -2,7 +2,7 @@ package net.accelf.itc_lms_unofficial
 
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.fragment_error.*
+import net.accelf.itc_lms_unofficial.databinding.FragmentErrorBinding
 
 private const val ARG_ERR = "arg_err"
 
@@ -10,6 +10,10 @@ class ErrorFragment : ActionableFragment(
     R.layout.fragment_error,
     ActionableFragment.Companion.ActionType.BACK_TO_MAIN
 ) {
+
+    private var _binding: FragmentErrorBinding? = null
+    private val binding get() = _binding!!
+
     private var errText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +25,14 @@ class ErrorFragment : ActionableFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentErrorBinding.bind(view)
 
-        textError.text = errText ?: getString(R.string.err_default)
+        binding.textError.text = errText ?: getString(R.string.err_default)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

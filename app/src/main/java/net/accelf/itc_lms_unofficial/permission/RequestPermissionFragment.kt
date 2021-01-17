@@ -2,11 +2,11 @@ package net.accelf.itc_lms_unofficial.permission
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_request_permission.*
-import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.BaseFragment
+import net.accelf.itc_lms_unofficial.databinding.FragmentRequestPermissionBinding
 
-class RequestPermissionFragment : Fragment(R.layout.fragment_request_permission) {
+class RequestPermissionFragment :
+    BaseFragment<FragmentRequestPermissionBinding>(FragmentRequestPermissionBinding::class.java) {
 
     private lateinit var permission: Permission
 
@@ -21,11 +21,11 @@ class RequestPermissionFragment : Fragment(R.layout.fragment_request_permission)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        titlePermissionName.setText(permission.title)
+        binding.titlePermissionName.setText(permission.title)
 
-        textPermissionUsage.setText(permission.usage)
+        binding.textPermissionUsage.setText(permission.usage)
 
-        buttonGrantPermission.setOnClickListener {
+        binding.buttonGrantPermission.setOnClickListener {
             val activity = requireActivity() as RequestPermissionActivity
             activity.request(permission)
         }

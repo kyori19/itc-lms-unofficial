@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.view_expandable_header.view.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.ViewExpandableHeaderBinding
 
 class ExpandableHeaderView(context: Context, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
@@ -19,9 +19,9 @@ class ExpandableHeaderView(context: Context, attrs: AttributeSet?) :
     @IdRes
     private val targetLayoutId: Int
 
-    init {
-        LayoutInflater.from(context).inflate(R.layout.view_expandable_header, this, true)
+    val binding = ViewExpandableHeaderBinding.inflate(LayoutInflater.from(context), this, true)
 
+    init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.ExpandableHeaderView, 0, 0).apply {
             try {
                 text = getString(R.styleable.ExpandableHeaderView_text) ?: ""
@@ -43,7 +43,7 @@ class ExpandableHeaderView(context: Context, attrs: AttributeSet?) :
         setOnClickListener {
             expandableLayout.toggle()
 
-            iconExpand.apply {
+            binding.iconExpand.apply {
                 val open = expandableLayout.isExpanded
 
                 val from = when (open) {
@@ -59,8 +59,8 @@ class ExpandableHeaderView(context: Context, attrs: AttributeSet?) :
             }
         }
 
-        textTitle.text = text
-        iconExpand.apply {
+        binding.textTitle.text = text
+        binding.iconExpand.apply {
             contentDescription = iconContentDescription
             rotation = when (expandableLayout.isExpanded) {
                 true -> 0f

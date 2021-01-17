@@ -3,7 +3,6 @@ package net.accelf.itc_lms_unofficial
 import android.os.Bundle
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_base.*
 import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import net.accelf.itc_lms_unofficial.timetable.TimeTableFragment
 import net.accelf.itc_lms_unofficial.timetable.TimeTableViewModel
@@ -19,7 +18,7 @@ class MainActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        swipeRefresh.setOnRefreshListener {
+        binding.swipeRefresh.setOnRefreshListener {
             viewModel.load()
         }
 

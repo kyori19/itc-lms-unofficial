@@ -8,15 +8,15 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.app.NotificationCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.github.polesapart.pdfviewer.PDFView
 import com.shockwave.pdfium.PdfPasswordException
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_pdf.*
+import net.accelf.itc_lms_unofficial.BaseFragment
 import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.FragmentPdfBinding
 import net.accelf.itc_lms_unofficial.file.download.ConfirmDownloadDialogFragment
 import net.accelf.itc_lms_unofficial.file.download.DownloadDialogResult
 import net.accelf.itc_lms_unofficial.file.pdf.PasswordDialogFragment.Companion.BUNDLE_PASSWORD
@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PdfFragment : Fragment(R.layout.fragment_pdf) {
+class PdfFragment : BaseFragment<FragmentPdfBinding>(FragmentPdfBinding::class.java) {
 
     private val passwordDialog by lazy {
         PasswordDialogFragment.newInstance()
@@ -48,7 +48,7 @@ class PdfFragment : Fragment(R.layout.fragment_pdf) {
                 PasswordDialogFragment.RESULT_SUCCESS -> {
                     passwordDialog.hide(parentFragmentManager)
 
-                    pdfView.fromBytes((viewModel.pdfFile.value as Success<ByteArray>).data)
+                    binding.pdfView.fromBytes((viewModel.pdfFile.value as Success<ByteArray>).data)
                         .setDefaults()
                         .password(bundle.getString(BUNDLE_PASSWORD))
                         .onLoad { _, _, _ ->
@@ -65,7 +65,7 @@ class PdfFragment : Fragment(R.layout.fragment_pdf) {
         viewModel.pdfFile.observe(viewLifecycleOwner) {
             when (it) {
                 is Success -> {
-                    pdfView.apply {
+                    binding.pdfView.apply {
                         fromBytes(it.data)
                             .setDefaults()
                             .load()
@@ -80,7 +80,7 @@ class PdfFragment : Fragment(R.layout.fragment_pdf) {
             .enableAnnotationRendering(true)
             .defaultPage(viewModel.openingPage)
             .onLoad { _, _, _ ->
-                viewModel.pdfTitle.postValue(pdfView.documentMeta.title)
+                viewModel.pdfTitle.postValue(binding.pdfView.documentMeta.title)
             }
             .onPageChange { page, _ ->
                 viewModel.openingPage = page

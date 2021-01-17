@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBarManager
-import kotlinx.android.synthetic.main.activity_base.*
 import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.LoadingFragment
 import net.accelf.itc_lms_unofficial.StartLoginFragment
@@ -32,24 +31,24 @@ fun <T> LiveData<Request<T>>.withResponse(
         when (it) {
             is Success -> {
                 if (swipeRefreshEnabled) {
-                    activity.swipeRefresh.isRefreshing = false
+                    (activity as BaseActivity).binding.swipeRefresh.isRefreshing = false
                 }
                 onSuccess(it.data)
             }
             is Loading -> {
-                if (!(swipeRefreshEnabled && activity.swipeRefresh.isRefreshing)) {
+                if (!(swipeRefreshEnabled && (activity as BaseActivity).binding.swipeRefresh.isRefreshing)) {
                     activity.replaceFragment(loadingFragment)
                 }
             }
             is Error -> {
-                if (!(swipeRefreshEnabled && activity.swipeRefresh.isRefreshing)) {
+                if (!(swipeRefreshEnabled && (activity as BaseActivity).binding.swipeRefresh.isRefreshing)) {
                     if (it.throwable is HttpException && it.throwable.code() == 302) {
                         activity.replaceFragment(StartLoginFragment.newInstance())
                     } else {
                         activity.replaceErrorFragment(it.throwable)
                     }
                 } else {
-                    activity.swipeRefresh.isRefreshing = false
+                    activity.binding.swipeRefresh.isRefreshing = false
                 }
             }
             else -> {

@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.aboutlibraries.LibsBuilder
-import kotlinx.android.synthetic.main.activity_base.*
+import net.accelf.itc_lms_unofficial.databinding.ActivityBaseBinding
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
@@ -27,8 +27,9 @@ import okhttp3.HttpUrl
 
 // FIXME: The base class of the @AndroidEntryPoint, contains a constructor with default parameters.
 //  This is currently not supported by the Hilt Gradle plugin.
-open class BaseActivity(val swipeRefreshEnabled: Boolean) :
-    AppCompatActivity(R.layout.activity_base) {
+open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() {
+
+    lateinit var binding: ActivityBaseBinding
 
     private val customTabsIntent by lazy {
         CustomTabsIntent.Builder()
@@ -38,15 +39,17 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) :
     }
 
     private val copiedSnackbar by lazy {
-        Snackbar.make(content, R.string.snackbar_copied, Snackbar.LENGTH_SHORT)
+        Snackbar.make(binding.content, R.string.snackbar_copied, Snackbar.LENGTH_SHORT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityBaseBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
 
-        swipeRefresh.isEnabled = swipeRefreshEnabled
+        binding.swipeRefresh.isEnabled = swipeRefreshEnabled
 
         ViewTreeLifecycleOwner.set(window.decorView, this)
 

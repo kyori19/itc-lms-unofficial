@@ -8,8 +8,8 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.google.android.material.card.MaterialCardView
-import kotlinx.android.synthetic.main.view_task_worker.view.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.ViewTaskWorkerBinding
 import net.accelf.itc_lms_unofficial.util.set
 
 class TaskWorkerView(context: Context, attrs: AttributeSet?) : MaterialCardView(context, attrs) {
@@ -22,7 +22,7 @@ class TaskWorkerView(context: Context, attrs: AttributeSet?) : MaterialCardView(
 
             workManager.getWorkInfosByTagLiveData(tag)
                 .observe(findViewTreeLifecycleOwner()!!, {
-                    listWorkers.set<WorkInfo, WorkersAdapter>(it)
+                    binding.listWorkers.set<WorkInfo, WorkersAdapter>(it)
                 })
         }
 
@@ -30,9 +30,9 @@ class TaskWorkerView(context: Context, attrs: AttributeSet?) : MaterialCardView(
         WorkManager.getInstance(context)
     }
 
-    init {
-        LayoutInflater.from(context).inflate(R.layout.view_task_worker, this, true)
+    val binding = ViewTaskWorkerBinding.inflate(LayoutInflater.from(context), this, true)
 
+    init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.TaskWorkerView, 0, 0).apply {
             try {
                 title = getString(R.styleable.TaskWorkerView_title) ?: ""
@@ -45,15 +45,15 @@ class TaskWorkerView(context: Context, attrs: AttributeSet?) : MaterialCardView(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        titleTask.text = title
+        binding.titleTask.text = title
 
-        buttonDeleteAll.setOnClickListener {
+        binding.buttonDeleteAll.setOnClickListener {
             workManager.cancelAllWorkByTag(tag)
         }
     }
 
     fun setOnEnqueueClickListener(listener: (View) -> Unit) {
-        buttonEnqueue.apply {
+        binding.buttonEnqueue.apply {
             visibility = VISIBLE
             setOnClickListener(listener)
         }

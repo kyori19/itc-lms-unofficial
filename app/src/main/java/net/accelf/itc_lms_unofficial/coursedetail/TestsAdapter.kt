@@ -1,31 +1,19 @@
 package net.accelf.itc_lms_unofficial.coursedetail
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_test.view.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.ItemTestBinding
 import net.accelf.itc_lms_unofficial.models.Test
 import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.timeSpanToString
 
 class TestsAdapter(
     items: List<Test>,
-) : UpdatableAdapter<Test, TestsAdapter.ViewHolder>(items) {
+) : UpdatableAdapter<Test, ItemTestBinding>(items, ItemTestBinding::class.java) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_test, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<ItemTestBinding>, position: Int) {
         val item = items[position]
 
-        holder.apply {
+        holder.binding.apply {
             iconTestStatus.apply {
                 setImageResource(
                     when (item.status) {
@@ -48,13 +36,5 @@ class TestsAdapter(
                 text = context.timeSpanToString(item.from, item.until)
             }
         }
-    }
-
-    override fun getItemCount(): Int = items.size
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val iconTestStatus: ImageView = view.iconTestStatus
-        val titleTest: TextView = view.titleTest
-        val textTestDate: TextView = view.textTestDate
     }
 }

@@ -5,15 +5,19 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_login_request.*
+import net.accelf.itc_lms_unofficial.databinding.FragmentLoginRequestBinding
 import net.accelf.itc_lms_unofficial.util.isNotNullOrEmpty
 
 class LoginRequestFragment : Fragment(R.layout.fragment_login_request) {
 
+    private var _binding: FragmentLoginRequestBinding? = null
+    private val binding get() = _binding!!
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentLoginRequestBinding.bind(view)
 
-        textLoginInstruction.text = getString(R.string.login_instruction)
+        binding.textLoginInstruction.text = getString(R.string.login_instruction)
 
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -21,14 +25,14 @@ class LoginRequestFragment : Fragment(R.layout.fragment_login_request) {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                buttonLogin.isEnabled = editTextContents().first
+                binding.buttonLogin.isEnabled = editTextContents().first
             }
         }
-        listOf(editTextUserName, editTextPassword).forEach {
+        listOf(binding.editTextUserName, binding.editTextPassword).forEach {
             it.addTextChangedListener(textWatcher)
         }
 
-        buttonLogin.apply {
+        binding.buttonLogin.apply {
             isEnabled = false
 
             setOnClickListener {
@@ -41,13 +45,18 @@ class LoginRequestFragment : Fragment(R.layout.fragment_login_request) {
     }
 
     private fun editTextContents(): Triple<Boolean, String, String> {
-        val userName = editTextUserName.text?.trim()
-        val password = editTextPassword.text?.trim()
+        val userName = binding.editTextUserName.text?.trim()
+        val password = binding.editTextPassword.text?.trim()
         return Triple(
             userName.isNotNullOrEmpty() && password.isNotNullOrEmpty(),
             userName.toString(),
             password.toString()
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

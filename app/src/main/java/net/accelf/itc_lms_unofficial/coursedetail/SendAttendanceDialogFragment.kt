@@ -12,16 +12,16 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
-import kotlinx.android.synthetic.main.dialog_send_attendance.view.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.DialogSendAttendanceBinding
 import net.accelf.itc_lms_unofficial.util.Success
 import net.accelf.itc_lms_unofficial.util.isNotNullOrEmpty
 
 @SuppressLint("InflateParams")
 class SendAttendanceDialogFragment : DialogFragment() {
 
-    private val layout by lazy {
-        layoutInflater.inflate(R.layout.dialog_send_attendance, null)
+    private val binding by lazy {
+        DialogSendAttendanceBinding.inflate(layoutInflater)
     }
 
     private val viewModel by activityViewModels<CourseDetailViewModel>()
@@ -30,15 +30,15 @@ class SendAttendanceDialogFragment : DialogFragment() {
         return activity?.let { activity ->
             AlertDialog.Builder(activity).apply {
                 setTitle(R.string.dialog_title_send_attendance)
-                setView(layout)
+                setView(binding.root)
 
                 setPositiveButton(R.string.button_dialog_send) { _, _ ->
                     setFragmentResult(
                         this@SendAttendanceDialogFragment::class.java.simpleName,
                         bundleOf(
                             BUNDLE_RESULT to Result.success(SendAttendanceDialogResult(
-                                layout.editTextAttendancePassword.text.toString(),
-                                layout.editTextAttendanceComment.text.toString()))
+                                binding.editTextAttendancePassword.text.toString(),
+                                binding.editTextAttendanceComment.text.toString()))
                         )
                     )
                 }
@@ -56,29 +56,29 @@ class SendAttendanceDialogFragment : DialogFragment() {
                     positiveButton.isEnabled = false
 
                     (viewModel.attendanceSend.value as Success).data.let { attendanceSend ->
-                        layout.textAttendanceAlreadySent.visibility = when (attendanceSend.sent) {
+                        binding.textAttendanceAlreadySent.visibility = when (attendanceSend.sent) {
                             true -> VISIBLE
                             false -> GONE
                         }
 
-                        layout.textAttendanceError.visibility =
+                        binding.textAttendanceError.visibility =
                             when (attendanceSend.errorOnPassword.isNotEmpty() || attendanceSend.errorOnComment.isNotEmpty()) {
                                 true -> VISIBLE
                                 false -> GONE
                             }
 
                         // Warning: Using apply causes wrong `this` suggestion
-                        layout.inputLayoutAttendancePassword.error = attendanceSend.errorOnPassword
-                        layout.editTextAttendancePassword.setText(attendanceSend.password)
-                        layout.editTextAttendancePassword.addTextChangedListener {
-                            layout.inputLayoutAttendancePassword.isErrorEnabled = false
+                        binding.inputLayoutAttendancePassword.error = attendanceSend.errorOnPassword
+                        binding.editTextAttendancePassword.setText(attendanceSend.password)
+                        binding.editTextAttendancePassword.addTextChangedListener {
+                            binding.inputLayoutAttendancePassword.isErrorEnabled = false
                             positiveButton.isEnabled = it.isNotNullOrEmpty()
                         }
 
-                        layout.inputLayoutAttendanceComment.error = attendanceSend.errorOnComment
-                        layout.editTextAttendanceComment.setText(attendanceSend.comment)
-                        layout.editTextAttendanceComment.addTextChangedListener {
-                            layout.inputLayoutAttendanceComment.isErrorEnabled = false
+                        binding.inputLayoutAttendanceComment.error = attendanceSend.errorOnComment
+                        binding.editTextAttendanceComment.setText(attendanceSend.comment)
+                        binding.editTextAttendanceComment.addTextChangedListener {
+                            binding.inputLayoutAttendanceComment.isErrorEnabled = false
                         }
                     }
                 }

@@ -9,21 +9,21 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
-import kotlinx.android.synthetic.main.dialog_password.view.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.DialogPasswordBinding
 
 @SuppressLint("InflateParams")
 class PasswordDialogFragment : DialogFragment() {
 
-    private val layout by lazy {
-        layoutInflater.inflate(R.layout.dialog_password, null)
+    private val binding by lazy {
+        DialogPasswordBinding.inflate(layoutInflater)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             AlertDialog.Builder(it).apply {
                 setTitle(R.string.dialog_title_pdf_require_password)
-                setView(layout)
+                setView(binding.root)
 
                 setPositiveButton(R.string.button_dialog_open) { _, _ -> }
                 setNegativeButton(R.string.button_dialog_cancel) { _, _ ->
@@ -40,7 +40,7 @@ class PasswordDialogFragment : DialogFragment() {
                                 this@PasswordDialogFragment::class.java.simpleName,
                                 bundleOf(
                                     BUNDLE_RESULT_CODE to RESULT_SUCCESS,
-                                    BUNDLE_PASSWORD to layout.editTextDialogPassword.text.toString(),
+                                    BUNDLE_PASSWORD to binding.editTextDialogPassword.text.toString(),
                                 )
                             )
                         }
@@ -53,7 +53,8 @@ class PasswordDialogFragment : DialogFragment() {
         fragmentManager.beginTransaction().apply {
             if (fragmentManager.findFragmentByTag(DIALOG_TAG) is PasswordDialogFragment) {
                 show(this@PasswordDialogFragment)
-                layout.editTextDialogPassword.error = getString(R.string.input_error_password_wrong)
+                binding.editTextDialogPassword.error =
+                    getString(R.string.input_error_password_wrong)
             } else {
                 add(this@PasswordDialogFragment, DIALOG_TAG)
             }

@@ -12,16 +12,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.dialog_download_frame.view.*
 import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.DialogDownloadFrameBinding
 import net.accelf.itc_lms_unofficial.util.defaultSharedPreference
 
 @SuppressLint("InflateParams")
 class ConfirmDownloadDialogFragment : DialogFragment() {
 
-    private val layout by lazy {
-        layoutInflater.inflate(R.layout.dialog_download_frame, null)
+    private val binding by lazy {
+        DialogDownloadFrameBinding.inflate(layoutInflater)
     }
 
     private val viewModel by activityViewModels<DownloadDialogViewModel>()
@@ -36,7 +36,7 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
         return activity?.let { activity ->
             AlertDialog.Builder(activity).apply {
                 setTitle(R.string.dialog_title_confirm_download)
-                setView(layout)
+                setView(binding.root)
 
                 setPositiveButton(R.string.button_dialog_download) { _, _ ->
                     when (tabIndex) {
@@ -80,7 +80,7 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
                         (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE)
                     positiveButton.isEnabled = false
 
-                    layout.viewPager.apply {
+                    binding.viewPager.apply {
                         adapter = TabAdapter(this@ConfirmDownloadDialogFragment)
 
                         registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -100,7 +100,7 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
                             }
                         })
 
-                        TabLayoutMediator(layout.tabLayout, this) { tab, index ->
+                        TabLayoutMediator(binding.tabLayout, this) { tab, index ->
                             tab.setText(
                                 when (index) {
                                     0 -> R.string.dialog_tab_title_download_tree

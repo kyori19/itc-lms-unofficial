@@ -5,15 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-abstract class UpdatableAdapter<T, B : ViewBinding>(items: List<T>, val bindingClass: Class<B>) :
-    RecyclerView.Adapter<UpdatableAdapter<T, B>.ViewHolder<B>>() {
-
-    var items = items
-        set(value) {
-            field = value
-
-            notifyDataSetChanged()
-        }
+abstract class BaseAdapter<T, B : ViewBinding>(val items: List<T>, val bindingClass: Class<B>) :
+    RecyclerView.Adapter<BaseAdapter<T, B>.ViewHolder<B>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<B> {
         val binding = bindingClass

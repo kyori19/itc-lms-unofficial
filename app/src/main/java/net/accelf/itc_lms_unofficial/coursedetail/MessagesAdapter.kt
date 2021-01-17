@@ -1,31 +1,19 @@
 package net.accelf.itc_lms_unofficial.coursedetail
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_message.view.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.ItemMessageBinding
 import net.accelf.itc_lms_unofficial.models.Message
 import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
 import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 
 class MessagesAdapter(
     items: List<Message>,
-) : UpdatableAdapter<Message, MessagesAdapter.ViewHolder>(items) {
+) : UpdatableAdapter<Message, ItemMessageBinding>(items, ItemMessageBinding::class.java) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_message, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<ItemMessageBinding>, position: Int) {
         val item = items[position]
 
-        holder.apply {
+        holder.binding.apply {
             iconMessageStatus.apply {
                 setImageResource(
                     when (item.status) {
@@ -63,14 +51,5 @@ class MessagesAdapter(
                 }
             }
         }
-    }
-
-    override fun getItemCount(): Int = items.size
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val iconMessageStatus: ImageView = view.iconMessageStatus
-        val titleMessage: TextView = view.titleMessage
-        val textMessageDate: TextView = view.textMessageDate
-        val textLatestInfo: TextView = view.textLatestInfo
     }
 }

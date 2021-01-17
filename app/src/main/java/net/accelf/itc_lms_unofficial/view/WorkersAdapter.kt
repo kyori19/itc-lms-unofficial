@@ -1,31 +1,20 @@
 package net.accelf.itc_lms_unofficial.view
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
-import kotlinx.android.synthetic.main.item_worker.view.*
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.databinding.ItemWorkerBinding
 import net.accelf.itc_lms_unofficial.util.UpdatableAdapter
 import net.accelf.itc_lms_unofficial.util.getColorFromAttr
 
 class WorkersAdapter(items: List<WorkInfo>) :
-    UpdatableAdapter<WorkInfo, WorkersAdapter.ViewHolder>(items) {
+    UpdatableAdapter<WorkInfo, ItemWorkerBinding>(items, ItemWorkerBinding::class.java) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_worker, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<ItemWorkerBinding>, position: Int) {
         val item = items[position]
 
-        holder.apply {
+        holder.binding.apply {
             textWorkerState.apply {
                 text = item.state.toString()
 
@@ -60,15 +49,7 @@ class WorkersAdapter(items: List<WorkInfo>) :
         }
     }
 
-    override fun getItemCount(): Int = items.size
-
     companion object {
         const val DATA_MESSAGE = "message"
-    }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textWorkerState: TextView = view.textWorkerState
-        val textWorkerId: TextView = view.textWorkerId
-        val textWorkerMessage: TextView = view.textWorkerMessage
     }
 }

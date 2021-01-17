@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -16,9 +15,10 @@ import com.google.gson.Gson
 import com.tingyik90.snackprogressbar.SnackProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_course_detail.*
+import net.accelf.itc_lms_unofficial.BaseFragment
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.coursedetail.SendAttendanceDialogFragment.Companion.BUNDLE_RESULT
+import net.accelf.itc_lms_unofficial.databinding.FragmentCourseDetailBinding
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.models.*
@@ -26,8 +26,9 @@ import net.accelf.itc_lms_unofficial.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyListener,
-    MaterialListener {
+class CourseDetailFragment :
+    BaseFragment<FragmentCourseDetailBinding>(FragmentCourseDetailBinding::class.java),
+    NotifyListener, MaterialListener {
 
     @Inject
     lateinit var gson: Gson
@@ -120,10 +121,10 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.courseDetail.onSuccess(viewLifecycleOwner) { courseDetail ->
-            textDepartment.text = courseDetail.department
-            textCourseName.text = courseDetail.name
-            textCourseCode.text = courseDetail.courseCode
-            textPeriod.text = StringBuilder(getString(
+            binding.textDepartment.text = courseDetail.department
+            binding.textCourseName.text = courseDetail.name
+            binding.textCourseCode.text = courseDetail.courseCode
+            binding.textPeriod.text = StringBuilder(getString(
                 R.string.text_period,
                 courseDetail.semester,
                 courseDetail.periods.first().first,
@@ -135,8 +136,9 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
                     }
             }
 
-            showViewsAndDoWhen(courseDetail.sendAttendanceId != null, buttonSendAttendance) {
-                buttonSendAttendance.setOnClickListener {
+            showViewsAndDoWhen(courseDetail.sendAttendanceId != null,
+                binding.buttonSendAttendance) {
+                binding.buttonSendAttendance.setOnClickListener {
                     if (!viewModel.prepareForSendingAttendance(courseDetail.sendAttendanceId!!)) {
                         Toast.makeText(requireContext(),
                             R.string.toast_already_fetching,
@@ -146,70 +148,70 @@ class CourseDetailFragment : Fragment(R.layout.fragment_course_detail), NotifyLi
                 }
             }
 
-            textTeachersName.text = courseDetail.teachers.joinToString(", ")
-            textCourseSummary.apply {
+            binding.textTeachersName.text = courseDetail.teachers.joinToString(", ")
+            binding.textCourseSummary.apply {
                 text = courseDetail.summary.fromHtml()
                 movementMethod = linkMovementMethod
             }
             showViewsAndDoWhen(courseDetail.onlineInfo != null,
-                titleOnlineInfo,
-                textOnlineInfo,
-                textOnlineInfoDate) {
-                textOnlineInfoDate.text =
+                binding.titleOnlineInfo,
+                binding.textOnlineInfo,
+                binding.textOnlineInfoDate) {
+                binding.textOnlineInfoDate.text =
                     courseDetail.onlineInfoUpdatedAt?.let { TIME_FORMAT.format(it) }
-                textOnlineInfo.apply {
+                binding.textOnlineInfo.apply {
                     text = courseDetail.onlineInfo!!.toSpanned()
                     movementMethod = linkMovementMethod
                 }
             }
 
-            listNotifies.setWithoutInitAdapter(
+            binding.listNotifies.setWithoutInitAdapter(
                 courseDetail.notifies,
-                headerNotifies
+                binding.headerNotifies
             ) {
                 NotifiesAdapter(courseDetail.notifies, this)
             }
 
             viewModel.focusCourseContentResourceId?.let {
-                expandableCourseContents.isExpanded = true
+                binding.expandableCourseContents.isExpanded = true
             }
-            listCourseContents.setWithoutInitAdapter(
+            binding.listCourseContents.setWithoutInitAdapter(
                 courseDetail.courseContents,
-                headerCourseContents
+                binding.headerCourseContents
             ) {
                 CourseContentsAdapter(courseDetail.courseContents, this, viewModel)
             }
 
-            listReports.setWithoutInitAdapter(
+            binding.listReports.setWithoutInitAdapter(
                 courseDetail.reports,
-                headerReports
+                binding.headerReports
             ) {
                 ReportsAdapter(courseDetail.id, courseDetail.reports)
             }
 
-            listMessages.set<Message, MessagesAdapter>(
+            binding.listMessages.set<Message, MessagesAdapter>(
                 courseDetail.messages,
-                headerMessages
+                binding.headerMessages
             )
 
-            listAttendances.set<Attendance, AttendancesAdapter>(
+            binding.listAttendances.set<Attendance, AttendancesAdapter>(
                 courseDetail.attendances,
-                headerAttendances
+                binding.headerAttendances
             )
 
-            listTests.set<Test, TestsAdapter>(
+            binding.listTests.set<Test, TestsAdapter>(
                 courseDetail.tests,
-                headerTests
+                binding.headerTests
             )
 
-            listForums.set<Forum, ForumsAdapter>(
+            binding.listForums.set<Forum, ForumsAdapter>(
                 courseDetail.forums,
-                headerForums
+                binding.headerForums
             )
 
-            listSurveys.set<Survey, SurveysAdapter>(
+            binding.listSurveys.set<Survey, SurveysAdapter>(
                 courseDetail.surveys,
-                headerSurveys
+                binding.headerSurveys
             )
         }
 
