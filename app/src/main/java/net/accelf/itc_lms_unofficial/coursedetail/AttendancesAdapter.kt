@@ -18,13 +18,17 @@ class AttendancesAdapter(
                 setImageResource(
                     when (item.status) {
                         Attendance.AttendanceStatus.PRESENT -> R.drawable.ic_check
-                        Attendance.AttendanceStatus.ABSENT -> R.drawable.ic_cancel
+                        Attendance.AttendanceStatus.LATE -> R.drawable.ic_time
+                        Attendance.AttendanceStatus.ABSENT -> R.drawable.ic_none
+                        else -> R.drawable.ic_cancel
                     }
                 )
                 contentDescription = context.getString(
                     when (item.status) {
                         Attendance.AttendanceStatus.PRESENT -> R.string.hint_icon_present
+                        Attendance.AttendanceStatus.LATE -> R.string.hint_icon_late
                         Attendance.AttendanceStatus.ABSENT -> R.string.hint_icon_absent
+                        else -> R.string.hint_icon_unknown
                     }
                 )
             }

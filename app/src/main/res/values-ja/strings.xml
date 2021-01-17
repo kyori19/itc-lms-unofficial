@@ -143,4 +143,5 @@
     <string name="dialog_title_send_attendance_success">送信完了</string>
     <string name="text_attendance_already_sent">この講義の出席は既に送信済みです。</string>
     <string name="text_attendance_error">エラーが発見されました。</string>
+    <string name="hint_icon_late">遅刻</string>
 </resources>

@@ -9,12 +9,15 @@ data class Attendance(
     val status: AttendanceStatus
 ) : Serializable {
     enum class AttendanceStatus(private val texts: Set<String>) {
+        UNKNOWN(setOf()),
         PRESENT(setOf("出席", "Present")),
-        ABSENT(setOf("欠席"));
+        LATE(setOf("遅刻", "Late")),
+        ABSENT(setOf("欠席", "Absent")),
+        ;
 
         companion object {
             fun String.toAttendanceStatus(): AttendanceStatus {
-                return values().first { this in it.texts }
+                return values().firstOrNull { this in it.texts } ?: UNKNOWN
             }
         }
     }

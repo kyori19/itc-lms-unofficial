@@ -72,6 +72,7 @@
     <string name="hint_icon_waiting_for_answer">Waiting for answer</string>
 
     <string name="hint_icon_absent">Absent</string>
+    <string name="hint_icon_late">Late</string>
     <string name="hint_icon_present">Present</string>
 
     <string name="hint_icon_not_taken">Not taken</string>
