@@ -99,7 +99,7 @@ class LoginActivity : BaseActivity(false) {
         replaceFragment(
             LoadingFragment.newInstance(
                 getString(R.string.loading_check_account),
-                true
+                ActionableFragment.ActionType.RETRY_LOGIN
             )
         )
         webView // Initialize lazy val

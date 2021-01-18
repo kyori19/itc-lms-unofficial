@@ -10,9 +10,15 @@ import kotlin.concurrent.thread
 
 open class ActionableFragment(
     @LayoutRes contentLayoutId: Int,
-    private val type: ActionType,
     private val delayMillis: Long = 0
 ) : Fragment(contentLayoutId) {
+
+    enum class ActionType {
+        BACK_TO_MAIN,
+        RETRY_LOGIN,
+    }
+
+    var actionType = ActionType.BACK_TO_MAIN
 
     private var snackbar: Snackbar? = null
 
@@ -39,7 +45,7 @@ open class ActionableFragment(
     }
 
     private fun showAction(view: View) {
-        when (type) {
+        when (actionType) {
             ActionType.BACK_TO_MAIN -> {
                 snackbar =
                     Snackbar.make(view, R.string.snackbar_hint_restart, Snackbar.LENGTH_INDEFINITE)
@@ -65,13 +71,6 @@ open class ActionableFragment(
                             show()
                         }
             }
-        }
-    }
-
-    companion object {
-        enum class ActionType {
-            BACK_TO_MAIN,
-            RETRY_LOGIN
         }
     }
 }

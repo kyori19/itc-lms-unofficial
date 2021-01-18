@@ -4,17 +4,7 @@ import android.os.Bundle
 import android.view.View
 import net.accelf.itc_lms_unofficial.databinding.FragmentLoadingBinding
 
-private const val ARG_LOADING_TEXT = "loading_text"
-
-class LoadingFragment(login: Boolean) : ActionableFragment(
-    R.layout.fragment_loading,
-    if (login) {
-        ActionableFragment.Companion.ActionType.RETRY_LOGIN
-    } else {
-        ActionableFragment.Companion.ActionType.BACK_TO_MAIN
-    },
-    5000L
-) {
+class LoadingFragment : ActionableFragment(R.layout.fragment_loading, 5000L) {
 
     private var _binding: FragmentLoadingBinding? = null
     private val binding get() = _binding!!
@@ -25,6 +15,7 @@ class LoadingFragment(login: Boolean) : ActionableFragment(
         super.onCreate(savedInstanceState)
         arguments?.let {
             loadingText = it.getString(ARG_LOADING_TEXT)
+            actionType = ActionType.valueOf(ARG_ACTION_TYPE)
         }
     }
 
@@ -41,14 +32,18 @@ class LoadingFragment(login: Boolean) : ActionableFragment(
     }
 
     companion object {
+        private const val ARG_LOADING_TEXT = "loading_text"
+        private const val ARG_ACTION_TYPE = "action_type"
+
         @JvmStatic
         fun newInstance(
             loadingText: String? = null,
-            login: Boolean = false,
+            actionType: ActionType = ActionType.BACK_TO_MAIN,
         ): LoadingFragment {
-            return LoadingFragment(login).apply {
+            return LoadingFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_LOADING_TEXT, loadingText)
+                    putString(ARG_ACTION_TYPE, actionType.name)
                 }
             }
         }

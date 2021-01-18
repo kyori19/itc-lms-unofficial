@@ -6,10 +6,7 @@ import net.accelf.itc_lms_unofficial.databinding.FragmentErrorBinding
 
 private const val ARG_ERR = "arg_err"
 
-class ErrorFragment : ActionableFragment(
-    R.layout.fragment_error,
-    ActionableFragment.Companion.ActionType.BACK_TO_MAIN
-) {
+class ErrorFragment : ActionableFragment(R.layout.fragment_error) {
 
     private var _binding: FragmentErrorBinding? = null
     private val binding get() = _binding!!
