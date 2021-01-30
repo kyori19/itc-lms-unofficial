@@ -3,6 +3,7 @@ package net.accelf.itc_lms_unofficial
 import android.os.Bundle
 import android.view.View
 import net.accelf.itc_lms_unofficial.databinding.FragmentLoadingBinding
+import net.accelf.itc_lms_unofficial.util.valueOf
 
 class LoadingFragment : ActionableFragment(R.layout.fragment_loading, 5000L) {
 
@@ -15,7 +16,7 @@ class LoadingFragment : ActionableFragment(R.layout.fragment_loading, 5000L) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             loadingText = it.getString(ARG_LOADING_TEXT)
-            actionType = ActionType.valueOf(ARG_ACTION_TYPE)
+            actionType = valueOf(it.getString(ARG_ACTION_TYPE)) ?: ActionType.BACK_TO_MAIN
         }
     }
 
