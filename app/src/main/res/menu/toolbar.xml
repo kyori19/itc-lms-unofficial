@@ -15,6 +15,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/actionLmsInformation"
+        android:icon="@drawable/ic_info"
+        android:title="@string/title_information"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/actionOpenInBrowser"
         android:icon="@drawable/ic_open_in_browser"
         android:title="@string/menu_open_in_browser"

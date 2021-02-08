@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.aboutlibraries.LibsBuilder
 import net.accelf.itc_lms_unofficial.databinding.ActivityBaseBinding
+import net.accelf.itc_lms_unofficial.information.InformationActivity
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
@@ -108,6 +109,10 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() 
             }
             R.id.actionOpenTaskManager -> {
                 startActivity<TaskManagerActivity>()
+                true
+            }
+            R.id.actionLmsInformation -> {
+                startActivity<InformationActivity>()
                 true
             }
             R.id.actionOpenInBrowser -> {

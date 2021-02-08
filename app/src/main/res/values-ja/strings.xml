@@ -144,4 +144,6 @@
     <string name="text_attendance_already_sent">この講義の出席は既に送信済みです。</string>
     <string name="text_attendance_error">エラーが発見されました。</string>
     <string name="hint_icon_late">遅刻</string>
+    <string name="title_information">ITC-LMSからのお知らせ</string>
+    <string name="loading_information">お知らせを読込中…</string>
 </resources>

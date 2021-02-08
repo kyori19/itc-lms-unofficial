@@ -21,6 +21,7 @@ class DocumentConverterFactory(private val gson: Gson) : Converter.Factory() {
         return when (type) {
             AttendanceSend::class.java -> AttendanceSend.Converter(baseUri)
             CourseDetail::class.java -> CourseDetail.Converter(baseUri, gson)
+            Information::class.java -> Information.Converter(baseUri)
             NotifyDetail::class.java -> NotifyDetail.Converter(baseUri)
             ReportDetail::class.java -> ReportDetail.Converter(baseUri)
             Settings::class.java -> Settings.Converter(baseUri)

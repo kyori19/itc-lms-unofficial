@@ -6,6 +6,7 @@
 
     <string name="loading_default">Loading…</string>
     <string name="loading_check_account">Checking login state…</string>
+    <string name="loading_information">Loading information…</string>
     <string name="loading_time_table">Loading timetable…</string>
     <string name="loading_course_detail">Loading course details…</string>
     <string name="loading_report_detail">Loading report details…</string>
@@ -133,6 +134,7 @@
     <string name="title_course_details">Course details</string>
     <string name="title_course_summary">Course summary</string>
     <string name="title_forums">Forums</string>
+    <string name="title_information">Information from ITC-LMS</string>
     <string name="title_materials">Materials</string>
     <string name="title_messages">Messages</string>
     <string name="title_notifies">Notifies</string>

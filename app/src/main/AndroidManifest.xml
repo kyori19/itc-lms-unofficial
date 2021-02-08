@@ -37,6 +37,9 @@
         <activity
             android:name=".settings.PreferenceActivity"
             android:label="@string/title_settings" />
+        <activity
+            android:name=".information.InformationActivity"
+            android:label="@string/title_information" />
 
         <service android:name=".services.NotificationService" />
 

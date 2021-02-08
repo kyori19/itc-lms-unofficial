@@ -36,6 +36,9 @@ class SavedCookieJar @Inject constructor(@ApplicationContext private val context
     }
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
+        if (url.encodedPath == "/login") {
+            return listOf()
+        }
         return cookies
     }
 
