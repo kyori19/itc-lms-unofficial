@@ -43,7 +43,7 @@ data class CourseDetail(
 
     class Converter(baseUrl: String, private val gson: Gson) :
         DocumentConverterFactory.DocumentConverter<CourseDetail>(baseUrl) {
-        override fun convert(value: ResponseBody): CourseDetail? {
+        override fun convert(value: ResponseBody): CourseDetail {
             document(value).let { document ->
                 var (department, courseCode, name) = Triple("", "", "")
                 COURSE_NAME_REGEX.matchEntire(
