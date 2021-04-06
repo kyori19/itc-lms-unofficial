@@ -36,10 +36,7 @@ class MessagesAdapter(
 
             textLatestInfo.apply {
                 text = when (item.status) {
-                    Message.MessageStatus.WAITING_FOR_ANSWER -> context.getString(
-                        R.string.text_message_sent_at,
-                        TIME_FORMAT.format(item.actedAt!!)
-                    )
+                    Message.MessageStatus.WAITING_FOR_ANSWER -> context.getString(R.string.text_message_sent)
                     Message.MessageStatus.HAS_ANSWER -> context.getString(
                         R.string.text_message_got_answer_at,
                         TIME_FORMAT.format(item.actedAt!!)

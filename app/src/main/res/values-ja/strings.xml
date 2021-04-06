@@ -60,7 +60,7 @@
     <string name="menu_share_url">このページのURLを共有</string>
     <string name="text_message_completed_by">%sによって解決済み</string>
     <string name="text_message_got_answer_at">%sに回答を受信</string>
-    <string name="text_message_sent_at">%sに問い合わせを送信済み</string>
+    <string name="text_message_sent">問い合わせを送信済み</string>
     <string name="title_about">このアプリについて</string>
     <string name="title_attendances">出席</string>
     <string name="title_course_contents">講義資料</string>

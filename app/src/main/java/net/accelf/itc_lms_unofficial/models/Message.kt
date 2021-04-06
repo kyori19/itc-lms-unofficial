@@ -25,7 +25,7 @@ data class Message(
     }
 
     companion object {
-        val MESSAGE_STATUS_REGEX = Regex("""(.+)\((.+)\)""")
+        val MESSAGE_STATUS_REGEX = Regex("""(.+)(?:\((.+)\))?""")
 
         fun String.getMessageId(): String {
             return lmsHostUrl.newBuilder(this)!!

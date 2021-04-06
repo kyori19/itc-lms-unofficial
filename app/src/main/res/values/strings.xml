@@ -125,7 +125,7 @@
 
     <string name="text_message_completed_by">Marked as completed by %s</string>
     <string name="text_message_got_answer_at">Received an answer at %s</string>
-    <string name="text_message_sent_at">Sent a message at %s</string>
+    <string name="text_message_sent">Sent a message</string>
     <string name="text_report_submitted_at">Submitted at %s</string>
 
     <string name="title_about">About this app</string>
