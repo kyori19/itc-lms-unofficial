@@ -7,8 +7,8 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import net.accelf.itc_lms_unofficial.BuildConfig
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
 import net.accelf.itc_lms_unofficial.network.EmptyResponseInterceptor
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class ApplicationModule {
 
     @Provides

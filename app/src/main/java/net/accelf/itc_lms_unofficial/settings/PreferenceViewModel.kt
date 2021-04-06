@@ -1,7 +1,7 @@
 package net.accelf.itc_lms_unofficial.settings
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.selectedValue
 import net.accelf.itc_lms_unofficial.models.Settings
 import net.accelf.itc_lms_unofficial.network.LMS
@@ -9,8 +9,10 @@ import net.accelf.itc_lms_unofficial.util.Request
 import net.accelf.itc_lms_unofficial.util.RxAwareViewModel
 import net.accelf.itc_lms_unofficial.util.Success
 import net.accelf.itc_lms_unofficial.util.mutableRequestOf
+import javax.inject.Inject
 
-class PreferenceViewModel @ViewModelInject constructor(
+@HiltViewModel
+class PreferenceViewModel @Inject constructor(
     private val lms: LMS,
 ) : RxAwareViewModel() {
 

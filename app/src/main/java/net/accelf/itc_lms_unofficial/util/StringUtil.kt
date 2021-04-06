@@ -17,7 +17,7 @@ val EN_DATE_FORMAT = SimpleDateFormat("MMM. dd, yyyy", Locale.US)
 
 fun String.toTimeSpan(): List<Date> {
     return TIME_SPAN_REGEX.findAll(this).map {
-        TIME_FORMAT.parse(it.value)
+        TIME_FORMAT.parse(it.value)!!
     }.toList()
 }
 

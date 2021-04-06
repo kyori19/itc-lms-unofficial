@@ -14,9 +14,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import androidx.core.app.TaskStackBuilder
-import androidx.hilt.Assisted
-import androidx.hilt.work.WorkerInject
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.LoginActivity
 import net.accelf.itc_lms_unofficial.Notifications
@@ -37,7 +38,8 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.HttpException
 import java.util.concurrent.TimeUnit
 
-class PullUpdatesWorker @WorkerInject constructor(
+@HiltWorker
+class PullUpdatesWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted workerParams: WorkerParameters,
     private val lms: LMS,

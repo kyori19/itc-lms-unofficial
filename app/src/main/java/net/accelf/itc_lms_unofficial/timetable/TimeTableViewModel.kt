@@ -1,14 +1,16 @@
 package net.accelf.itc_lms_unofficial.timetable
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import net.accelf.itc_lms_unofficial.models.TimeTable
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.Request
 import net.accelf.itc_lms_unofficial.util.RxAwareViewModel
 import net.accelf.itc_lms_unofficial.util.mutableRequestOf
+import javax.inject.Inject
 
-class TimeTableViewModel @ViewModelInject constructor(
+@HiltViewModel
+class TimeTableViewModel @Inject constructor(
     private val lms: LMS,
 ) : RxAwareViewModel() {
 

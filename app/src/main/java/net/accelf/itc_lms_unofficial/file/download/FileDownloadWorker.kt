@@ -5,10 +5,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat.*
 import androidx.core.app.NotificationManagerCompat
-import androidx.hilt.Assisted
-import androidx.hilt.work.WorkerInject
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.google.gson.Gson
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import io.reactivex.Single
 import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.R
@@ -22,7 +23,8 @@ import net.accelf.itc_lms_unofficial.util.readWithProgress
 import net.accelf.itc_lms_unofficial.view.WorkersAdapter.Companion.DATA_MESSAGE
 import java.util.concurrent.atomic.AtomicInteger
 
-class FileDownloadWorker @WorkerInject constructor(
+@HiltWorker
+class FileDownloadWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted workerParams: WorkerParameters,
     private val lms: LMS,

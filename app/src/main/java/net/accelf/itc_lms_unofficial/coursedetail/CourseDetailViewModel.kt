@@ -1,9 +1,8 @@
 package net.accelf.itc_lms_unofficial.coursedetail
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_CONTENT_MATERIAL_ID
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_ID
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_NOTIFY_ID
@@ -12,10 +11,12 @@ import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.NotifyDetail
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.util.*
+import javax.inject.Inject
 
-class CourseDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CourseDetailViewModel @Inject constructor(
     private val lms: LMS,
-    @Assisted private val savedState: SavedStateHandle,
+    private val savedState: SavedStateHandle,
 ) : RxAwareViewModel() {
 
     val courseId = savedState.get<String>(EXTRA_COURSE_ID)!!
