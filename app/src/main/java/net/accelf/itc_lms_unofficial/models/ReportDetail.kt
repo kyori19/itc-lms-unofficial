@@ -1,10 +1,7 @@
 package net.accelf.itc_lms_unofficial.models
 
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
-import net.accelf.itc_lms_unofficial.util.second
-import net.accelf.itc_lms_unofficial.util.secondOrNull
-import net.accelf.itc_lms_unofficial.util.thirdOrNull
-import net.accelf.itc_lms_unofficial.util.toDateTime
+import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.ResponseBody
 import java.io.Serializable
 import java.util.*
@@ -39,10 +36,11 @@ data class ReportDetail(
     class Converter(baseUri: String) :
         DocumentConverterFactory.DocumentConverter<ReportDetail>(baseUri) {
 
-        override fun convert(value: ResponseBody): ReportDetail? {
+        override fun convert(value: ResponseBody): ReportDetail {
             document(value).let { document ->
                 val details = document.select("#report_view .textareaContents")
                 val times = document.select(".page_supple .label span")
+                    .filter { TIME_SPAN_REGEX.matches(it.text()) }
                 val feedback = document.select("#report_statu .subblock_form.break div")
 
                 return ReportDetail(
