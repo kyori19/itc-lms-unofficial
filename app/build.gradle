@@ -42,6 +42,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    // https://youtrack.jetbrains.com/issue/KT-33248
+    // noinspection DifferentStdlibGradleVersion
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.activity:activity-ktx:1.2.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
