@@ -36,7 +36,7 @@ class LoadingFragment : ActionableFragment(5000L) {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                LoadingFragmentContent()
+                LoadingFragmentContent(loadingText)
             }
         }
     }
