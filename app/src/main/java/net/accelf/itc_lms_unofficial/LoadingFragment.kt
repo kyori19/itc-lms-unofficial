@@ -1,14 +1,23 @@
 package net.accelf.itc_lms_unofficial
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import net.accelf.itc_lms_unofficial.databinding.FragmentLoadingBinding
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import net.accelf.itc_lms_unofficial.ui.Text
+import net.accelf.itc_lms_unofficial.ui.Values
 import net.accelf.itc_lms_unofficial.util.valueOf
 
-class LoadingFragment : ActionableFragment(R.layout.fragment_loading, 5000L) {
-
-    private var _binding: FragmentLoadingBinding? = null
-    private val binding get() = _binding!!
+class LoadingFragment : ActionableFragment(5000L) {
 
     private var loadingText: String? = null
 
@@ -20,16 +29,35 @@ class LoadingFragment : ActionableFragment(R.layout.fragment_loading, 5000L) {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentLoadingBinding.bind(view)
-
-        binding.textLoading.text = loadingText ?: getString(R.string.loading_default)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                LoadingFragmentContent()
+            }
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    @Composable
+    @Preview
+    private fun PreviewLoadingFragmentContent() {
+        LoadingFragmentContent()
+    }
+
+    @Composable
+    private fun LoadingFragmentContent(loadingText: String? = null) {
+        MaterialTheme(colors = Values.Colors.theme) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                CircularProgressIndicator(color = MaterialTheme.colors.secondary)
+                Text(text = loadingText ?: stringResource(id = R.string.loading_default))
+            }
+        }
     }
 
     companion object {

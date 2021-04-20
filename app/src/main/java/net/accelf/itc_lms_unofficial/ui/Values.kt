@@ -7,9 +7,9 @@ object Values {
 
     object Colors {
         val theme = darkColors(
-            primary = Color(0xf6754),
-            primaryVariant = Color(0xc45d03),
-            secondary = Color(0xdaf420),
+            primary = Color(0xfff67504),
+            primaryVariant = Color(0xffc45d03),
+            secondary = Color(0xffdaf420),
         )
     }
 }

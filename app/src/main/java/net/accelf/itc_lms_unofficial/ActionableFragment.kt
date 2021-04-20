@@ -2,16 +2,14 @@ package net.accelf.itc_lms_unofficial
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import net.accelf.itc_lms_unofficial.util.startActivity
 import kotlin.concurrent.thread
 
 open class ActionableFragment(
-    @LayoutRes contentLayoutId: Int,
-    private val delayMillis: Long = 0
-) : Fragment(contentLayoutId) {
+    private val delayMillis: Long = 0,
+) : Fragment() {
 
     enum class ActionType {
         BACK_TO_MAIN,
