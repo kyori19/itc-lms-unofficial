@@ -20,6 +20,7 @@ android {
     }
 
     buildFeatures {
+        compose true
         viewBinding true
     }
 
@@ -37,6 +38,10 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion "$compose_version"
     }
 }
 
@@ -60,6 +65,11 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.security:security-crypto:1.1.0-alpha03'
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-core:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation 'androidx.work:work-runtime-ktx:2.5.0'
     implementation 'androidx.work:work-rxjava2:2.5.0'
     implementation 'com.github.polesapart:AndroidPdfViewer:3.2.2'
