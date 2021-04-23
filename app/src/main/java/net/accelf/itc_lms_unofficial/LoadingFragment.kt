@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import net.accelf.itc_lms_unofficial.ui.Text
+import net.accelf.itc_lms_unofficial.ui.NormalText
 import net.accelf.itc_lms_unofficial.ui.Values
 import net.accelf.itc_lms_unofficial.util.valueOf
 
@@ -55,7 +55,7 @@ class LoadingFragment : ActionableFragment(5000L) {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 CircularProgressIndicator(color = MaterialTheme.colors.secondary)
-                Text(text = loadingText ?: stringResource(id = R.string.loading_default))
+                NormalText(text = loadingText ?: stringResource(id = R.string.loading_default))
             }
         }
     }

@@ -72,7 +72,7 @@ fun Icon(
  *
  * Additionally, for [color], if [color] is not set, and [style] does not have a color, then
  * [LocalContentColor] will be used with an alpha of [LocalContentAlpha]- this allows this
- * [Text] or element containing this [Text] to adapt to different background colors and still
+ * [NormalText] or element containing this [NormalText] to adapt to different background colors and still
  * maintain contrast and accessibility.
  *
  * @param text The text to be displayed.
@@ -103,7 +103,7 @@ fun Icon(
  * @param style Style configuration for the text such as color, font, line height etc.
  */
 @Composable
-fun Text(
+fun NormalText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colors.onSurface,
@@ -121,7 +121,7 @@ fun Text(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
 ) {
-    androidx.compose.material.Text(
+    Text(
         text,
         modifier,
         color,

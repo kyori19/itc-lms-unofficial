@@ -1,62 +1,94 @@
 package net.accelf.itc_lms_unofficial
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
-import net.accelf.itc_lms_unofficial.databinding.FragmentLoginRequestBinding
-import net.accelf.itc_lms_unofficial.util.isNotNullOrEmpty
+import net.accelf.itc_lms_unofficial.ui.NormalText
+import net.accelf.itc_lms_unofficial.ui.Values
 
-class LoginRequestFragment : Fragment(R.layout.fragment_login_request) {
+class LoginRequestFragment : Fragment() {
 
-    private var _binding: FragmentLoginRequestBinding? = null
-    private val binding get() = _binding!!
+    private val mutableUserName = mutableStateOf("")
+    private val mutablePassword = mutableStateOf("")
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentLoginRequestBinding.bind(view)
-
-        binding.textLoginInstruction.text = getString(R.string.login_instruction)
-
-        val textWatcher = object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.buttonLogin.isEnabled = editTextContents().first
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                LoginRequestFragmentContent()
             }
         }
-        listOf(binding.editTextUserName, binding.editTextPassword).forEach {
-            it.addTextChangedListener(textWatcher)
-        }
+    }
 
-        binding.buttonLogin.apply {
-            isEnabled = false
+    @Composable
+    @Preview
+    private fun LoginRequestFragmentContent() {
+        val userName by remember { mutableUserName }
+        val password by remember { mutablePassword }
 
-            setOnClickListener {
-                val (areNullOrEmpty, userName, password) = editTextContents()
-                if (areNullOrEmpty && activity is LoginActivity) {
-                    (activity as LoginActivity).onLoginClick(userName, password)
+        MaterialTheme(colors = Values.Colors.theme) {
+            Column {
+                NormalText(
+                    modifier = Modifier.padding(Values.Spacing.around),
+                    text = stringResource(id = R.string.login_instruction),
+                    fontSize = Values.Text.large,
+                )
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(Values.Spacing.around),
+                    label = { Text(text = stringResource(id = R.string.login_hint_user_name)) },
+                    value = userName,
+                    onValueChange = { mutableUserName.value = it },
+                    textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                )
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(Values.Spacing.around),
+                    label = { Text(text = stringResource(id = R.string.input_hint_password)) },
+                    value = password,
+                    onValueChange = { mutablePassword.value = it },
+                    textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                )
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(Values.Spacing.around),
+                    onClick = { (activity as LoginActivity).onLoginClick(userName, password) },
+                    enabled = userName.isNotBlank() && password.isNotBlank(),
+                ) {
+                    Text(text = stringResource(id = R.string.button_login))
                 }
             }
         }
-    }
-
-    private fun editTextContents(): Triple<Boolean, String, String> {
-        val userName = binding.editTextUserName.text?.trim()
-        val password = binding.editTextPassword.text?.trim()
-        return Triple(
-            userName.isNotNullOrEmpty() && password.isNotNullOrEmpty(),
-            userName.toString(),
-            password.toString()
-        )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {
