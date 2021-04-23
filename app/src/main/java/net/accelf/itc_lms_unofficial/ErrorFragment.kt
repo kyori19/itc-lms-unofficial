@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,8 +58,14 @@ class ErrorFragment : ActionableFragment() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Icon(imageVector = Icons.Default.Warning)
-                NormalText(text = errText ?: stringResource(id = R.string.err_default))
+                Icon(
+                    modifier = Modifier.padding(Values.Spacing.around),
+                    imageVector = Icons.Default.Warning,
+                )
+                NormalText(
+                    modifier = Modifier.padding(Values.Spacing.around),
+                    text = errText ?: stringResource(id = R.string.err_default),
+                )
             }
         }
     }

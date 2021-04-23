@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,8 +56,14 @@ class LoadingFragment : ActionableFragment(5000L) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                CircularProgressIndicator(color = MaterialTheme.colors.secondary)
-                NormalText(text = loadingText ?: stringResource(id = R.string.loading_default))
+                CircularProgressIndicator(
+                    modifier = Modifier.padding(Values.Spacing.around),
+                    color = MaterialTheme.colors.secondary,
+                )
+                NormalText(
+                    modifier = Modifier.padding(Values.Spacing.around),
+                    text = loadingText ?: stringResource(id = R.string.loading_default),
+                )
             }
         }
     }
