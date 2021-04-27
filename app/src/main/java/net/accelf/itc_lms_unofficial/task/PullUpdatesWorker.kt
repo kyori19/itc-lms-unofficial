@@ -124,7 +124,7 @@ class PullUpdatesWorker @AssistedInject constructor(
                 val updateIds = it.updates.map { update -> update.id.toInt() }
                 context.getNotifications()
                     .forEach { sbn ->
-                        if (sbn.id < 1000000 && sbn.id !in updateIds) {
+                        if (sbn.id < Notifications.Ids.SESSION_EXPIRED && sbn.id !in updateIds) {
                             context.cancelNotification(sbn.id)
                         }
                     }
