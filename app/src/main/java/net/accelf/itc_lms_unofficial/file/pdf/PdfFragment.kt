@@ -3,30 +3,32 @@ package net.accelf.itc_lms_unofficial.file.pdf
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.github.polesapart.pdfviewer.PDFView
 import com.shockwave.pdfium.PdfPasswordException
 import dagger.hilt.android.AndroidEntryPoint
-import net.accelf.itc_lms_unofficial.BaseFragment
 import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.databinding.FragmentPdfBinding
 import net.accelf.itc_lms_unofficial.file.download.ConfirmDownloadDialogFragment
 import net.accelf.itc_lms_unofficial.file.download.DownloadDialogResult
 import net.accelf.itc_lms_unofficial.file.pdf.PasswordDialogFragment.Companion.BUNDLE_PASSWORD
-import net.accelf.itc_lms_unofficial.util.Success
-import net.accelf.itc_lms_unofficial.util.notify
+import net.accelf.itc_lms_unofficial.ui.Values
+import net.accelf.itc_lms_unofficial.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PdfFragment : BaseFragment<FragmentPdfBinding>(FragmentPdfBinding::class.java) {
+class PdfFragment : Fragment() {
 
     private val passwordDialog by lazy {
         PasswordDialogFragment.newInstance()
@@ -36,10 +38,70 @@ class PdfFragment : BaseFragment<FragmentPdfBinding>(FragmentPdfBinding::class.j
     lateinit var notificationId: AtomicInteger
 
     private val viewModel by activityViewModels<PdfViewModel>()
+    private val mutablePassword = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    @ExperimentalUnsignedTypes
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                PdfFragmentContent()
+            }
+        }
+    }
+
+    @ExperimentalUnsignedTypes
+    @Composable
+    @Preview
+    private fun PdfFragmentContent() {
+        val pdfFile by viewModel.pdfFile.observeAsState()
+        val password by remember { mutablePassword }
+
+        MaterialTheme(colors = Values.Colors.theme) {
+            val background = MaterialTheme.colors.background.value.toInt()
+
+            AndroidView(
+                { PDFView(it, null) },
+            ) {
+                if (pdfFile is Success) {
+                    it.setBackgroundColor(background)
+                    it.fromBytes((pdfFile as Success).data)
+                        .spacing(1)
+                        .enableAnnotationRendering(true)
+                        .defaultPage(viewModel.openingPage)
+                        .onLoad { _, _, _ ->
+                            viewModel.pdfTitle.postValue(it.documentMeta.title)
+                        }
+                        .onPageChange { page, _ ->
+                            viewModel.openingPage = page
+                        }
+                        .onError { e ->
+                            if (e is PdfPasswordException) {
+                                passwordDialog.display(parentFragmentManager)
+                            }
+                        }
+                        .let { config ->
+                            if (password.isEmpty()) {
+                                return@let config
+                            }
+
+                            return@let config.password(password)
+                                .onLoad { _, _, _ ->
+                                    passwordDialog.dismissDialog()
+                                }
+                        }
+                        .load()
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,48 +110,13 @@ class PdfFragment : BaseFragment<FragmentPdfBinding>(FragmentPdfBinding::class.j
                 PasswordDialogFragment.RESULT_SUCCESS -> {
                     passwordDialog.hide(parentFragmentManager)
 
-                    binding.pdfView.fromBytes((viewModel.pdfFile.value as Success<ByteArray>).data)
-                        .setDefaults()
-                        .password(bundle.getString(BUNDLE_PASSWORD))
-                        .onLoad { _, _, _ ->
-                            passwordDialog.dismissDialog()
-                        }
-                        .load()
+                    mutablePassword.value = bundle.getString(BUNDLE_PASSWORD) ?: ""
                 }
                 PasswordDialogFragment.RESULT_CANCEL -> {
                     activity?.finish()
                 }
             }
         }
-
-        viewModel.pdfFile.observe(viewLifecycleOwner) {
-            when (it) {
-                is Success -> {
-                    binding.pdfView.apply {
-                        fromBytes(it.data)
-                            .setDefaults()
-                            .load()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun PDFView.Configurator.setDefaults(): PDFView.Configurator {
-        return spacing(1)
-            .enableAnnotationRendering(true)
-            .defaultPage(viewModel.openingPage)
-            .onLoad { _, _, _ ->
-                viewModel.pdfTitle.postValue(binding.pdfView.documentMeta.title)
-            }
-            .onPageChange { page, _ ->
-                viewModel.openingPage = page
-            }
-            .onError {
-                if (it is PdfPasswordException) {
-                    passwordDialog.display(parentFragmentManager)
-                }
-            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -131,7 +158,10 @@ class PdfFragment : BaseFragment<FragmentPdfBinding>(FragmentPdfBinding::class.j
                                     }
                                     val chooser = Intent.createChooser(intent, file.name)
                                     val pendingIntent =
-                                        PendingIntent.getActivity(context, id, chooser, 0)
+                                        PendingIntent.getActivity(context,
+                                            id,
+                                            chooser,
+                                            PendingIntent.FLAG_IMMUTABLE)
                                     setContentIntent(pendingIntent)
                                 }.build()
                         requireContext().notify(id, notification)
