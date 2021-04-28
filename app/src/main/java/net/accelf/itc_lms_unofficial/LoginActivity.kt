@@ -142,8 +142,7 @@ class LoginActivity : BaseActivity(false) {
             .withResponse(this) {
                 cancelNotificationsWhichShouldBeCanceledAfterLogin()
 
-                startActivity<MainActivity>()
-                finish()
+                restartApp()
             }
     }
 

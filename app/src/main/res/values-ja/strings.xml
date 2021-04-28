@@ -146,4 +146,6 @@
     <string name="hint_icon_late">遅刻</string>
     <string name="title_information">ITC-LMSからのお知らせ</string>
     <string name="loading_information">お知らせを読込中…</string>
+    <string name="pref_title_logout">ログアウト</string>
+    <string name="pref_text_logout">アプリケーションに保存されているクッキーを削除します。</string>
 </resources>

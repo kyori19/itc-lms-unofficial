@@ -116,6 +116,8 @@
     <string name="pref_title_lms_language">ITC-LMS language</string>
     <string name="pref_text_lms_language">Language in ITC-LMS.\nThis settings could affect on/be affected by another browsers.</string>
     <string name="pref_category_login">Login</string>
+    <string name="pref_title_logout">Logout</string>
+    <string name="pref_text_logout">This removes cookies from application.</string>
     <string name="pref_title_automate_login">Automate login</string>
     <string name="pref_text_automate_login">This feature is NOT REQUIRED to use this application.\nWith this option enabled, this app will try to login using username/password when it loses the access to the server.\nYou should aware that there\'s a risk of your username/password stolen by malicious person, especially on rooted devices.\nUsername/password will be removed when this option is disabled.</string>
 

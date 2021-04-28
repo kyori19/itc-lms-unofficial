@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import net.accelf.itc_lms_unofficial.util.startActivity
+import net.accelf.itc_lms_unofficial.util.restartApp
 import kotlin.concurrent.thread
 
 open class ActionableFragment(
@@ -49,8 +49,7 @@ open class ActionableFragment(
                     Snackbar.make(view, R.string.snackbar_hint_restart, Snackbar.LENGTH_INDEFINITE)
                         .apply {
                             setAction(R.string.snackbar_button_restart) {
-                                startActivity<MainActivity>()
-                                activity?.finish()
+                                restartApp()
                             }
 
                             show()

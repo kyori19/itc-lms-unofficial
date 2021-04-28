@@ -9,10 +9,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.di.EncryptedDataStore
+import net.accelf.itc_lms_unofficial.di.SavedCookieJar
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.selectedValue
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toTextStrings
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toValueStrings
 import net.accelf.itc_lms_unofficial.util.onSuccess
+import net.accelf.itc_lms_unofficial.util.restartApp
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,6 +22,9 @@ class PreferenceFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var encryptedDataStore: EncryptedDataStore
+
+    @Inject
+    lateinit var cookieJar: SavedCookieJar
 
     private val viewModel by activityViewModels<PreferenceViewModel>()
 
@@ -50,6 +55,19 @@ class PreferenceFragment : PreferenceFragmentCompat() {
 
             val automateLoginDependents = mutableListOf<EditTextPreference>()
             preferenceCategory(R.string.pref_category_login) {
+                preference {
+                    key = Prefs.Keys.LOGOUT
+                    setTitle(R.string.pref_title_logout)
+                    setSummary(R.string.pref_text_logout)
+                    setOnPreferenceClickListener {
+                        sharedPreferences.edit()
+                            .putStringSet(Prefs.Keys.COOKIE, emptySet())
+                            .apply()
+                        cookieJar.loadCookies()
+                        restartApp()
+                        true
+                    }
+                }
                 switchPreference {
                     key = Prefs.Keys.AUTOMATE_LOGIN
                     setTitle(R.string.pref_title_automate_login)

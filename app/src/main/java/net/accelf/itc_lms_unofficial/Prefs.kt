@@ -5,6 +5,7 @@ class Prefs {
     class Keys {
 
         companion object {
+            const val LOGOUT = "logout"
             const val AUTOMATE_LOGIN = "automate_login"
             const val COOKIE = "cookie"
             const val LAST_DOWNLOADED_URI = "last_downloaded_uri"
