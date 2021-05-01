@@ -22,5 +22,6 @@ object Values {
 
     object Text {
         val large = 24.sp
+        val small = 12.sp
     }
 }
