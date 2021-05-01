@@ -66,6 +66,7 @@ class LoginRequestFragment : Fragment() {
                     onValueChange = { mutableUserName.value = it },
                     textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    singleLine = true,
                 )
                 PasswordField(
                     modifier = Modifier

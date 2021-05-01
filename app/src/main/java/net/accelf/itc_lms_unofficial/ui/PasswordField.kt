@@ -29,7 +29,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -71,13 +70,6 @@ fun PreviewPasswordField() {
  * @param keyboardActions when the input service emits an IME action, the corresponding callback
  * is called. Note that this IME action may be different from what you specified in
  * [KeyboardOptions.imeAction].
- * @param singleLine when set to true, this text field becomes a single horizontally scrolling
- * text field instead of wrapping onto multiple lines. The keyboard will be informed to not show
- * the return key as the [ImeAction]. Note that [maxLines] parameter will be ignored as the
- * maxLines attribute will be automatically set to 1.
- * @param maxLines the maximum height in terms of maximum number of visible lines. Should be
- * equal or greater than 1. Note that this parameter will be ignored and instead maxLines will be
- * set to 1 if [singleLine] is set to true.
  * @param interactionSource the [MutableInteractionSource] representing the stream of
  * [Interaction]s for this TextField. You can create and pass in your own remembered
  * [MutableInteractionSource] if you want to observe [Interaction]s and customize the
@@ -99,7 +91,6 @@ fun PasswordField(
     leadingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
     keyboardActions: KeyboardActions = KeyboardActions(),
-    singleLine: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape =
@@ -132,7 +123,7 @@ fun PasswordField(
         visualTransformation = if (visible.value) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         keyboardActions,
-        singleLine,
+        true,
         maxLines,
         interactionSource,
         shape,
