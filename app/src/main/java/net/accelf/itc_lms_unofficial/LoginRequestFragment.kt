@@ -21,10 +21,10 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import net.accelf.itc_lms_unofficial.ui.NormalText
+import net.accelf.itc_lms_unofficial.ui.PasswordField
 import net.accelf.itc_lms_unofficial.ui.Values
 
 class LoginRequestFragment : Fragment() {
@@ -67,16 +67,13 @@ class LoginRequestFragment : Fragment() {
                     textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 )
-                TextField(
+                PasswordField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(Values.Spacing.around),
+                    mutableValue = mutablePassword,
                     label = { Text(text = stringResource(id = R.string.input_hint_password)) },
-                    value = password,
-                    onValueChange = { mutablePassword.value = it },
                     textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
                 Button(
                     modifier = Modifier
