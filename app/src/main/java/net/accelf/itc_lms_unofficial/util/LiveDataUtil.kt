@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import net.accelf.itc_lms_unofficial.BaseActivity
@@ -61,20 +60,6 @@ fun <T> LiveData<Request<T>>.onSuccess(owner: LifecycleOwner, onSuccess: (T) -> 
     observe(owner) {
         when (it) {
             is Success -> onSuccess(it.data)
-            else -> {
-            }
-        }
-    }
-}
-
-fun <T> LiveData<Request<T>>.setProgressBar(
-    owner: LifecycleOwner,
-    progressBar: CircularProgressBar,
-) {
-    observe(owner) {
-        when (it) {
-            is Loading -> progressBar.progressMax = 1f
-            is Progress -> progressBar.progress = it.progress
             else -> {
             }
         }

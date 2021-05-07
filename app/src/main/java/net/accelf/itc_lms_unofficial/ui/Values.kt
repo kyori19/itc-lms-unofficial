@@ -13,6 +13,10 @@ object Values {
             primaryVariant = Color(0xffc45d03),
             secondary = Color(0xffdaf420),
         )
+
+        object Gray {
+            val darken = Color(0xff616161)
+        }
     }
 
     object Spacing {
