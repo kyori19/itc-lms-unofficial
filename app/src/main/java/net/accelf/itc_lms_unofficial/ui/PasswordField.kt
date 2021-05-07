@@ -26,7 +26,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,6 +36,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 
+@ExperimentalComposeUiApi
 @Composable
 @Preview
 fun PreviewPasswordField() {
@@ -79,6 +82,7 @@ fun PreviewPasswordField() {
  * (including label, placeholder, leading and trailing icons, indicator line) and background for
  * this text field in different states. See [TextFieldDefaults.textFieldColors]
  */
+@ExperimentalComposeUiApi
 @Composable
 fun PasswordField(
     modifier: Modifier = Modifier,
@@ -103,7 +107,10 @@ fun PasswordField(
     TextField(
         value = password,
         onValueChange = { mutableValue.value = it },
-        modifier,
+        modifier.autofill(
+            autofillTypes = listOf(AutofillType.Password),
+            onFill = { mutableValue.value = it },
+        ),
         enabled,
         readOnly,
         textStyle,

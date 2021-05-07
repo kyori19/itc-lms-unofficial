@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
@@ -32,6 +33,7 @@ class PasswordDialogFragment : DialogFragment() {
     private val mutablePassword = mutableStateOf("")
     private val mutableIsWrong = mutableStateOf(false)
 
+    @ExperimentalComposeUiApi
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             AlertDialog.Builder(it).apply {
@@ -66,6 +68,7 @@ class PasswordDialogFragment : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
+    @ExperimentalComposeUiApi
     @Composable
     @Preview
     private fun PasswordDialogFragmentContent() {

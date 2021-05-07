@@ -16,7 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -26,12 +28,14 @@ import androidx.fragment.app.Fragment
 import net.accelf.itc_lms_unofficial.ui.NormalText
 import net.accelf.itc_lms_unofficial.ui.PasswordField
 import net.accelf.itc_lms_unofficial.ui.Values
+import net.accelf.itc_lms_unofficial.ui.autofill
 
 class LoginRequestFragment : Fragment() {
 
     private val mutableUserName = mutableStateOf("")
     private val mutablePassword = mutableStateOf("")
 
+    @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +48,7 @@ class LoginRequestFragment : Fragment() {
         }
     }
 
+    @ExperimentalComposeUiApi
     @Composable
     @Preview
     private fun LoginRequestFragmentContent() {
@@ -59,6 +64,10 @@ class LoginRequestFragment : Fragment() {
                 )
                 TextField(
                     modifier = Modifier
+                        .autofill(
+                            autofillTypes = listOf(AutofillType.EmailAddress),
+                            onFill = { mutableUserName.value = it },
+                        )
                         .fillMaxWidth()
                         .padding(Values.Spacing.around),
                     label = { Text(text = stringResource(id = R.string.login_hint_user_name)) },
