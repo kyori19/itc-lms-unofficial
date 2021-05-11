@@ -3,10 +3,7 @@ package net.accelf.itc_lms_unofficial.permission
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import net.accelf.itc_lms_unofficial.R
 
 enum class Permission(
@@ -25,11 +22,8 @@ enum class Permission(
         return context.checkSelfPermission(androidName) == PERMISSION_GRANTED
     }
 
-    fun request(activity: AppCompatActivity, onResult: ActivityResultCallback<Boolean>) {
-        val startForResult =
-            activity.registerForActivityResult(ActivityResultContracts.RequestPermission(),
-                onResult)
-        startForResult.launch(androidName)
+    fun request(requestable: PermissionRequestable) {
+        requestable.permissionRequestLauncher.launch(androidName)
     }
 
     companion object {

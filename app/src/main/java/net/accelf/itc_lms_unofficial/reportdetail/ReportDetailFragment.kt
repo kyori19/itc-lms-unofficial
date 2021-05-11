@@ -2,27 +2,38 @@ package net.accelf.itc_lms_unofficial.reportdetail
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.BaseFragment
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.databinding.FragmentReportDetailBinding
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
+import net.accelf.itc_lms_unofficial.file.download.Downloadable.Companion.preparePermissionRequestForDownloadable
 import net.accelf.itc_lms_unofficial.models.File
 import net.accelf.itc_lms_unofficial.models.Report
 import net.accelf.itc_lms_unofficial.models.ReportDetail
+import net.accelf.itc_lms_unofficial.permission.PermissionRequestable
 import net.accelf.itc_lms_unofficial.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ReportDetailFragment :
     BaseFragment<FragmentReportDetailBinding>(FragmentReportDetailBinding::class.java),
-    SubmittedFileListener {
+    SubmittedFileListener, PermissionRequestable, Downloadable.ProvidesGson {
 
     private lateinit var reportDetail: ReportDetail
 
     @Inject
-    lateinit var gson: Gson
+    override lateinit var gson: Gson
+
+    private var downloadable: Downloadable? = null
+    override var permissionRequestLauncher: ActivityResultLauncher<String> =
+        preparePermissionRequestForDownloadable {
+            val d = downloadable!!
+            downloadable = null
+            d
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,9 +117,9 @@ class ReportDetailFragment :
                 textAttachmentFileName) {
                 listOf(iconAttachmentFile, textAttachmentFileName).forEach {
                     it.setOnClickListener {
-                        val downloadable = Downloadable.reportFile(reportDetail.courseId,
+                        downloadable = Downloadable.reportFile(reportDetail.courseId,
                             reportDetail.attachmentFile!!)
-                        downloadable.open(this@ReportDetailFragment, gson)
+                        downloadable!!.open(this@ReportDetailFragment)
                     }
                 }
 
@@ -151,9 +162,9 @@ class ReportDetailFragment :
                     textReportFeedbackFileName) {
                     listOf(iconReportFeedbackFile, textReportFeedbackFileName).forEach {
                         it.setOnClickListener {
-                            val downloadable = Downloadable.reportFile(reportDetail.courseId,
+                            downloadable = Downloadable.reportFile(reportDetail.courseId,
                                 reportDetail.feedbackFile!!)
-                            downloadable.open(this@ReportDetailFragment, gson)
+                            downloadable!!.open(this@ReportDetailFragment)
                         }
                     }
 
@@ -166,8 +177,8 @@ class ReportDetailFragment :
     }
 
     override fun openFile(file: File) {
-        val downloadable = Downloadable.reportFile(reportDetail.courseId, file)
-        downloadable.open(this, gson)
+        downloadable = Downloadable.reportFile(reportDetail.courseId, file)
+        downloadable!!.open(this)
     }
 
     companion object {

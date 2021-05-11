@@ -1,6 +1,6 @@
 package net.accelf.itc_lms_unofficial.file.download
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.google.gson.Gson
@@ -11,9 +11,9 @@ import net.accelf.itc_lms_unofficial.models.File
 import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.permission.Permission
-import net.accelf.itc_lms_unofficial.permission.RequestPermissionActivity
+import net.accelf.itc_lms_unofficial.permission.PermissionRequestable
+import net.accelf.itc_lms_unofficial.permission.PermissionRequestable.Companion.preparePermissionRequest
 import net.accelf.itc_lms_unofficial.util.TIME_SECONDS_FORMAT
-import net.accelf.itc_lms_unofficial.util.notify
 import okhttp3.ResponseBody
 import java.io.Serializable
 import java.util.*
@@ -39,38 +39,27 @@ data class Downloadable(
         }
     }
 
-    fun open(fragment: Fragment, gson: Gson) {
+    fun <T> open(fragment: T) where T : Fragment, T : PermissionRequestable, T : ProvidesGson {
         val context = fragment.requireContext()
         if (file.fileName.endsWith(".pdf")) {
             context.startActivity(PdfActivity.intent(context, this))
             return
         }
 
-        val permission = Permission.WRITE_EXTERNAL_STORAGE
         if (!permission.granted(context)) {
-            permission.request(fragment.requireActivity() as AppCompatActivity) {
-                if (permission.granted(context)) {
-                    downloadWithDialog(fragment, gson)
-                    return@request
-                }
-
-                val (id, notification) = RequestPermissionActivity.permissionRequiredNotification(
-                    context,
-                    permission)
-                context.notify(id, notification)
-            }
+            permission.request(fragment)
             return
         }
 
-        downloadWithDialog(fragment, gson)
+        downloadWithDialog(fragment)
     }
 
-    private fun downloadWithDialog(fragment: Fragment, gson: Gson) {
+    private fun <T> downloadWithDialog(fragment: T) where T : Fragment, T : ProvidesGson {
         val confirmDownloadDialog = ConfirmDownloadDialogFragment.newInstance(file.fileName)
         fragment.setFragmentResultListener(ConfirmDownloadDialogFragment::class.java.simpleName) { _, it ->
             @Suppress("UNCHECKED_CAST")
             (it.getSerializable(BUNDLE_RESULT) as Result<DownloadDialogResult>).onSuccess {
-                FileDownloadWorker.enqueue(fragment.requireContext(), gson, this, it)
+                FileDownloadWorker.enqueue(fragment.requireContext(), fragment.gson, this, it)
             }
         }
         confirmDownloadDialog.show(fragment.parentFragmentManager,
@@ -78,6 +67,8 @@ data class Downloadable(
     }
 
     companion object {
+
+        private val permission = Permission.WRITE_EXTERNAL_STORAGE
 
         fun materialFile(courseId: String, material: Material): Downloadable {
             return Downloadable(
@@ -100,6 +91,14 @@ data class Downloadable(
                 null,
             )
         }
+
+        fun <T> T.preparePermissionRequestForDownloadable(getDownloadable: () -> Downloadable): ActivityResultLauncher<String>
+                where T : Fragment, T : ProvidesGson {
+            return preparePermissionRequest({ permission }) {
+                val downloadable = getDownloadable()
+                downloadable.downloadWithDialog(this)
+            }
+        }
     }
 
     enum class Type {
@@ -112,4 +111,8 @@ data class Downloadable(
         val resourceId: String,
         val endDate: Date,
     ) : Serializable
+
+    interface ProvidesGson {
+        var gson: Gson
+    }
 }

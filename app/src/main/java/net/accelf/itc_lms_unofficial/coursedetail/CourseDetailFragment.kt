@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
@@ -22,22 +23,32 @@ import net.accelf.itc_lms_unofficial.coursedetail.SendAttendanceDialogFragment.C
 import net.accelf.itc_lms_unofficial.databinding.FragmentCourseDetailBinding
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
+import net.accelf.itc_lms_unofficial.file.download.Downloadable.Companion.preparePermissionRequestForDownloadable
 import net.accelf.itc_lms_unofficial.models.*
+import net.accelf.itc_lms_unofficial.permission.PermissionRequestable
 import net.accelf.itc_lms_unofficial.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class CourseDetailFragment :
     BaseFragment<FragmentCourseDetailBinding>(FragmentCourseDetailBinding::class.java),
-    NotifyListener, MaterialListener {
+    NotifyListener, MaterialListener, PermissionRequestable, Downloadable.ProvidesGson {
 
     @Inject
-    lateinit var gson: Gson
+    override lateinit var gson: Gson
 
     @Inject
     lateinit var linkMovementMethod: CustomLinkMovementMethod
 
     private val viewModel by activityViewModels<CourseDetailViewModel>()
+
+    private var downloadable: Downloadable? = null
+    override var permissionRequestLauncher: ActivityResultLauncher<String> =
+        preparePermissionRequestForDownloadable {
+            val d = downloadable!!
+            downloadable = null
+            d
+        }
 
     private val snackProgressBarManager by lazy {
         SnackProgressBarManager(requireView(), this)
@@ -265,8 +276,8 @@ class CourseDetailFragment :
     }
 
     override fun openFile(material: Material) {
-        val downloadable = Downloadable.materialFile(viewModel.courseId, material)
-        downloadable.open(this, gson)
+        downloadable = Downloadable.materialFile(viewModel.courseId, material)
+        downloadable!!.open(this)
     }
 
     override fun openLink(url: String) {

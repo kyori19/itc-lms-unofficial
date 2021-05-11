@@ -6,24 +6,32 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.NotificationCompat
 import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.permission.PermissionRequestable.Companion.preparePermissionRequest
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 
-class RequestPermissionActivity : BaseActivity(false) {
+class RequestPermissionActivity : BaseActivity(false), PermissionRequestable {
+
+    lateinit var permission: Permission
+    override val permissionRequestLauncher: ActivityResultLauncher<String> =
+        preparePermissionRequest({ permission }) {
+            setResult(if (it) Activity.RESULT_OK else Activity.RESULT_CANCELED)
+            finish()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (intent.hasExtra(EXTRA_PERMISSION_ID)) {
             val permissionId = intent.getIntExtra(EXTRA_PERMISSION_ID, 0)
-            val permission = Permission.fromId(permissionId)
+            permission = Permission.fromId(permissionId)
 
             if (!shouldShowRequestPermissionRationale(permission.androidName)) {
                 request(permission)
-                return
             }
 
             replaceFragment(RequestPermissionFragment.newInstance(permissionId))
@@ -31,10 +39,7 @@ class RequestPermissionActivity : BaseActivity(false) {
     }
 
     fun request(permission: Permission) {
-        permission.request(this) {
-            setResult(if (it) Activity.RESULT_OK else Activity.RESULT_CANCELED)
-            finish()
-        }
+        permission.request(this)
     }
 
     companion object {
