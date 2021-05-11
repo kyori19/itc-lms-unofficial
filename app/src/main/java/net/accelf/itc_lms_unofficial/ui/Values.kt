@@ -16,6 +16,7 @@ object Values {
 
         object Gray {
             val darken = Color(0xff616161)
+            val surface = Color(0xff212121)
         }
     }
 
