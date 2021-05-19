@@ -57,7 +57,7 @@ class RequestPermissionActivity : BaseActivity(false), PermissionRequestable {
             permission: Permission,
         ): Pair<Int, Notification> {
             val id = Notifications.Ids.PERMISSION_REQUIRED + permission.id
-            return id to NotificationCompat.Builder(context, Notifications.Channels.ERRORS)
+            return id to NotificationCompat.Builder(context, Notifications.Channels.DOWNLOADS)
                 .apply {
                     setSmallIcon(R.drawable.ic_info)
                     setContentTitle(context.getString(R.string.notify_title_permission_required))
