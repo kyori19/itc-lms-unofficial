@@ -1,12 +1,26 @@
 package net.accelf.itc_lms_unofficial.permission
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import net.accelf.itc_lms_unofficial.BaseFragment
-import net.accelf.itc_lms_unofficial.databinding.FragmentRequestPermissionBinding
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.fragment.app.Fragment
+import net.accelf.itc_lms_unofficial.R
+import net.accelf.itc_lms_unofficial.ui.NormalText
+import net.accelf.itc_lms_unofficial.ui.Values
+import net.accelf.itc_lms_unofficial.ui.compose
 
-class RequestPermissionFragment :
-    BaseFragment<FragmentRequestPermissionBinding>(FragmentRequestPermissionBinding::class.java) {
+class RequestPermissionFragment : Fragment() {
 
     private lateinit var permission: Permission
 
@@ -18,16 +32,54 @@ class RequestPermissionFragment :
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return compose {
+            RequestPermissionFragmentContent(permission)
+        }
+    }
 
-        binding.titlePermissionName.setText(permission.title)
+    @Composable
+    @Preview
+    private fun PreviewRequestPermissionFragmentContent() {
+        RequestPermissionFragmentContent(Permission.WRITE_EXTERNAL_STORAGE)
+    }
 
-        binding.textPermissionUsage.setText(permission.usage)
-
-        binding.buttonGrantPermission.setOnClickListener {
-            val activity = requireActivity() as RequestPermissionActivity
-            activity.request(permission)
+    @Composable
+    private fun RequestPermissionFragmentContent(permission: Permission) {
+        Column(
+            modifier = Modifier.padding(Values.Spacing.around),
+        ) {
+            NormalText(
+                text = stringResource(id = permission.title),
+                modifier = Modifier.padding(Values.Spacing.around),
+                style = MaterialTheme.typography.h5,
+            )
+            NormalText(
+                text = stringResource(id = R.string.text_permission_used_to),
+                modifier = Modifier.padding(Values.Spacing.around),
+                style = MaterialTheme.typography.body2,
+            )
+            NormalText(
+                text = stringResource(id = permission.usage),
+                modifier = Modifier.padding(Values.Spacing.around),
+                style = MaterialTheme.typography.body1,
+            )
+            Row {
+                Button(
+                    onClick = { (requireActivity() as RequestPermissionActivity).request(permission) },
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .weight(1f),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.button_grant_permission),
+                    )
+                }
+            }
         }
     }
 
