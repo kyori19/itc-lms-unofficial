@@ -19,16 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillType
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
-import net.accelf.itc_lms_unofficial.ui.NormalText
-import net.accelf.itc_lms_unofficial.ui.PasswordField
-import net.accelf.itc_lms_unofficial.ui.Values
-import net.accelf.itc_lms_unofficial.ui.autofill
+import net.accelf.itc_lms_unofficial.ui.*
 
 class LoginRequestFragment : Fragment() {
 
@@ -41,10 +37,8 @@ class LoginRequestFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                LoginRequestFragmentContent()
-            }
+        return compose {
+            LoginRequestFragmentContent()
         }
     }
 
@@ -55,45 +49,43 @@ class LoginRequestFragment : Fragment() {
         val userName by remember { mutableUserName }
         val password by remember { mutablePassword }
 
-        MaterialTheme(colors = Values.Colors.theme) {
-            Column {
-                NormalText(
-                    modifier = Modifier.padding(Values.Spacing.around),
-                    text = stringResource(id = R.string.login_instruction),
-                    fontSize = Values.Text.large,
-                )
-                TextField(
-                    modifier = Modifier
-                        .autofill(
-                            autofillTypes = listOf(AutofillType.EmailAddress),
-                            onFill = { mutableUserName.value = it },
-                        )
-                        .fillMaxWidth()
-                        .padding(Values.Spacing.around),
-                    label = { Text(text = stringResource(id = R.string.login_hint_user_name)) },
-                    value = userName,
-                    onValueChange = { mutableUserName.value = it },
-                    textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    singleLine = true,
-                )
-                PasswordField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Values.Spacing.around),
-                    mutableValue = mutablePassword,
-                    label = { Text(text = stringResource(id = R.string.input_hint_password)) },
-                    textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
-                )
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Values.Spacing.around),
-                    onClick = { (activity as LoginActivity).onLoginClick(userName, password) },
-                    enabled = userName.isNotBlank() && password.isNotBlank(),
-                ) {
-                    Text(text = stringResource(id = R.string.button_login))
-                }
+        Column {
+            NormalText(
+                modifier = Modifier.padding(Values.Spacing.around),
+                text = stringResource(id = R.string.login_instruction),
+                fontSize = Values.Text.large,
+            )
+            TextField(
+                modifier = Modifier
+                    .autofill(
+                        autofillTypes = listOf(AutofillType.EmailAddress),
+                        onFill = { mutableUserName.value = it },
+                    )
+                    .fillMaxWidth()
+                    .padding(Values.Spacing.around),
+                label = { Text(text = stringResource(id = R.string.login_hint_user_name)) },
+                value = userName,
+                onValueChange = { mutableUserName.value = it },
+                textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                singleLine = true,
+            )
+            PasswordField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Values.Spacing.around),
+                mutableValue = mutablePassword,
+                label = { Text(text = stringResource(id = R.string.input_hint_password)) },
+                textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+            )
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Values.Spacing.around),
+                onClick = { (activity as LoginActivity).onLoginClick(userName, password) },
+                enabled = userName.isNotBlank() && password.isNotBlank(),
+            ) {
+                Text(text = stringResource(id = R.string.button_login))
             }
         }
     }

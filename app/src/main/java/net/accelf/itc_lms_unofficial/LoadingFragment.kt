@@ -12,11 +12,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import net.accelf.itc_lms_unofficial.ui.NormalText
 import net.accelf.itc_lms_unofficial.ui.Values
+import net.accelf.itc_lms_unofficial.ui.compose
 import net.accelf.itc_lms_unofficial.util.valueOf
 
 class LoadingFragment : ActionableFragment(5000L) {
@@ -36,10 +36,8 @@ class LoadingFragment : ActionableFragment(5000L) {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                LoadingFragmentContent(loadingText)
-            }
+        return compose {
+            LoadingFragmentContent(loadingText)
         }
     }
 
@@ -51,20 +49,18 @@ class LoadingFragment : ActionableFragment(5000L) {
 
     @Composable
     private fun LoadingFragmentContent(loadingText: String? = null) {
-        MaterialTheme(colors = Values.Colors.theme) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.padding(Values.Spacing.around),
-                    color = MaterialTheme.colors.secondary,
-                )
-                NormalText(
-                    modifier = Modifier.padding(Values.Spacing.around),
-                    text = loadingText ?: stringResource(id = R.string.loading_default),
-                )
-            }
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.padding(Values.Spacing.around),
+                color = MaterialTheme.colors.secondary,
+            )
+            NormalText(
+                modifier = Modifier.padding(Values.Spacing.around),
+                text = loadingText ?: stringResource(id = R.string.loading_default),
+            )
         }
     }
 

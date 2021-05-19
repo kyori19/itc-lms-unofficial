@@ -7,7 +7,6 @@ import android.view.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.NotificationCompat
@@ -22,7 +21,7 @@ import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.download.ConfirmDownloadDialogFragment
 import net.accelf.itc_lms_unofficial.file.download.DownloadDialogResult
 import net.accelf.itc_lms_unofficial.file.pdf.PasswordDialogFragment.Companion.BUNDLE_PASSWORD
-import net.accelf.itc_lms_unofficial.ui.Values
+import net.accelf.itc_lms_unofficial.ui.compose
 import net.accelf.itc_lms_unofficial.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
@@ -51,10 +50,8 @@ class PdfFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                PdfFragmentContent()
-            }
+        return compose {
+            PdfFragmentContent()
         }
     }
 
@@ -65,41 +62,39 @@ class PdfFragment : Fragment() {
         val pdfFile by viewModel.pdfFile.observeAsState()
         val password by remember { mutablePassword }
 
-        MaterialTheme(colors = Values.Colors.theme) {
-            val background = MaterialTheme.colors.background.value.toInt()
+        val background = MaterialTheme.colors.background.value.toInt()
 
-            AndroidView(
-                { PDFView(it, null) },
-            ) {
-                if (pdfFile is Success) {
-                    it.setBackgroundColor(background)
-                    it.fromBytes((pdfFile as Success).data)
-                        .spacing(1)
-                        .enableAnnotationRendering(true)
-                        .defaultPage(viewModel.openingPage)
-                        .onLoad { _, _, _ ->
-                            viewModel.pdfTitle.postValue(it.documentMeta.title)
+        AndroidView(
+            { PDFView(it, null) },
+        ) {
+            if (pdfFile is Success) {
+                it.setBackgroundColor(background)
+                it.fromBytes((pdfFile as Success).data)
+                    .spacing(1)
+                    .enableAnnotationRendering(true)
+                    .defaultPage(viewModel.openingPage)
+                    .onLoad { _, _, _ ->
+                        viewModel.pdfTitle.postValue(it.documentMeta.title)
+                    }
+                    .onPageChange { page, _ ->
+                        viewModel.openingPage = page
+                    }
+                    .onError { e ->
+                        if (e is PdfPasswordException) {
+                            passwordDialog.display(parentFragmentManager)
                         }
-                        .onPageChange { page, _ ->
-                            viewModel.openingPage = page
+                    }
+                    .let { config ->
+                        if (password.isEmpty()) {
+                            return@let config
                         }
-                        .onError { e ->
-                            if (e is PdfPasswordException) {
-                                passwordDialog.display(parentFragmentManager)
-                            }
-                        }
-                        .let { config ->
-                            if (password.isEmpty()) {
-                                return@let config
-                            }
 
-                            return@let config.password(password)
-                                .onLoad { _, _, _ ->
-                                    passwordDialog.dismissDialog()
-                                }
-                        }
-                        .load()
-                }
+                        return@let config.password(password)
+                            .onLoad { _, _, _ ->
+                                passwordDialog.dismissDialog()
+                            }
+                    }
+                    .load()
             }
         }
     }

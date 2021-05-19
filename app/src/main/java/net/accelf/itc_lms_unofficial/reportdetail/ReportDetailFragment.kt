@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,10 +69,8 @@ class ReportDetailFragment : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                ReportDetailFragmentContent(reportDetail)
-            }
+        return compose {
+            ReportDetailFragmentContent(reportDetail)
         }
     }
 
@@ -85,223 +82,221 @@ class ReportDetailFragment : Fragment(),
 
     @Composable
     private fun ReportDetailFragmentContent(reportDetail: ReportDetail) {
-        MaterialTheme(colors = Values.Colors.theme) {
-            Column(
-                modifier = Modifier.padding(Values.Spacing.around),
+        Column(
+            modifier = Modifier.padding(Values.Spacing.around),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    NormalText(
-                        text = reportDetail.title,
+                NormalText(
+                    text = reportDetail.title,
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .weight(weight = 1f),
+                    style = MaterialTheme.typography.h5,
+                    color = MaterialTheme.colors.secondary,
+                )
+                NormalText(
+                    text = timeSpanString(reportDetail.from, reportDetail.until),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = when (reportDetail.status) {
+                        Report.ReportStatus.NOT_SUBMITTED -> Icons.Default.Clear
+                        Report.ReportStatus.SUBMITTED_IN_TIME -> Icons.Default.Check
+                        Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> Icons.Default.Schedule
+                        Report.ReportStatus.TEMPORARILY_SAVED -> Icons.Default.Save
+                    },
+                    modifier = Modifier.padding(Values.Spacing.around),
+                    contentDescription = stringResource(
+                        id = when (reportDetail.status) {
+                            Report.ReportStatus.NOT_SUBMITTED -> R.string.hint_icon_not_submitted
+                            Report.ReportStatus.SUBMITTED_IN_TIME -> R.string.hint_icon_submitted_in_time
+                            Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.string.hint_icon_submitted_after_deadline
+                            Report.ReportStatus.TEMPORARILY_SAVED -> R.string.hint_icon_temporarily_saved
+                        },
+                    ),
+                    tint = when (reportDetail.status == Report.ReportStatus.SUBMITTED_IN_TIME) {
+                        true -> Values.Colors.success
+                        false -> MaterialTheme.colors.error
+                    },
+                )
+                NormalText(
+                    text = stringResource(
+                        id = when (reportDetail.status) {
+                            Report.ReportStatus.NOT_SUBMITTED -> R.string.hint_icon_not_submitted
+                            Report.ReportStatus.SUBMITTED_IN_TIME -> R.string.hint_icon_submitted_in_time
+                            Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.string.hint_icon_submitted_after_deadline
+                            Report.ReportStatus.TEMPORARILY_SAVED -> R.string.hint_icon_temporarily_saved
+                        },
+                    ),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                )
+
+                Icon(
+                    imageVector = when (reportDetail.afterDeadlineSubmittable) {
+                        true -> Icons.Default.Check
+                        false -> Icons.Default.Clear
+                    },
+                    contentDescription = stringResource(
+                        id = when (reportDetail.afterDeadlineSubmittable) {
+                            true -> R.string.hint_icon_late_submittable
+                            false -> R.string.hint_icon_not_late_submittable
+                        }
+                    ),
+                    tint = when (reportDetail.afterDeadlineSubmittable) {
+                        true -> Values.Colors.success
+                        false -> MaterialTheme.colors.error
+                    },
+                )
+                NormalText(
+                    text = stringResource(
+                        id = when (reportDetail.afterDeadlineSubmittable) {
+                            true -> R.string.hint_icon_late_submittable
+                            false -> R.string.hint_icon_not_late_submittable
+                        },
+                    ),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                )
+            }
+
+            reportDetail.submittedAt?.let {
+                NormalText(
+                    text = stringResource(
+                        id = R.string.text_report_submitted_at,
+                        TIME_FORMAT.format(it),
+                    ),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                )
+            }
+
+            if (reportDetail.description.isNotEmpty()) {
+                SpannedText(
+                    text = reportDetail.description.fromHtml(),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                )
+            }
+
+            reportDetail.attachmentFile?.let {
+                Row {
+                    File(
+                        file = it,
                         modifier = Modifier
-                            .padding(Values.Spacing.around)
-                            .weight(weight = 1f),
-                        style = MaterialTheme.typography.h5,
-                        color = MaterialTheme.colors.secondary,
-                    )
-                    NormalText(
-                        text = timeSpanString(reportDetail.from, reportDetail.until),
-                        modifier = Modifier.padding(Values.Spacing.around),
+                            .clickable { openFile(it) }
+                            .weight(1f),
                     )
                 }
+            }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+            if (
+                reportDetail.submissionType == ReportDetail.SubmissionType.FILE
+                || reportDetail.submittedFiles.isNotEmpty()
+            ) {
+                TitledCard(
+                    title = stringResource(id = R.string.title_report_submit_files),
+                    modifier = Modifier.padding(Values.Spacing.around),
                 ) {
-                    Icon(
-                        imageVector = when (reportDetail.status) {
-                            Report.ReportStatus.NOT_SUBMITTED -> Icons.Default.Clear
-                            Report.ReportStatus.SUBMITTED_IN_TIME -> Icons.Default.Check
-                            Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> Icons.Default.Schedule
-                            Report.ReportStatus.TEMPORARILY_SAVED -> Icons.Default.Save
-                        },
-                        modifier = Modifier.padding(Values.Spacing.around),
-                        contentDescription = stringResource(
-                            id = when (reportDetail.status) {
-                                Report.ReportStatus.NOT_SUBMITTED -> R.string.hint_icon_not_submitted
-                                Report.ReportStatus.SUBMITTED_IN_TIME -> R.string.hint_icon_submitted_in_time
-                                Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.string.hint_icon_submitted_after_deadline
-                                Report.ReportStatus.TEMPORARILY_SAVED -> R.string.hint_icon_temporarily_saved
-                            },
-                        ),
-                        tint = when (reportDetail.status == Report.ReportStatus.SUBMITTED_IN_TIME) {
-                            true -> Values.Colors.success
-                            false -> MaterialTheme.colors.error
-                        },
-                    )
-                    NormalText(
-                        text = stringResource(
-                            id = when (reportDetail.status) {
-                                Report.ReportStatus.NOT_SUBMITTED -> R.string.hint_icon_not_submitted
-                                Report.ReportStatus.SUBMITTED_IN_TIME -> R.string.hint_icon_submitted_in_time
-                                Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.string.hint_icon_submitted_after_deadline
-                                Report.ReportStatus.TEMPORARILY_SAVED -> R.string.hint_icon_temporarily_saved
-                            },
-                        ),
-                        modifier = Modifier.padding(Values.Spacing.around),
-                    )
-
-                    Icon(
-                        imageVector = when (reportDetail.afterDeadlineSubmittable) {
-                            true -> Icons.Default.Check
-                            false -> Icons.Default.Clear
-                        },
-                        contentDescription = stringResource(
-                            id = when (reportDetail.afterDeadlineSubmittable) {
-                                true -> R.string.hint_icon_late_submittable
-                                false -> R.string.hint_icon_not_late_submittable
-                            }
-                        ),
-                        tint = when (reportDetail.afterDeadlineSubmittable) {
-                            true -> Values.Colors.success
-                            false -> MaterialTheme.colors.error
-                        },
-                    )
-                    NormalText(
-                        text = stringResource(
-                            id = when (reportDetail.afterDeadlineSubmittable) {
-                                true -> R.string.hint_icon_late_submittable
-                                false -> R.string.hint_icon_not_late_submittable
-                            },
-                        ),
-                        modifier = Modifier.padding(Values.Spacing.around),
-                    )
-                }
-
-                reportDetail.submittedAt?.let {
-                    NormalText(
-                        text = stringResource(
-                            id = R.string.text_report_submitted_at,
-                            TIME_FORMAT.format(it),
-                        ),
-                        modifier = Modifier.padding(Values.Spacing.around),
-                    )
-                }
-
-                if (reportDetail.description.isNotEmpty()) {
-                    SpannedText(
-                        text = reportDetail.description.fromHtml(),
-                        modifier = Modifier.padding(Values.Spacing.around),
-                    )
-                }
-
-                reportDetail.attachmentFile?.let {
-                    Row {
-                        File(
-                            file = it,
-                            modifier = Modifier
-                                .clickable { openFile(it) }
-                                .weight(1f),
-                        )
-                    }
-                }
-
-                if (
-                    reportDetail.submissionType == ReportDetail.SubmissionType.FILE
-                    || reportDetail.submittedFiles.isNotEmpty()
-                ) {
-                    TitledCard(
-                        title = stringResource(id = R.string.title_report_submit_files),
-                        modifier = Modifier.padding(Values.Spacing.around),
-                    ) {
-                        LazyColumn {
-                            items(reportDetail.submittedFiles) {
-                                Row {
-                                    File(
-                                        submittedFile = it,
-                                        modifier = Modifier
-                                            .padding(Values.Spacing.around)
-                                            .clickable { openFile(it.file) }
-                                            .weight(1f),
-                                    )
-                                }
+                    LazyColumn {
+                        items(reportDetail.submittedFiles) {
+                            Row {
+                                File(
+                                    submittedFile = it,
+                                    modifier = Modifier
+                                        .padding(Values.Spacing.around)
+                                        .clickable { openFile(it.file) }
+                                        .weight(1f),
+                                )
                             }
                         }
                     }
                 }
+            }
 
-                if (
-                    reportDetail.submissionType == ReportDetail.SubmissionType.TEXT_INPUT
-                    || reportDetail.submittedText.isNotEmpty()
+            if (
+                reportDetail.submissionType == ReportDetail.SubmissionType.TEXT_INPUT
+                || reportDetail.submittedText.isNotEmpty()
+            ) {
+                TitledCard(
+                    title = stringResource(id = R.string.title_report_submit_text),
+                    modifier = Modifier.padding(Values.Spacing.around),
                 ) {
-                    TitledCard(
-                        title = stringResource(id = R.string.title_report_submit_text),
+                    NormalText(
+                        text = reportDetail.submittedText,
                         modifier = Modifier.padding(Values.Spacing.around),
+                    )
+                }
+            }
+
+            reportDetail.fedBackAt?.let { fedBackAt ->
+                TitledCard(
+                    title = stringResource(id = R.string.title_report_feedback),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         NormalText(
-                            text = reportDetail.submittedText,
+                            text = stringResource(id = R.string.title_report_feedback),
+                            modifier = Modifier
+                                .padding(Values.Spacing.around)
+                                .weight(1f),
+                        )
+                        NormalText(
+                            text = reportDetail.fedBackBy,
                             modifier = Modifier.padding(Values.Spacing.around),
                         )
                     }
-                }
 
-                reportDetail.fedBackAt?.let { fedBackAt ->
-                    TitledCard(
-                        title = stringResource(id = R.string.title_report_feedback),
-                        modifier = Modifier.padding(Values.Spacing.around),
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            NormalText(
-                                text = stringResource(id = R.string.title_report_feedback),
-                                modifier = Modifier
-                                    .padding(Values.Spacing.around)
-                                    .weight(1f),
-                            )
-                            NormalText(
-                                text = reportDetail.fedBackBy,
-                                modifier = Modifier.padding(Values.Spacing.around),
-                            )
-                        }
+                        NormalText(
+                            text = stringResource(id = R.string.title_report_feedback_score),
+                            modifier = Modifier
+                                .padding(Values.Spacing.around)
+                                .weight(1f),
+                        )
+                        NormalText(
+                            text = reportDetail.feedbackScore,
+                            modifier = Modifier.padding(Values.Spacing.around),
+                        )
+                    }
 
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            NormalText(
-                                text = stringResource(id = R.string.title_report_feedback_score),
-                                modifier = Modifier
-                                    .padding(Values.Spacing.around)
-                                    .weight(1f),
-                            )
-                            NormalText(
-                                text = reportDetail.feedbackScore,
-                                modifier = Modifier.padding(Values.Spacing.around),
-                            )
-                        }
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        NormalText(
+                            text = stringResource(id = R.string.title_report_feedback_comment),
+                            modifier = Modifier
+                                .padding(Values.Spacing.around)
+                                .weight(1f),
+                        )
+                        NormalText(
+                            text = reportDetail.feedbackComment,
+                            modifier = Modifier.padding(Values.Spacing.around),
+                        )
+                    }
 
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            NormalText(
-                                text = stringResource(id = R.string.title_report_feedback_comment),
-                                modifier = Modifier
-                                    .padding(Values.Spacing.around)
-                                    .weight(1f),
-                            )
-                            NormalText(
-                                text = reportDetail.feedbackComment,
-                                modifier = Modifier.padding(Values.Spacing.around),
-                            )
-                        }
+                    reportDetail.feedbackFile?.let {
+                        File(
+                            file = it,
+                            modifier = Modifier.clickable { openFile(it) },
+                        )
+                    }
 
-                        reportDetail.feedbackFile?.let {
-                            File(
-                                file = it,
-                                modifier = Modifier.clickable { openFile(it) },
-                            )
-                        }
-
-                        Row {
-                            NormalText(
-                                text = TIME_FORMAT.format(fedBackAt),
-                                modifier = Modifier
-                                    .padding(Values.Spacing.around)
-                                    .weight(1f),
-                                textAlign = TextAlign.End,
-                            )
-                        }
+                    Row {
+                        NormalText(
+                            text = TIME_FORMAT.format(fedBackAt),
+                            modifier = Modifier
+                                .padding(Values.Spacing.around)
+                                .weight(1f),
+                            textAlign = TextAlign.End,
+                        )
                     }
                 }
             }

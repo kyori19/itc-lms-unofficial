@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.os.bundleOf
@@ -26,6 +25,7 @@ import androidx.fragment.app.setFragmentResult
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.ui.PasswordField
 import net.accelf.itc_lms_unofficial.ui.Values
+import net.accelf.itc_lms_unofficial.ui.compose
 
 @SuppressLint("InflateParams")
 class PasswordDialogFragment : DialogFragment() {
@@ -38,10 +38,8 @@ class PasswordDialogFragment : DialogFragment() {
         return activity?.let {
             AlertDialog.Builder(it).apply {
                 setTitle(R.string.dialog_title_pdf_require_password)
-                setView(ComposeView(requireContext()).apply {
-                    setContent {
-                        PasswordDialogFragmentContent()
-                    }
+                setView(compose {
+                    PasswordDialogFragmentContent()
                 })
 
                 setPositiveButton(R.string.button_dialog_open) { _, _ -> }
@@ -74,27 +72,25 @@ class PasswordDialogFragment : DialogFragment() {
     private fun PasswordDialogFragmentContent() {
         val isWrong by remember { mutableIsWrong }
 
-        MaterialTheme(colors = Values.Colors.theme) {
-            Column(
-                modifier = Modifier.padding(Values.Spacing.around),
-            ) {
-                PasswordField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Values.Spacing.around),
-                    mutableValue = mutablePassword,
-                    label = { Text(text = stringResource(id = R.string.input_hint_password)) },
-                    isError = isWrong,
-                )
+        Column(
+            modifier = Modifier.padding(Values.Spacing.around),
+        ) {
+            PasswordField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Values.Spacing.around),
+                mutableValue = mutablePassword,
+                label = { Text(text = stringResource(id = R.string.input_hint_password)) },
+                isError = isWrong,
+            )
 
-                if (isWrong) {
-                    Text(
-                        modifier = Modifier.padding(Values.Spacing.around),
-                        text = stringResource(id = R.string.input_error_password_wrong),
-                        color = MaterialTheme.colors.error,
-                        fontSize = Values.Text.small,
-                    )
-                }
+            if (isWrong) {
+                Text(
+                    modifier = Modifier.padding(Values.Spacing.around),
+                    text = stringResource(id = R.string.input_error_password_wrong),
+                    color = MaterialTheme.colors.error,
+                    fontSize = Values.Text.small,
+                )
             }
         }
     }

@@ -14,13 +14,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import net.accelf.itc_lms_unofficial.ui.Values
+import net.accelf.itc_lms_unofficial.ui.compose
 import net.accelf.itc_lms_unofficial.util.Progress
 import net.accelf.itc_lms_unofficial.util.Request
 import net.accelf.itc_lms_unofficial.util.mutableLiveDataOf
@@ -34,10 +34,8 @@ class LoadingProgressFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                LoadingProgressFragmentContent(viewModel.pdfFile)
-            }
+        return compose {
+            LoadingProgressFragmentContent(viewModel.pdfFile)
         }
     }
 
@@ -51,31 +49,29 @@ class LoadingProgressFragment : Fragment() {
     private fun LoadingProgressFragmentContent(livePdfFile: LiveData<Request<ByteArray>>) {
         val pdfFile by livePdfFile.observeAsState()
 
-        MaterialTheme(colors = Values.Colors.theme) {
-            Box(
-                contentAlignment = Alignment.Center,
-            ) {
-                val outerStrokeWidth = 10.dp
-                val outerCircleWidth = 108.dp
-                val innerDiff = 2.dp
+        Box(
+            contentAlignment = Alignment.Center,
+        ) {
+            val outerStrokeWidth = 10.dp
+            val outerCircleWidth = 108.dp
+            val innerDiff = 2.dp
 
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .padding(Values.Spacing.around + innerDiff / 2)
-                        .size(outerCircleWidth - innerDiff),
-                    progress = 1f,
-                    color = Values.Colors.Gray.darken,
-                    strokeWidth = outerStrokeWidth - innerDiff,
-                )
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .padding(Values.Spacing.around)
-                        .size(outerCircleWidth),
-                    progress = if (pdfFile is Progress) (pdfFile as Progress<ByteArray>).progress else 0f,
-                    color = MaterialTheme.colors.secondary,
-                    strokeWidth = outerStrokeWidth,
-                )
-            }
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .padding(Values.Spacing.around + innerDiff / 2)
+                    .size(outerCircleWidth - innerDiff),
+                progress = 1f,
+                color = Values.Colors.Gray.darken,
+                strokeWidth = outerStrokeWidth - innerDiff,
+            )
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .padding(Values.Spacing.around)
+                    .size(outerCircleWidth),
+                progress = if (pdfFile is Progress) (pdfFile as Progress<ByteArray>).progress else 0f,
+                color = MaterialTheme.colors.secondary,
+                strokeWidth = outerStrokeWidth,
+            )
         }
     }
 
