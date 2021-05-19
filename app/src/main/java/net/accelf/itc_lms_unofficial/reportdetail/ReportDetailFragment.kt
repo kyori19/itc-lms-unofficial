@@ -182,14 +182,16 @@ class ReportDetailFragment : Fragment(),
                 )
             }
 
-            reportDetail.attachmentFile?.let {
-                Row {
-                    File(
-                        file = it,
-                        modifier = Modifier
-                            .clickable { openFile(it) }
-                            .weight(1f),
-                    )
+            LazyColumn {
+                items(reportDetail.attachmentFiles) {
+                    Row {
+                        File(
+                            file = it,
+                            modifier = Modifier
+                                .clickable { openFile(it) }
+                                .weight(1f),
+                        )
+                    }
                 }
             }
 

@@ -11,7 +11,7 @@ data class ReportDetail(
     val courseId: String,
     val title: String,
     val description: String,
-    val attachmentFile: File?,
+    val attachmentFiles: List<File>,
     val from: Date?,
     val until: Date?,
     val afterDeadlineSubmittable: Boolean,
@@ -48,14 +48,16 @@ data class ReportDetail(
                     document.select("input[name=idnumber]").first().`val`(),
                     details.first().text(),
                     details.second().html(),
-                    document.select(".page_supple .downloadFile").firstOrNull()?.let {
-                        File(
-                            document.select(".page_supple .objectName").first().text(),
-                            it.text(),
-                            File.ScanStatus.fromText(document.select(".page_supple .scanStatus")
-                                .first().text())
-                        )
-                    },
+                    document.select(".page_supple .subblock_form div")
+                        .filter { it.select("div .downloadFile").size == 1 }
+                        .map {
+                            File(
+                                it.select(".objectName").first().text(),
+                                it.select(".downloadFile").first().text(),
+                                File.ScanStatus.fromText(
+                                    it.select(".scanStatus").first().text()),
+                            )
+                        },
                     times.first().text().toDateTime(),
                     times.last().text().toDateTime(),
                     document.select(".page_supple .subblock_form").last().text() in listOf("可",
@@ -112,7 +114,7 @@ data class ReportDetail(
             courseId = "2040111110Y01",
             title = "Report Title",
             description = "The description of the course will be displayed here.\nIt can be multi lines.",
-            attachmentFile = File.sample,
+            attachmentFiles = listOf(File.sample, File.sample),
             from = Date(),
             until = Date(),
             afterDeadlineSubmittable = false,
