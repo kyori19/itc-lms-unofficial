@@ -19,4 +19,12 @@ data class File(
             }
         }
     }
+
+    companion object {
+        val sample = File(
+            objectName = "2020/ab/cd/ef/12345678-90ab-cdef-1234-567890abcdef",
+            fileName = "Attachment file 1",
+            scanStatus = ScanStatus.SCANNED,
+        )
+    }
 }

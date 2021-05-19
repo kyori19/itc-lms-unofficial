@@ -105,4 +105,27 @@ data class ReportDetail(
             }
         }
     }
+
+    companion object {
+        val sample = ReportDetail(
+            id = "99999",
+            courseId = "2040111110Y01",
+            title = "Report Title",
+            description = "The description of the course will be displayed here.\nIt can be multi lines.",
+            attachmentFile = File.sample,
+            from = Date(),
+            until = Date(),
+            afterDeadlineSubmittable = false,
+            status = Report.ReportStatus.SUBMITTED_IN_TIME,
+            submissionType = SubmissionType.FILE,
+            submittedAt = Date(),
+            submittedFiles = listOf(SubmittedFile.sample, SubmittedFile.sample),
+            submittedText = "Answer",
+            fedBackBy = "teacher name",
+            feedbackComment = "very good!",
+            fedBackAt = Date(),
+            feedbackScore = "10",
+            feedbackFile = File.sample,
+        )
+    }
 }

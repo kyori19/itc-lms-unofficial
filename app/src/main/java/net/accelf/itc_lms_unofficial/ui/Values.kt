@@ -14,9 +14,10 @@ object Values {
             secondary = Color(0xffdaf420),
         )
 
+        val success = Color(0xff4caf50)
+
         object Gray {
             val darken = Color(0xff616161)
-            val surface = Color(0xff212121)
         }
     }
 

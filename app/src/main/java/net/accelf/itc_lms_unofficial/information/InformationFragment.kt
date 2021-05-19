@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -24,7 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.models.Information
-import net.accelf.itc_lms_unofficial.ui.NormalText
+import net.accelf.itc_lms_unofficial.ui.SpannedText
+import net.accelf.itc_lms_unofficial.ui.TitledCard
 import net.accelf.itc_lms_unofficial.ui.Values
 import net.accelf.itc_lms_unofficial.util.Request
 import net.accelf.itc_lms_unofficial.util.Success
@@ -70,24 +67,16 @@ class InformationFragment : Fragment() {
         val information by liveInformation.observeAsState()
 
         MaterialTheme(Values.Colors.theme) {
-            Card(
-                modifier = Modifier.padding(Values.Spacing.around),
-                backgroundColor = Values.Colors.Gray.surface,
-            ) {
-                Column {
-                    NormalText(
-                        text = stringResource(id = R.string.title_information),
-                        modifier = Modifier.padding(Values.Spacing.around),
-                        fontSize = Values.Text.large,
-                    )
-                    AndroidView(
-                        { TextView(it) },
+            if (information is Success) {
+                TitledCard(
+                    title = stringResource(id = R.string.title_information),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    SpannedText(
+                        text = (information as Success).data.text.fromHtml(),
                         modifier = Modifier.padding(Values.Spacing.around),
                     ) {
-                        it.movementMethod = linkMovementMethod
-                        if (information is Success) {
-                            it.text = (information as Success).data.text.fromHtml()
-                        }
+                        movementMethod = linkMovementMethod
                     }
                 }
             }

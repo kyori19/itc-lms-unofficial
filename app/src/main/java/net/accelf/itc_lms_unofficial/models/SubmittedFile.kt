@@ -8,4 +8,14 @@ data class SubmittedFile(
     val comment: String,
     val submittedAt: Date,
     val file: File,
-) : Serializable
+) : Serializable {
+
+    companion object {
+        val sample = SubmittedFile(
+            id = "999999",
+            comment = "give me scores!",
+            file = File.sample,
+            submittedAt = Date(),
+        )
+    }
+}
