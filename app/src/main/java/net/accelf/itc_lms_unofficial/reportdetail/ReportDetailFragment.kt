@@ -244,7 +244,7 @@ class ReportDetailFragment : Fragment(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         NormalText(
-                            text = stringResource(id = R.string.title_report_feedback),
+                            text = stringResource(id = R.string.title_report_fed_back_by),
                             modifier = Modifier
                                 .padding(Values.Spacing.around)
                                 .weight(1f),
