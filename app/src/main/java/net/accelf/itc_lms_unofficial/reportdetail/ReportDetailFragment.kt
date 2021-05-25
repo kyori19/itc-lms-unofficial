@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
@@ -185,14 +182,12 @@ class ReportDetailFragment : Fragment(),
 
             LazyColumn {
                 items(reportDetail.attachmentFiles) {
-                    Row {
-                        File(
-                            file = it,
-                            modifier = Modifier
-                                .clickable { openFile(it) }
-                                .weight(1f),
-                        )
-                    }
+                    File(
+                        file = it,
+                        modifier = Modifier
+                            .clickable { openFile(it) }
+                            .fillMaxWidth(),
+                    )
                 }
             }
 
@@ -202,19 +197,19 @@ class ReportDetailFragment : Fragment(),
             ) {
                 TitledCard(
                     title = stringResource(id = R.string.title_report_submit_files),
-                    modifier = Modifier.padding(Values.Spacing.around),
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .fillMaxWidth(),
                 ) {
                     LazyColumn {
                         items(reportDetail.submittedFiles) {
-                            Row {
-                                File(
-                                    submittedFile = it,
-                                    modifier = Modifier
-                                        .padding(Values.Spacing.around)
-                                        .clickable { openFile(it.file) }
-                                        .weight(1f),
-                                )
-                            }
+                            File(
+                                submittedFile = it,
+                                modifier = Modifier
+                                    .padding(Values.Spacing.around)
+                                    .clickable { openFile(it.file) }
+                                    .fillMaxWidth(),
+                            )
                         }
                     }
                 }
@@ -226,7 +221,9 @@ class ReportDetailFragment : Fragment(),
             ) {
                 TitledCard(
                     title = stringResource(id = R.string.title_report_submit_text),
-                    modifier = Modifier.padding(Values.Spacing.around),
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .fillMaxWidth(),
                 ) {
                     NormalText(
                         text = reportDetail.submittedText,
@@ -238,7 +235,9 @@ class ReportDetailFragment : Fragment(),
             reportDetail.fedBackAt?.let { fedBackAt ->
                 TitledCard(
                     title = stringResource(id = R.string.title_report_feedback),
-                    modifier = Modifier.padding(Values.Spacing.around),
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .fillMaxWidth(),
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -292,15 +291,13 @@ class ReportDetailFragment : Fragment(),
                         )
                     }
 
-                    Row {
-                        NormalText(
-                            text = TIME_FORMAT.format(fedBackAt),
-                            modifier = Modifier
-                                .padding(Values.Spacing.around)
-                                .weight(1f),
-                            textAlign = TextAlign.End,
-                        )
-                    }
+                    NormalText(
+                        text = TIME_FORMAT.format(fedBackAt),
+                        modifier = Modifier
+                            .padding(Values.Spacing.around)
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.End,
+                    )
                 }
             }
         }

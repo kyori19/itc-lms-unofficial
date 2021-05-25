@@ -1,7 +1,8 @@
 package net.accelf.itc_lms_unofficial.ui
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Card
@@ -16,9 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 fun PreviewTitledCard() {
     TitledCard(
         title = "Card Title",
+        modifier = Modifier
+            .padding(Values.Spacing.around)
+            .fillMaxWidth(),
     ) {
         Button(
             onClick = {},
+            modifier = Modifier
+                .padding(Values.Spacing.around)
+                .fillMaxWidth(),
         ) {
             Text(
                 text = "Card content"
@@ -31,23 +38,18 @@ fun PreviewTitledCard() {
 fun TitledCard(
     title: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    Row(
+    Card(
         modifier = modifier,
     ) {
-        Card(
-            modifier = Modifier
-                .weight(1f),
-        ) {
-            Column {
-                NormalText(
-                    text = title,
-                    modifier = Modifier.padding(Values.Spacing.around),
-                    style = MaterialTheme.typography.h5,
-                )
-                content()
-            }
+        Column {
+            NormalText(
+                text = title,
+                modifier = Modifier.padding(Values.Spacing.around),
+                style = MaterialTheme.typography.h5,
+            )
+            content()
         }
     }
 }

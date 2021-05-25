@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -68,17 +68,15 @@ class RequestPermissionFragment : Fragment() {
                 modifier = Modifier.padding(Values.Spacing.around),
                 style = MaterialTheme.typography.body1,
             )
-            Row {
-                Button(
-                    onClick = { (requireActivity() as RequestPermissionActivity).request(permission) },
-                    modifier = Modifier
-                        .padding(Values.Spacing.around)
-                        .weight(1f),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.button_grant_permission),
-                    )
-                }
+            Button(
+                onClick = { (requireActivity() as RequestPermissionActivity).request(permission) },
+                modifier = Modifier
+                    .padding(Values.Spacing.around)
+                    .fillMaxWidth(),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.button_grant_permission),
+                )
             }
         }
     }
