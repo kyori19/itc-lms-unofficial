@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import net.accelf.itc_lms_unofficial.ui.Values
+import net.accelf.itc_lms_unofficial.ui.Values.Theme.gray
 import net.accelf.itc_lms_unofficial.ui.compose
 import net.accelf.itc_lms_unofficial.util.Progress
 import net.accelf.itc_lms_unofficial.util.Request
@@ -61,7 +62,7 @@ class LoadingProgressFragment : Fragment() {
                     .padding(Values.Spacing.around + innerDiff / 2)
                     .size(outerCircleWidth - innerDiff),
                 progress = 1f,
-                color = Values.Colors.Gray.darken,
+                color = MaterialTheme.colors.gray(0.3),
                 strokeWidth = outerStrokeWidth - innerDiff,
             )
             CircularProgressIndicator(

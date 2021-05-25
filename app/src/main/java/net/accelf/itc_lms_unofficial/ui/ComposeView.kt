@@ -22,7 +22,7 @@ fun Fragment.compose(
 fun Root(
     content: @Composable () -> Unit,
 ) {
-    MaterialTheme(colors = Values.Colors.theme) {
+    MaterialTheme(colors = Values.Theme.colors) {
         content()
     }
 }

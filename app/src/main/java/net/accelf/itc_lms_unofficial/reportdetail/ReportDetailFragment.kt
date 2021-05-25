@@ -35,6 +35,7 @@ import net.accelf.itc_lms_unofficial.models.Report
 import net.accelf.itc_lms_unofficial.models.ReportDetail
 import net.accelf.itc_lms_unofficial.permission.PermissionRequestable
 import net.accelf.itc_lms_unofficial.ui.*
+import net.accelf.itc_lms_unofficial.ui.Values.Theme.success
 import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
 import net.accelf.itc_lms_unofficial.util.fromHtml
 import javax.inject.Inject
@@ -122,7 +123,7 @@ class ReportDetailFragment : Fragment(),
                         },
                     ),
                     tint = when (reportDetail.status == Report.ReportStatus.SUBMITTED_IN_TIME) {
-                        true -> Values.Colors.success
+                        true -> MaterialTheme.colors.success
                         false -> MaterialTheme.colors.error
                     },
                 )
@@ -150,7 +151,7 @@ class ReportDetailFragment : Fragment(),
                         }
                     ),
                     tint = when (reportDetail.afterDeadlineSubmittable) {
-                        true -> Values.Colors.success
+                        true -> MaterialTheme.colors.success
                         false -> MaterialTheme.colors.error
                     },
                 )
