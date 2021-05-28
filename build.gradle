@@ -11,10 +11,18 @@ buildscript {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+            content {
+                includeModule("com.google.dagger", "hilt-android-gradle-plugin")
+            }
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-beta02'
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_version"
+        classpath 'com.android.tools.build:gradle:7.0.0-beta03'
+        // FIXME: https://github.com/google/dagger/issues/2631
+        //noinspection GradleDependency
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:HEAD-SNAPSHOT'
         classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$about_libs_version"
         //noinspection DifferentKotlinGradleVersion
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
