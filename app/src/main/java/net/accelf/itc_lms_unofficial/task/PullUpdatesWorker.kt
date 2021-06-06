@@ -16,9 +16,10 @@ import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import androidx.core.app.TaskStackBuilder
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
+import androidx.work.rxjava3.RxWorker
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import net.accelf.itc_lms_unofficial.LoginActivity
 import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.Prefs

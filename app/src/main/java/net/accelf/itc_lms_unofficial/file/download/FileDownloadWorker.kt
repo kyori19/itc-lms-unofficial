@@ -7,10 +7,11 @@ import androidx.core.app.NotificationCompat.*
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
+import androidx.work.rxjava3.RxWorker
 import com.google.gson.Gson
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.file.download.DownloadDialogResult.Companion.fromJsonToResult

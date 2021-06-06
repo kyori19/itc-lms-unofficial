@@ -4,7 +4,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.google.gson.Gson
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import net.accelf.itc_lms_unofficial.file.download.ConfirmDownloadDialogFragment.Companion.BUNDLE_RESULT
 import net.accelf.itc_lms_unofficial.file.pdf.PdfActivity
 import net.accelf.itc_lms_unofficial.models.File

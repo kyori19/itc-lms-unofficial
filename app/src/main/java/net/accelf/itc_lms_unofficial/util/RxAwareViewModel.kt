@@ -2,9 +2,9 @@ package net.accelf.itc_lms_unofficial.util
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 
 /**
  * Copied from https://gist.github.com/aykuttasil/ff97723de6f9182f00369f1eb64adb8b

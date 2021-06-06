@@ -17,7 +17,7 @@ import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Singleton
 
@@ -46,7 +46,7 @@ class ApplicationModule {
             .client(okHttpClient)
             .baseUrl(lmsHostUrl)
             .addConverterFactory(DocumentConverterFactory(gson))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(LMS::class.java)
     }

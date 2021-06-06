@@ -1,6 +1,6 @@
 package net.accelf.itc_lms_unofficial.network
 
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import net.accelf.itc_lms_unofficial.models.*
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody

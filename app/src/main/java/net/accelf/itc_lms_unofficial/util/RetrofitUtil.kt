@@ -3,11 +3,11 @@ package net.accelf.itc_lms_unofficial.util
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.uber.autodispose.SingleSubscribeProxy
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider.from
-import com.uber.autodispose.autoDispose
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
+import autodispose2.SingleSubscribeProxy
+import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider.from
+import autodispose2.autoDispose
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
 import net.accelf.itc_lms_unofficial.StartLoginFragment
 import retrofit2.HttpException
 import java.io.ByteArrayOutputStream
