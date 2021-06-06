@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -81,7 +81,9 @@ class ReportDetailFragment : Fragment(),
     @Composable
     private fun ReportDetailFragmentContent(reportDetail: ReportDetail) {
         Column(
-            modifier = Modifier.padding(Values.Spacing.around),
+            modifier = Modifier
+                .padding(Values.Spacing.around)
+                .verticalScroll(rememberScrollState()),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -180,15 +182,13 @@ class ReportDetailFragment : Fragment(),
                 )
             }
 
-            LazyColumn {
-                items(reportDetail.attachmentFiles) {
-                    File(
-                        file = it,
-                        modifier = Modifier
-                            .clickable { openFile(it) }
-                            .fillMaxWidth(),
-                    )
-                }
+            reportDetail.attachmentFiles.forEach {
+                File(
+                    file = it,
+                    modifier = Modifier
+                        .clickable { openFile(it) }
+                        .fillMaxWidth(),
+                )
             }
 
             if (
@@ -201,16 +201,14 @@ class ReportDetailFragment : Fragment(),
                         .padding(Values.Spacing.around)
                         .fillMaxWidth(),
                 ) {
-                    LazyColumn {
-                        items(reportDetail.submittedFiles) {
-                            File(
-                                submittedFile = it,
-                                modifier = Modifier
-                                    .padding(Values.Spacing.around)
-                                    .clickable { openFile(it.file) }
-                                    .fillMaxWidth(),
-                            )
-                        }
+                    reportDetail.submittedFiles.forEach {
+                        File(
+                            submittedFile = it,
+                            modifier = Modifier
+                                .padding(Values.Spacing.around)
+                                .clickable { openFile(it.file) }
+                                .fillMaxWidth(),
+                        )
                     }
                 }
             }

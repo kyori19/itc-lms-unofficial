@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -51,7 +53,9 @@ class RequestPermissionFragment : Fragment() {
     @Composable
     private fun RequestPermissionFragmentContent(permission: Permission) {
         Column(
-            modifier = Modifier.padding(Values.Spacing.around),
+            modifier = Modifier
+                .padding(Values.Spacing.around)
+                .verticalScroll(rememberScrollState()),
         ) {
             NormalText(
                 text = stringResource(id = permission.title),

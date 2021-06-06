@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -66,7 +68,9 @@ class InformationFragment : Fragment() {
         if (information is Success) {
             TitledCard(
                 title = stringResource(id = R.string.title_information),
-                modifier = Modifier.padding(Values.Spacing.around),
+                modifier = Modifier
+                    .padding(Values.Spacing.around)
+                    .verticalScroll(rememberScrollState()),
             ) {
                 SpannedText(
                     text = (information as Success).data.text.fromHtml(),
