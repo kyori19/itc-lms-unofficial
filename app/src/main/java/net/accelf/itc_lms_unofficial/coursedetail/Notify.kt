@@ -1,6 +1,5 @@
 package net.accelf.itc_lms_unofficial.coursedetail
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -28,12 +27,13 @@ fun Notify(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         NormalText(
             text = notify.title,
-            modifier = Modifier.padding(Values.Spacing.around),
+            modifier = Modifier
+                .padding(Values.Spacing.around)
+                .weight(1f),
             style = MaterialTheme.typography.h6,
         )
 
