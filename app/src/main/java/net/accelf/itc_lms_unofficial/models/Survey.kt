@@ -12,6 +12,12 @@ data class Survey(
 ) : Serializable {
 
     companion object {
+        val sample = Survey(
+            id = "7777",
+            title = "Questionnaire",
+            from = Date(),
+            until = Date(),
+        )
 
         fun String.getSurveyId(): String {
             return lmsHostUrl.newBuilder(this)!!

@@ -49,6 +49,16 @@ data class QuillData(
     ) : Serializable
 
     companion object {
+        val sample = QuillData(
+            content = listOf(
+                QuillElement("test text ", QuillAttributes(null, null)),
+                QuillElement("with red text", QuillAttributes("red", null)),
+                QuillElement("\n", QuillAttributes(null, null)),
+                QuillElement("Colored link could appear",
+                    QuillAttributes("#00ff00", "https://example.com")),
+            ),
+        )
+
         fun String.parseQuill(gson: Gson): QuillData? {
             return gson.fromJson(this, QuillData::class.java)
         }

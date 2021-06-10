@@ -23,6 +23,22 @@ data class Attendance(
     }
 
     companion object {
+        val samplePresent = Attendance(
+            id = "55555",
+            date = Date(),
+            status = AttendanceStatus.PRESENT,
+        )
+        val sampleLate = Attendance(
+            id = "66666",
+            date = Date(),
+            status = AttendanceStatus.LATE,
+        )
+        val sampleAbsent = Attendance(
+            id = "77777",
+            date = Date(),
+            status = AttendanceStatus.ABSENT,
+        )
+
         val ATTENDANCE_ID_REGEX = Regex("""attendanceDetail\('\d+[A-Z]\d+,(\d+)'\);""")
     }
 }

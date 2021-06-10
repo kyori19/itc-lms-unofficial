@@ -22,4 +22,14 @@ data class CourseContent(
             return CourseContent(title, from, until, summary, materials)
         }
     }
+
+    companion object {
+        val sample = CourseContent(
+            title = "Notes",
+            from = Date(),
+            until = Date(),
+            summary = "The summary of the content will be displayed here.<br/>It can be multi lines.",
+            materials = listOf(Material.sampleFile, Material.sampleLink),
+        )
+    }
 }

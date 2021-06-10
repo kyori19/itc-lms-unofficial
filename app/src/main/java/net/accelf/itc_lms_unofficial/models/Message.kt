@@ -25,6 +25,15 @@ data class Message(
     }
 
     companion object {
+        val sample = Message(
+            id = "22222",
+            title = "Message to the teacher",
+            createdAt = Date(),
+            status = MessageStatus.HAS_ANSWER,
+            actorName = "Teacher 1",
+            actedAt = Date(),
+        )
+
         val MESSAGE_STATUS_REGEX = Regex("""(.+?)(?:\((.+)\))?""")
 
         fun String.getMessageId(): String {

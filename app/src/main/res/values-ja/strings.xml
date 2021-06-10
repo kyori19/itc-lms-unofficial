@@ -44,16 +44,6 @@
     <string name="hint_icon_taken">受験済み</string>
     <string name="hint_icon_unknown">不明</string>
     <string name="hint_delete_all_workers">全てのワーカーを削除</string>
-    <string name="hint_open_attendances">出席を開く</string>
-    <string name="hint_open_course_contents">講義資料を開く</string>
-    <string name="hint_open_course_details">講義詳細を開く</string>
-    <string name="hint_open_forums">掲示板を開く</string>
-    <string name="hint_open_materials">教材を開く</string>
-    <string name="hint_open_messages">問い合わせを開く</string>
-    <string name="hint_open_notifies">お知らせを開く</string>
-    <string name="hint_open_reports">課題を開く</string>
-    <string name="hint_open_surveys">アンケートを開く</string>
-    <string name="hint_open_tests">テストを開く</string>
     <string name="hint_start_task_now">今すぐタスクを実行</string>
     <string name="menu_copy_url">URLをコピー</string>
     <string name="menu_open_in_browser">このページをブラウザで開く</string>
@@ -148,4 +138,6 @@
     <string name="loading_information">お知らせを読込中…</string>
     <string name="pref_title_logout">ログアウト</string>
     <string name="pref_text_logout">アプリケーションに保存されているクッキーを削除します。</string>
+    <string name="hint_icon_expand">もっと見る</string>
+    <string name="hint_icon_collapse">隠す</string>
 </resources>

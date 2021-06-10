@@ -320,6 +320,30 @@ data class CourseDetail(
     }
 
     companion object {
+        val sample = CourseDetail(
+            id = "2000987650Z00",
+            department = "Department",
+            courseCode = "98765",
+            name = "Course Title",
+            teachers = listOf("teacher-1", "teacher-2"),
+            semester = "S1",
+            periods = listOf(TimeTable.DayOfWeek.MON to 2, TimeTable.DayOfWeek.FRI to 3),
+            summary = "The summary of the course will be displayed here.\\nIt can be multi lines.",
+            onlineInfoUpdatedAt = Date(),
+            onlineInfo = QuillData.sample,
+            notifies = listOf(Notify.sample, Notify.sample),
+            courseContents = listOf(CourseContent.sample, CourseContent.sample),
+            reports = listOf(Report.sample, Report.sample),
+            messages = listOf(Message.sample, Message.sample),
+            attendances = listOf(Attendance.samplePresent,
+                Attendance.sampleLate,
+                Attendance.sampleAbsent),
+            tests = listOf(Test.sample, Test.sample),
+            forums = listOf(Forum.sample, Forum.sample),
+            surveys = listOf(Survey.sample, Survey.sample),
+            sendAttendanceId = "33333",
+        )
+
         private val ATTENDANCE_SEND_ID_REGEX = Regex("""attendancesSend\('\d+[A-Z]\d+,(\d+)'\);""")
         private val COURSE_NAME_REGEX = Regex("""(.+)\s([A-Z\d]+)\s(.+)""")
         private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９他]|Other)[^,/]*""")

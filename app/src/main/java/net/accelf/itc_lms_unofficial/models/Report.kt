@@ -23,4 +23,14 @@ data class Report(
             }
         }
     }
+
+    companion object {
+        val sample = Report(
+            id = "99999",
+            title = "Report Title",
+            from = Date(),
+            until = Date(),
+            status = ReportStatus.SUBMITTED_IN_TIME,
+        )
+    }
 }

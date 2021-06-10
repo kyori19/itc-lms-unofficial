@@ -12,6 +12,12 @@ data class Forum(
 ) : Serializable {
 
     companion object {
+        val sample = Forum(
+            id = "91827",
+            title = "Forum top",
+            from = Date(),
+            until = Date(),
+        )
 
         fun String.getForumId(): String {
             return lmsHostUrl.newBuilder(this)!!

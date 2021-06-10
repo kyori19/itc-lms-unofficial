@@ -18,6 +18,13 @@ class Test(
     }
 
     companion object {
+        val sample = Test(
+            id = "11111",
+            title = "Test Title",
+            status = TestStatus.TAKEN,
+            from = Date(),
+            until = Date(),
+        )
 
         fun String.getTestParams(): Pair<String, TestStatus> {
             return lmsHostUrl.newBuilder(this)!!

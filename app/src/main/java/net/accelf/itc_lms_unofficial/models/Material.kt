@@ -19,4 +19,28 @@ data class Material(
         LINK,
         VIDEO
     }
+
+    companion object {
+        val sampleFile = Material(
+            resourceId = "345678",
+            materialId = "112233",
+            type = MaterialType.FILE,
+            name = "Distributed file",
+            file = File.sample,
+            url = null,
+            createdAt = Date(),
+            until = Date(),
+        )
+
+        val sampleLink = Material(
+            resourceId = "234567",
+            materialId = "878787",
+            type = MaterialType.LINK,
+            name = "Link to the external site",
+            file = null,
+            url = "https://example.com",
+            createdAt = Date(),
+            until = Date(),
+        )
+    }
 }

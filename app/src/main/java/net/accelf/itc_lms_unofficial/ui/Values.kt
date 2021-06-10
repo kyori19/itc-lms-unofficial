@@ -21,6 +21,9 @@ object Values {
         val Colors.success: Color
             @Composable get() = if (isLight) Color(0xff20b020) else Color(0xff5cb95c)
 
+        val Colors.warning: Color
+            @Composable get() = if (isLight) Color(0xfffbc02d) else Color(0xffd6b052)
+
         @Composable
         fun Colors.gray(@FloatRange(from = 0.0, to = 1.0) level: Double): Color {
             val lighten = (0xff * (if (isLight) 1.0 - level else level)).roundToInt()
@@ -29,7 +32,7 @@ object Values {
     }
 
     object Spacing {
-        private val normal = 4.dp
+        val normal = 4.dp
         val around = normal / 2
     }
 

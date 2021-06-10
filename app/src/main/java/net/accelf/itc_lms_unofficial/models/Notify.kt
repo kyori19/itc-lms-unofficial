@@ -11,6 +11,13 @@ data class Notify(
 ) : Serializable {
 
     companion object {
+        val sample = Notify(
+            id = "75689",
+            title = "Notify title",
+            from = Date(),
+            until = Date(),
+        )
+
         val NOTIFY_ID_REGEX = Regex("""InfoDetailCourseTop\(event,(\d+)\);""")
     }
 }

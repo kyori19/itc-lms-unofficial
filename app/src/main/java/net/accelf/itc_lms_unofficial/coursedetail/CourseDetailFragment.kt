@@ -1,15 +1,36 @@
 package net.accelf.itc_lms_unofficial.coursedetail
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,22 +38,20 @@ import com.google.gson.Gson
 import com.tingyik90.snackprogressbar.SnackProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import dagger.hilt.android.AndroidEntryPoint
-import net.accelf.itc_lms_unofficial.BaseFragment
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.coursedetail.SendAttendanceDialogFragment.Companion.BUNDLE_RESULT
-import net.accelf.itc_lms_unofficial.databinding.FragmentCourseDetailBinding
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.file.download.Downloadable.Companion.preparePermissionRequestForDownloadable
 import net.accelf.itc_lms_unofficial.models.*
 import net.accelf.itc_lms_unofficial.permission.PermissionRequestable
+import net.accelf.itc_lms_unofficial.reportdetail.ReportDetailActivity
+import net.accelf.itc_lms_unofficial.ui.*
 import net.accelf.itc_lms_unofficial.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CourseDetailFragment :
-    BaseFragment<FragmentCourseDetailBinding>(FragmentCourseDetailBinding::class.java),
-    NotifyListener, MaterialListener, PermissionRequestable, Downloadable.ProvidesGson {
+class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.ProvidesGson {
 
     @Inject
     override lateinit var gson: Gson
@@ -133,103 +152,358 @@ class CourseDetailFragment :
             }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        return compose {
+            val courseDetailRequest by viewModel.courseDetail.observeAsState()
+
+            when (courseDetailRequest) {
+                is Success -> {
+                    CourseDetailFragmentContent(
+                        courseDetail = (courseDetailRequest as Success).data,
+                        linkMovementMethod = linkMovementMethod,
+                        focusCourseContentResourceId = viewModel.focusCourseContentResourceId,
+                    )
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
+    @Composable
+    @Preview
+    private fun PreviewCourseDetailFragmentContent() {
+        CourseDetailFragmentContent(
+            courseDetail = CourseDetail.sample,
+            linkMovementMethod = CustomLinkMovementMethod(),
+            focusCourseContentResourceId = Material.sampleFile.materialId,
+        )
+    }
+
+    @Composable
+    private fun CourseDetailFragmentContent(
+        courseDetail: CourseDetail,
+        linkMovementMethod: CustomLinkMovementMethod,
+        focusCourseContentResourceId: String? = null,
+    ) {
+        val context = LocalContext.current
+
+        Column(
+            modifier = Modifier
+                .padding(Values.Spacing.around)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            ConstraintLayout(
+                modifier = Modifier
+                    .padding(Values.Spacing.around)
+                    .fillMaxWidth(),
+            ) {
+                val (textDepartment, textPeriod, textCourseTitle, textCourseCode) = createRefs()
+
+                NormalText(
+                    text = courseDetail.department,
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .constrainAs(textDepartment) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            bottom.linkTo(textCourseTitle.top)
+                        },
+                )
+                NormalText(
+                    text = stringResource(
+                        R.string.text_period,
+                        courseDetail.semester,
+                        courseDetail.periods.joinToString(", ") { (dow, p) -> "$dow $p" },
+                    ),
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .constrainAs(textPeriod) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(textCourseTitle.top)
+                            end.linkTo(parent.end)
+                        },
+                )
+                NormalText(
+                    text = courseDetail.name,
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .constrainAs(textCourseTitle) {
+                            top.linkTo(textDepartment.bottom)
+                            start.linkTo(parent.start)
+                            bottom.linkTo(parent.bottom)
+                        },
+                    style = MaterialTheme.typography.h5,
+                    color = MaterialTheme.colors.secondary,
+                )
+                NormalText(
+                    text = courseDetail.courseCode,
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .constrainAs(textCourseCode) {
+                            start.linkTo(textCourseTitle.end)
+                            bottom.linkTo(textCourseTitle.bottom)
+                        },
+                )
+            }
+
+            courseDetail.sendAttendanceId?.let { sendAttendanceId ->
+                Button(
+                    onClick = {
+                        if (!viewModel.prepareForSendingAttendance(sendAttendanceId)) {
+                            Toast.makeText(requireContext(),
+                                R.string.toast_already_fetching,
+                                Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(Values.Spacing.around)
+                        .fillMaxWidth(),
+                ) {
+                    Text(stringResource(id = R.string.button_send_attendance))
+                }
+            }
+
+            ExpandableCard(
+                title = stringResource(id = R.string.title_course_details),
+                modifier = Modifier.padding(Values.Spacing.around),
+            ) {
+                Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        NormalText(
+                            text = stringResource(R.string.title_teachers_name),
+                            modifier = Modifier
+                                .padding(Values.Spacing.around)
+                                .weight(1f),
+                        )
+
+                        NormalText(
+                            text = courseDetail.teachers.joinToString(", "),
+                            modifier = Modifier.padding(Values.Spacing.around),
+                            style = MaterialTheme.typography.h6,
+                        )
+                    }
+
+                    NormalText(
+                        text = stringResource(R.string.title_course_summary),
+                        modifier = Modifier.padding(Values.Spacing.around),
+                    )
+
+                    SpannedText(
+                        text = courseDetail.summary.fromHtml(),
+                        modifier = Modifier.padding(
+                            horizontal = Values.Spacing.around + Values.Spacing.normal,
+                            vertical = Values.Spacing.around,
+                        )
+                    ) {
+                        movementMethod = linkMovementMethod
+                    }
+
+                    courseDetail.onlineInfo?.let { onlineInfo ->
+                        Row {
+                            NormalText(
+                                text = stringResource(R.string.title_online_info),
+                                modifier = Modifier
+                                    .padding(Values.Spacing.around)
+                                    .weight(1f),
+                            )
+
+                            NormalText(
+                                text = TIME_FORMAT.format(courseDetail.onlineInfoUpdatedAt!!),
+                                modifier = Modifier.padding(Values.Spacing.around),
+                            )
+                        }
+
+                        val onlineInfoText = onlineInfo.annotatedString()
+                        val uriHandler = LocalUriHandler.current
+                        ClickableText(
+                            text = onlineInfoText,
+                            modifier = Modifier.padding(
+                                horizontal = Values.Spacing.around + Values.Spacing.normal,
+                                vertical = Values.Spacing.around,
+                            )
+                        ) {
+                            onlineInfoText.getStringAnnotations("URL", it, it)
+                                .firstOrNull()?.let { url ->
+                                    uriHandler.openUri(url.item)
+                                }
+                        }
+                    }
+                }
+            }
+
+            if (courseDetail.notifies.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(id = R.string.title_notifies),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    Column {
+                        courseDetail.notifies.forEach { notify ->
+                            Notify(
+                                notify = notify,
+                                modifier = Modifier
+                                    .padding(Values.Spacing.around)
+                                    .fillMaxWidth()
+                                    .clickable { openNotify(notify.id) },
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (courseDetail.courseContents.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(id = R.string.title_course_contents),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                    defaultExpanded = focusCourseContentResourceId != null,
+                ) {
+                    Column {
+                        courseDetail.courseContents.forEach { courseContent ->
+                            CourseContent(
+                                courseContent = courseContent,
+                                modifier = Modifier.padding(Values.Spacing.around),
+                                linkMovementMethod = linkMovementMethod,
+                                onMaterialClick = { material ->
+                                    when (material.type) {
+                                        Material.MaterialType.FILE -> {
+                                            openFile(material)
+                                        }
+                                        Material.MaterialType.LINK -> {
+                                            material.url?.let { url ->
+                                                openLink(url)
+                                            }
+                                        }
+                                        Material.MaterialType.VIDEO -> {
+                                            openVideo()
+                                        }
+                                    }
+                                },
+                                focusCourseContentResourceId = focusCourseContentResourceId,
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (courseDetail.reports.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(id = R.string.title_reports),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    Column {
+                        courseDetail.reports.forEach { report ->
+                            Report(
+                                report = report,
+                                modifier = Modifier
+                                    .padding(Values.Spacing.around)
+                                    .clickable {
+                                        context.startActivity(
+                                            ReportDetailActivity.intent(context,
+                                                courseDetail.id,
+                                                report.id)
+                                        )
+                                    },
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (courseDetail.messages.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(id = R.string.title_messages),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    Column {
+                        courseDetail.messages.forEach { message ->
+                            Message(
+                                message = message,
+                                modifier = Modifier.padding(Values.Spacing.around),
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (courseDetail.attendances.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(id = R.string.title_attendances),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    Column {
+                        courseDetail.attendances.forEach { attendance ->
+                            Attendance(
+                                attendance = attendance,
+                                modifier = Modifier.padding(Values.Spacing.around),
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (courseDetail.tests.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(id = R.string.title_tests),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    Column {
+                        courseDetail.tests.forEach { test ->
+                            Test(
+                                test = test,
+                                modifier = Modifier.padding(Values.Spacing.around),
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (courseDetail.forums.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(id = R.string.title_forums),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    Column {
+                        courseDetail.forums.forEach { forum ->
+                            Forum(
+                                forum = forum,
+                                modifier = Modifier
+                                    .padding(Values.Spacing.around)
+                                    .fillMaxWidth(),
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (courseDetail.surveys.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(id = R.string.title_surveys),
+                    modifier = Modifier.padding(Values.Spacing.around),
+                ) {
+                    Column {
+                        courseDetail.surveys.forEach { survey ->
+                            Survey(
+                                survey = survey,
+                                modifier = Modifier
+                                    .padding(Values.Spacing.around)
+                                    .fillMaxWidth(),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.courseDetail.onSuccess(viewLifecycleOwner) { courseDetail ->
-            binding.textDepartment.text = courseDetail.department
-            binding.textCourseName.text = courseDetail.name
-            binding.textCourseCode.text = courseDetail.courseCode
-            binding.textPeriod.text = StringBuilder(getString(
-                R.string.text_period,
-                courseDetail.semester,
-                courseDetail.periods.first().first,
-                courseDetail.periods.first().second
-            )).apply {
-                courseDetail.periods.filterIndexed { index, _ -> index != 0 }
-                    .forEach {
-                        append(", ${it.first} ${it.second}")
-                    }
-            }
-
-            showViewsAndDoWhen(courseDetail.sendAttendanceId != null,
-                binding.buttonSendAttendance) {
-                binding.buttonSendAttendance.setOnClickListener {
-                    if (!viewModel.prepareForSendingAttendance(courseDetail.sendAttendanceId!!)) {
-                        Toast.makeText(requireContext(),
-                            R.string.toast_already_fetching,
-                            Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-            }
-
-            binding.textTeachersName.text = courseDetail.teachers.joinToString(", ")
-            binding.textCourseSummary.apply {
-                text = courseDetail.summary.fromHtml()
-                movementMethod = linkMovementMethod
-            }
-            showViewsAndDoWhen(courseDetail.onlineInfo != null,
-                binding.titleOnlineInfo,
-                binding.textOnlineInfo,
-                binding.textOnlineInfoDate) {
-                binding.textOnlineInfoDate.text =
-                    courseDetail.onlineInfoUpdatedAt?.let { TIME_FORMAT.format(it) }
-                binding.textOnlineInfo.apply {
-                    text = courseDetail.onlineInfo!!.toSpanned()
-                    movementMethod = linkMovementMethod
-                }
-            }
-
-            binding.listNotifies.setWithoutInitAdapter(
-                courseDetail.notifies,
-                binding.headerNotifies
-            ) {
-                NotifiesAdapter(courseDetail.notifies, this)
-            }
-
-            viewModel.focusCourseContentResourceId?.let {
-                binding.expandableCourseContents.isExpanded = true
-            }
-            binding.listCourseContents.setWithoutInitAdapter(
-                courseDetail.courseContents,
-                binding.headerCourseContents
-            ) {
-                CourseContentsAdapter(courseDetail.courseContents, this, viewModel)
-            }
-
-            binding.listReports.setWithoutInitAdapter(
-                courseDetail.reports,
-                binding.headerReports
-            ) {
-                ReportsAdapter(courseDetail.id, courseDetail.reports)
-            }
-
-            binding.listMessages.set<Message, MessagesAdapter>(
-                courseDetail.messages,
-                binding.headerMessages
-            )
-
-            binding.listAttendances.set<Attendance, AttendancesAdapter>(
-                courseDetail.attendances,
-                binding.headerAttendances
-            )
-
-            binding.listTests.set<Test, TestsAdapter>(
-                courseDetail.tests,
-                binding.headerTests
-            )
-
-            binding.listForums.set<Forum, ForumsAdapter>(
-                courseDetail.forums,
-                binding.headerForums
-            )
-
-            binding.listSurveys.set<Survey, SurveysAdapter>(
-                courseDetail.surveys,
-                binding.headerSurveys
-            )
-        }
 
         viewModel.notifyDetail.withSnackProgressBar(viewLifecycleOwner,
             notifySnackProgressBar,
@@ -268,19 +542,19 @@ class CourseDetailFragment :
         }
     }
 
-    override fun openNotify(notifyId: String) {
+    private fun openNotify(notifyId: String) {
         if (!viewModel.loadNotify(notifyId)) {
             Toast.makeText(requireContext(), R.string.toast_already_fetching, Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
-    override fun openFile(material: Material) {
+    private fun openFile(material: Material) {
         downloadable = Downloadable.materialFile(viewModel.courseId, material)
         downloadable!!.open(this)
     }
 
-    override fun openLink(url: String) {
+    private fun openLink(url: String) {
         openingLinkDialog.setMessage(getString(R.string.dialog_message_open_link, url))
             .setPositiveButton(R.string.button_dialog_open) { _, _ ->
                 customTabsIntent.launchUrl(requireContext(), url.toUri())
@@ -288,7 +562,7 @@ class CourseDetailFragment :
             .show()
     }
 
-    override fun openVideo() {
+    private fun openVideo() {
         openingVideoDialog.show()
     }
 

@@ -15,21 +15,47 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun PreviewTitledCard() {
-    TitledCard(
-        title = "Card Title",
-        modifier = Modifier
-            .padding(Values.Spacing.around)
-            .fillMaxWidth(),
-    ) {
-        Button(
-            onClick = {},
+    Column {
+        TitledCard(
+            title = "Card Title",
             modifier = Modifier
                 .padding(Values.Spacing.around)
                 .fillMaxWidth(),
         ) {
-            Text(
-                text = "Card content"
-            )
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .padding(Values.Spacing.around)
+                    .fillMaxWidth(),
+            ) {
+                Text(
+                    text = "Card content",
+                )
+            }
+        }
+
+        TitledCard(
+            title = {
+                Text(
+                    text = "Custom title component",
+                    color = MaterialTheme.colors.primary,
+                    style = MaterialTheme.typography.h4,
+                )
+            },
+            modifier = Modifier
+                .padding(Values.Spacing.around)
+                .fillMaxWidth(),
+        ) {
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .padding(Values.Spacing.around)
+                    .fillMaxWidth(),
+            ) {
+                Text(
+                    text = "Card content",
+                )
+            }
         }
     }
 }
@@ -40,15 +66,30 @@ fun TitledCard(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Card(
-        modifier = modifier,
-    ) {
-        Column {
+    TitledCard(
+        title = {
             NormalText(
                 text = title,
                 modifier = Modifier.padding(Values.Spacing.around),
                 style = MaterialTheme.typography.h5,
             )
+        },
+        modifier = modifier,
+        content = content,
+    )
+}
+
+@Composable
+fun TitledCard(
+    title: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Card(
+        modifier = modifier,
+    ) {
+        Column {
+            title()
             content()
         }
     }
