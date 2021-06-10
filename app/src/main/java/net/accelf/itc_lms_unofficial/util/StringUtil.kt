@@ -35,10 +35,6 @@ fun String.toTimeSeconds(): Date? {
     return TIME_SECONDS_FORMAT.parse(this)
 }
 
-fun CharSequence?.isNotNullOrEmpty(): Boolean {
-    return !isNullOrEmpty()
-}
-
 fun Context.timeSpanToString(start: Date?, end: Date?, multiline: Boolean = true): String {
     return getString(
         when (multiline) {

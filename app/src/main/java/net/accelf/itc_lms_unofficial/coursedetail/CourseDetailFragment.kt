@@ -11,7 +11,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
@@ -22,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -32,14 +36,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.tingyik90.snackprogressbar.SnackProgressBar
 import com.tingyik90.snackprogressbar.SnackProgressBarManager
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.coursedetail.SendAttendanceDialogFragment.Companion.BUNDLE_RESULT
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.file.download.Downloadable.Companion.preparePermissionRequestForDownloadable
@@ -152,6 +154,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
             }
     }
 
+    @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -174,6 +177,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
         }
     }
 
+    @ExperimentalComposeUiApi
     @Composable
     @Preview
     private fun PreviewCourseDetailFragmentContent() {
@@ -184,6 +188,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
         )
     }
 
+    @ExperimentalComposeUiApi
     @Composable
     private fun CourseDetailFragmentContent(
         courseDetail: CourseDetail,
@@ -255,7 +260,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
                 Button(
                     onClick = {
                         if (!viewModel.prepareForSendingAttendance(sendAttendanceId)) {
-                            Toast.makeText(requireContext(),
+                            Toast.makeText(context,
                                 R.string.toast_already_fetching,
                                 Toast.LENGTH_SHORT)
                                 .show()
@@ -266,6 +271,25 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
                         .fillMaxWidth(),
                 ) {
                     Text(stringResource(id = R.string.button_send_attendance))
+                }
+
+                val attendanceSendRequest by viewModel.attendanceSend.observeAsState()
+                if (attendanceSendRequest != null && attendanceSendRequest is Success) {
+                    val attendanceSend = (attendanceSendRequest as Success).data
+                    if (!attendanceSend.success) {
+                        SendAttendanceDialog(
+                            attendanceSend = attendanceSend,
+                            onSubmit = { password, comment ->
+                                if (!viewModel.sendAttendance(password, comment)) {
+                                    Toast.makeText(context,
+                                        R.string.toast_already_fetching,
+                                        Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            },
+                            onCancel = { viewModel.closeSendAttendance() },
+                        )
+                    }
                 }
             }
 
@@ -516,28 +540,14 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
             }
         }
 
-        viewModel.attendanceSend.withSnackProgressBar(viewLifecycleOwner,
+        viewModel.attendanceSend.withSnackProgressBar(
+            viewLifecycleOwner,
             attendanceSendSnackProgressBar,
             snackProgressBarManager,
-            { viewModel.closeSendAttendance() }) {
+            { viewModel.closeSendAttendance() }
+        ) {
             if (it.success) {
                 sendAttendanceSuccessDialog.show()
-                return@withSnackProgressBar
-            }
-
-            SendAttendanceDialogFragment.newInstance()
-                .show(parentFragmentManager, SendAttendanceDialogFragment::class.java.simpleName)
-        }
-
-        setFragmentResultListener(SendAttendanceDialogFragment::class.java.simpleName) { _, it ->
-            @Suppress("UNCHECKED_CAST")
-            (it.getSerializable(BUNDLE_RESULT) as Result<SendAttendanceDialogResult>).onSuccess {
-                if (!viewModel.sendAttendance(it.attendancePassword, it.attendanceComment)) {
-                    Toast.makeText(requireContext(),
-                        R.string.toast_already_fetching,
-                        Toast.LENGTH_SHORT)
-                        .show()
-                }
             }
         }
     }

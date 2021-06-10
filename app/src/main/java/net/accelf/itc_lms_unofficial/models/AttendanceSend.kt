@@ -68,4 +68,21 @@ data class AttendanceSend(
             }
         }
     }
+
+    companion object {
+        val sample = AttendanceSend(
+            id = "55555",
+            csrf = "",
+            sent = true,
+            allowedSince = Date(),
+            allowedUntil = Date(),
+            lateSince = Date(),
+            lateUntil = Date(),
+            password = "foo",
+            errorOnPassword = "Wrong password",
+            comment = "",
+            errorOnComment = "",
+            success = false,
+        )
+    }
 }
