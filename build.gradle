@@ -3,7 +3,7 @@ buildscript {
     ext.about_libs_version = '8.9.0'
     ext.autodispose_version = '2.0.0'
     ext.compose_version = '1.0.0-beta08'
-    ext.dagger_version= '2.36'
+    ext.dagger_version= '2.37'
     ext.hilt_version = '1.0.0'
     ext.kotlin_version = '1.5.10'
     ext.lifecycle_version = '2.3.1'
@@ -21,7 +21,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-beta03'
+        classpath 'com.android.tools.build:gradle:7.1.0-alpha02'
         classpath "com.google.dagger:hilt-android-gradle-plugin:$dagger_version"
         classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$about_libs_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
