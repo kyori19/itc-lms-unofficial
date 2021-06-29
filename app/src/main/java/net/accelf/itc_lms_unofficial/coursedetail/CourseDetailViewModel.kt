@@ -6,6 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_CONTENT_MATERIAL_ID
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_COURSE_ID
 import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_NOTIFY_ID
+import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_OPEN_DESCRIPTION
+import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.EXTRA_URL
 import net.accelf.itc_lms_unofficial.models.AttendanceSend
 import net.accelf.itc_lms_unofficial.models.CourseDetail
 import net.accelf.itc_lms_unofficial.models.NotifyDetail
@@ -27,10 +29,25 @@ class CourseDetailViewModel @Inject constructor(
     private val mutableNotifyDetail = mutableLiveDataOf<Request<NotifyDetail>?>(null)
     val notifyDetail: LiveData<Request<NotifyDetail>?> = mutableNotifyDetail
 
-    var focusCourseContentResourceId: String?
-        get() = savedState.get(EXTRA_COURSE_CONTENT_MATERIAL_ID)
-        private set(value) {
-            savedState.set(EXTRA_COURSE_CONTENT_MATERIAL_ID, value)
+    val focusCourseContentResourceId: String?
+        get() {
+            val v = savedState.get<String>(EXTRA_COURSE_CONTENT_MATERIAL_ID)
+            savedState.set(EXTRA_COURSE_CONTENT_MATERIAL_ID, null)
+            return v
+        }
+
+    val url: String?
+        get() {
+            val v = savedState.get<String>(EXTRA_URL)
+            savedState.set(EXTRA_URL, null)
+            return v
+        }
+
+    val openDescription: Boolean
+        get() {
+            val v = savedState.get<Boolean>(EXTRA_OPEN_DESCRIPTION) ?: false
+            savedState.set(EXTRA_OPEN_DESCRIPTION, false)
+            return v
         }
 
     private val mutableAttendanceSend = mutableLiveDataOf<Request<AttendanceSend>?>(null)
@@ -69,10 +86,6 @@ class CourseDetailViewModel @Inject constructor(
     fun closeNotify() {
         mutableNotifyDetail.postValue(null)
         savedState.set(EXTRA_NOTIFY_ID, null)
-    }
-
-    fun onCourseContentOpened() {
-        focusCourseContentResourceId = null
     }
 
     fun prepareForSendingAttendance(attendanceId: String): Boolean {

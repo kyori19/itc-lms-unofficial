@@ -13,7 +13,6 @@ import android.webkit.WebViewClient
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
-import androidx.core.app.TaskStackBuilder
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import androidx.work.rxjava3.RxWorker
@@ -24,14 +23,11 @@ import net.accelf.itc_lms_unofficial.LoginActivity
 import net.accelf.itc_lms_unofficial.Notifications
 import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity
-import net.accelf.itc_lms_unofficial.coursedetail.CourseDetailActivity.Companion.putCourseId
 import net.accelf.itc_lms_unofficial.di.EncryptedDataStore
 import net.accelf.itc_lms_unofficial.di.SavedCookieJar
 import net.accelf.itc_lms_unofficial.models.Update
 import net.accelf.itc_lms_unofficial.models.Updates
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.reportdetail.ReportDetailActivity
 import net.accelf.itc_lms_unofficial.services.NotificationService
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.util.*
@@ -137,6 +133,7 @@ class PullUpdatesWorker @AssistedInject constructor(
             }
     }
 
+    @SuppressLint("LaunchActivityFromNotification")
     private fun Update.toNotification(csrf: String): Notification {
         return NotificationCompat.Builder(context, Notifications.Channels.LMS_UPDATES)
             .apply {
@@ -152,41 +149,24 @@ class PullUpdatesWorker @AssistedInject constructor(
 
                 setAutoCancel(true)
 
-                val activityIntent = when (contentType) {
-                    Update.ContentType.NOTIFY -> CourseDetailActivity.intent(context,
-                        courseId,
-                        notifyId = contentId)
-                    Update.ContentType.MATERIAL -> CourseDetailActivity.intent(context,
-                        courseId,
-                        materialId = contentId)
-                    Update.ContentType.REPORT -> ReportDetailActivity.intent(context,
-                        courseId,
-                        contentId)
-                    else -> CourseDetailActivity.intent(context, courseId)
-                }
-                val stackedIntent = TaskStackBuilder.create(context)
-                    .run {
-                        addNextIntentWithParentStack(activityIntent)
-                        if (contentType == Update.ContentType.REPORT) {
-                            editIntentAt(intents.indexOfFirst { it.component?.shortClassName == ".coursedetail.CourseDetailActivity" })
-                                ?.putCourseId(courseId)
-                        }
-                        getPendingIntent(id.toInt(), PendingIntent.FLAG_CANCEL_CURRENT)
-                    }
-
                 val openIntent =
-                    NotificationService.intent(context, csrf, targetId, stackedIntent!!)
-                val pendingOpenIntent = PendingIntent.getService(context,
+                    NotificationService.intent(context, this@toNotification, csrf, false)
+                val pendingOpenIntent = PendingIntent.getService(
+                    context,
                     80000000 + id.toInt(),
                     openIntent,
-                    PendingIntent.FLAG_CANCEL_CURRENT)
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT,
+                )
                 setContentIntent(pendingOpenIntent)
 
-                val cancelIntent = NotificationService.intent(context, csrf, targetId)
-                val pendingCancelIntent = PendingIntent.getService(context,
+                val cancelIntent =
+                    NotificationService.intent(context, this@toNotification, csrf, true)
+                val pendingCancelIntent = PendingIntent.getService(
+                    context,
                     90000000 + id.toInt(),
                     cancelIntent,
-                    PendingIntent.FLAG_CANCEL_CURRENT)
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT,
+                )
                 setDeleteIntent(pendingCancelIntent)
             }.build()
     }
@@ -207,7 +187,7 @@ class PullUpdatesWorker @AssistedInject constructor(
                 val intent = LoginActivity.intent(context)
                 val pendingIntent = PendingIntent.getActivity(
                     context, Notifications.Ids.SESSION_EXPIRED,
-                    intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                 )
                 setContentIntent(pendingIntent)
             }.build()
@@ -229,7 +209,7 @@ class PullUpdatesWorker @AssistedInject constructor(
                 val intent = Intent(context, PreferenceActivity::class.java)
                 val pendingIntent = PendingIntent.getActivity(
                     context, Notifications.Ids.WRONG_CREDENTIALS,
-                    intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
                 )
                 setContentIntent(pendingIntent)
             }.build()

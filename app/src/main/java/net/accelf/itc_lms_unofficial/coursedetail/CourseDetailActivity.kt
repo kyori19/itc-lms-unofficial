@@ -42,22 +42,28 @@ class CourseDetailActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
         const val EXTRA_COURSE_ID = "course_id"
         const val EXTRA_NOTIFY_ID = "notify_id"
         const val EXTRA_COURSE_CONTENT_MATERIAL_ID = "course_content_material_id"
+        const val EXTRA_URL = "url"
+        const val EXTRA_OPEN_DESCRIPTION = "open_description"
 
         fun intent(
             context: Context,
             courseId: String,
             notifyId: String? = null,
             materialId: String? = null,
+            url: String? = null,
+            openDescription: Boolean = false,
         ): Intent {
             return Intent(context, CourseDetailActivity::class.java).apply {
                 putExtra(EXTRA_COURSE_ID, courseId)
                 putExtra(EXTRA_NOTIFY_ID, notifyId)
                 putExtra(EXTRA_COURSE_CONTENT_MATERIAL_ID, materialId)
+                putExtra(EXTRA_URL, url)
+                putExtra(EXTRA_OPEN_DESCRIPTION, openDescription)
             }
         }
 
         fun Intent.putCourseId(courseId: String): Intent {
-            require(component?.shortClassName == ".coursedetail.CourseDetailActivity") { "Intent of CourseDetailActivity required" }
+            require(component?.className == CourseDetailActivity::class.java.name) { "Intent of CourseDetailActivity required" }
             return apply {
                 putExtra(EXTRA_COURSE_ID, courseId)
             }

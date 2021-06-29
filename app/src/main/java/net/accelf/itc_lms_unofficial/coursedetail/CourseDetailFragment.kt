@@ -1,5 +1,6 @@
 package net.accelf.itc_lms_unofficial.coursedetail
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -169,6 +170,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
                         courseDetail = (courseDetailRequest as Success).data,
                         linkMovementMethod = linkMovementMethod,
                         focusCourseContentResourceId = viewModel.focusCourseContentResourceId,
+                        openDescription = viewModel.openDescription,
                     )
                 }
                 else -> {
@@ -185,6 +187,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
             courseDetail = CourseDetail.sample,
             linkMovementMethod = CustomLinkMovementMethod(),
             focusCourseContentResourceId = Material.sampleFile.materialId,
+            openDescription = true,
         )
     }
 
@@ -194,6 +197,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
         courseDetail: CourseDetail,
         linkMovementMethod: CustomLinkMovementMethod,
         focusCourseContentResourceId: String? = null,
+        openDescription: Boolean = false,
     ) {
         val context = LocalContext.current
 
@@ -296,6 +300,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
             ExpandableCard(
                 title = stringResource(id = R.string.title_course_details),
                 modifier = Modifier.padding(Values.Spacing.around),
+                defaultExpanded = openDescription,
             ) {
                 Column {
                     Row(
@@ -549,6 +554,10 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
             if (it.success) {
                 sendAttendanceSuccessDialog.show()
             }
+        }
+
+        viewModel.url?.let {
+            customTabsIntent.launchUrl(requireContext(), Uri.parse(it))
         }
     }
 
