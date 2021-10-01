@@ -21,14 +21,14 @@ data class NotifyDetail(
             document(value).let { document ->
                 val blocks =
                     document.select("#information_view .subblock_form span:not(#osiraseTitle)")
-                val (from, to) = blocks.first().text().toTimeSpan()
+                val span = blocks.first()?.text()?.toTimeSpan()
 
                 return NotifyDetail(
-                    document.select("#osiraseTitle").first().text(),
+                    document.select("#osiraseTitle").first()?.text() ?: "",
                     blocks.second().text(),
-                    from,
-                    to,
-                    document.select(".textareaContents").first().html()
+                    span?.get(0),
+                    span?.get(1),
+                    document.select(".textareaContents").first()?.html() ?: "",
                 )
             }
         }

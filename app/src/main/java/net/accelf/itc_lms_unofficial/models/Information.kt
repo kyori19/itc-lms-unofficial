@@ -14,7 +14,7 @@ data class Information(
         override fun convert(value: ResponseBody): Information {
             document(value).let { document ->
                 return Information(
-                    document.select("#information .infotext ul").first().html(),
+                    document.select("#information .infotext ul").first()?.html() ?: "",
                 )
             }
         }

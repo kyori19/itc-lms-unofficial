@@ -11,10 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -111,6 +108,7 @@ class ReportDetailFragment : Fragment(),
                         Report.ReportStatus.SUBMITTED_IN_TIME -> Icons.Default.Check
                         Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> Icons.Default.Schedule
                         Report.ReportStatus.TEMPORARILY_SAVED -> Icons.Default.Save
+                        Report.ReportStatus.UNKNOWN -> Icons.Default.Cancel
                     },
                     modifier = Modifier.padding(Values.Spacing.around),
                     contentDescription = stringResource(
@@ -119,6 +117,7 @@ class ReportDetailFragment : Fragment(),
                             Report.ReportStatus.SUBMITTED_IN_TIME -> R.string.hint_icon_submitted_in_time
                             Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.string.hint_icon_submitted_after_deadline
                             Report.ReportStatus.TEMPORARILY_SAVED -> R.string.hint_icon_temporarily_saved
+                            Report.ReportStatus.UNKNOWN -> R.string.hint_icon_unknown
                         },
                     ),
                     tint = when (reportDetail.status == Report.ReportStatus.SUBMITTED_IN_TIME) {
@@ -133,6 +132,7 @@ class ReportDetailFragment : Fragment(),
                             Report.ReportStatus.SUBMITTED_IN_TIME -> R.string.hint_icon_submitted_in_time
                             Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.string.hint_icon_submitted_after_deadline
                             Report.ReportStatus.TEMPORARILY_SAVED -> R.string.hint_icon_temporarily_saved
+                            Report.ReportStatus.UNKNOWN -> R.string.hint_icon_unknown
                         },
                     ),
                     modifier = Modifier.padding(Values.Spacing.around),

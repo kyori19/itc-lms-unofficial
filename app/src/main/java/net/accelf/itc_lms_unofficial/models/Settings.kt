@@ -20,11 +20,11 @@ data class Settings(
         override fun convert(value: ResponseBody): Settings? {
             document(value).let {
                 return Settings(
-                    it.select("input[name=_csrf]").first().`val`(),
+                    it.select("input[name=_csrf]").first()?.`val`() ?: "",
                     it.select("select[name=langCd] option").toSelectOptions(),
-                    it.select("input[name=mailType][checked]").first().`val`(),
-                    it.select("input[name=mailAddress1]").first().`val`(),
-                    it.select("input[name=mailAddress2]").first().`val`(),
+                    it.select("input[name=mailType][checked]").first()?.`val`() ?: "",
+                    it.select("input[name=mailAddress1]").first()?.`val`() ?: "",
+                    it.select("input[name=mailAddress2]").first()?.`val`() ?: "",
                     it.select("select[name=forwardId11] option").toSelectOptions(),
                     it.select("select[name=forwardId110] option").toSelectOptions(),
                 )

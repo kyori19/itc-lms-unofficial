@@ -15,12 +15,12 @@ data class Report(
         SUBMITTED_IN_TIME(setOf("期限内提出", "Submit in time")),
         SUBMITTED_AFTER_DEADLINE(setOf("期限後提出", "Late submission")),
         TEMPORARILY_SAVED(setOf("一時保存", "Temporarily saved")),
+        UNKNOWN(setOf()),
         ;
 
         companion object {
-            fun fromSource(text: String): ReportStatus {
-                return values().first { text in it.texts }
-            }
+            fun String?.toReportStatus(): ReportStatus =
+                values().firstOrNull { this in it.texts } ?: UNKNOWN
         }
     }
 

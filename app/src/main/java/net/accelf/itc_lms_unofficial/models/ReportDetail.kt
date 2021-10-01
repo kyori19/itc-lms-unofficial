@@ -1,5 +1,7 @@
 package net.accelf.itc_lms_unofficial.models
 
+import net.accelf.itc_lms_unofficial.models.File.ScanStatus.Companion.toScanStatus
+import net.accelf.itc_lms_unofficial.models.Report.ReportStatus.Companion.toReportStatus
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
 import net.accelf.itc_lms_unofficial.util.*
 import okhttp3.ResponseBody
@@ -44,28 +46,25 @@ data class ReportDetail(
                 val feedback = document.select("#report_statu .subblock_form.break div")
 
                 return ReportDetail(
-                    document.select("#reportId").first().`val`(),
-                    document.select("input[name=idnumber]").first().`val`(),
-                    details.first().text(),
+                    document.select("#reportId").first()?.`val`() ?: "",
+                    document.select("input[name=idnumber]").first()?.`val`() ?: "",
+                    details.first()?.text() ?: "",
                     details.second().html(),
                     document.select(".page_supple .subblock_form div")
                         .filter { it.select("div .downloadFile").size == 1 }
                         .map {
                             File(
-                                it.select(".objectName").first().text(),
-                                it.select(".downloadFile").first().text(),
-                                File.ScanStatus.fromText(
-                                    it.select(".scanStatus").first().text()),
+                                it.select(".objectName").first()?.text() ?: "",
+                                it.select(".downloadFile").first()?.text() ?: "",
+                                it.select(".scanStatus").first()?.text().toScanStatus(),
                             )
                         },
                     times.first().text().toDateTime(),
                     times.last().text().toDateTime(),
-                    document.select(".page_supple .subblock_form").last().text() in listOf("可",
-                        "Allowed"),
+                    document.select(".page_supple .subblock_form")
+                        .last()?.text() in listOf("可", "Allowed"),
                     document.select("#report_statu .subblock_form span")
-                        .firstOrNull()?.let {
-                            Report.ReportStatus.fromSource(it.text())
-                        } ?: Report.ReportStatus.NOT_SUBMITTED,
+                        .firstOrNull()?.text().toReportStatus(),
                     when {
                         document.select("#submissionArea").isNotEmpty() -> SubmissionType.FILE
                         document.select("#submissionText").isNotEmpty() -> SubmissionType.TEXT_INPUT
@@ -78,12 +77,12 @@ data class ReportDetail(
 
                         return@map SubmittedFile(
                             row.select("input[name=\"deleteFile\"]").getOrNull(0)?.`val`() ?: "",
-                            cols.first().text(),
-                            cols.last().text().toDateTime()!!,
+                            cols.first()?.text() ?: "",
+                            cols.last()?.text()?.toDateTime()!!,
                             File(
-                                row.select(".objectName").first().text(),
-                                row.select(".fileName").first().text(),
-                                File.ScanStatus.fromText(row.select(".scanStatus").first().text())
+                                row.select(".objectName").first()?.text() ?: "",
+                                row.select(".fileName").first()?.text() ?: "",
+                                row.select(".scanStatus").first()?.text().toScanStatus(),
                             )
                         )
                     },
@@ -97,10 +96,10 @@ data class ReportDetail(
                         .firstOrNull()?.let {
                             File(
                                 document.select("#report_statu .subblock_form.break .objectName")
-                                    .first().text(),
+                                    .first()?.text() ?: "",
                                 it.text(),
-                                File.ScanStatus.fromText(document.select("#report_statu .subblock_form.break .scanStatus")
-                                    .first().text()),
+                                document.select("#report_statu .subblock_form.break .scanStatus")
+                                    .first()?.text().toScanStatus(),
                             )
                         },
                 )

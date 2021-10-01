@@ -54,19 +54,19 @@ data class TimeTable(
                 }
 
                 return TimeTable(
-                    it.select("#page_contents .login_view_name").first().text(),
+                    it.select("#page_contents .login_view_name").first()?.text() ?: "",
                     it.select("#page_contents .divTable:not(.otherCourse) .divTableBody .divTableRow.data")
                         .map { period ->
                             period.select(".divTableCell").map { cell ->
                                 cell.select(".divTableCellRow").map { row ->
                                     row.select(".divTableCellHeader").first().let { header ->
                                         Course(
-                                            header.id(),
-                                            header.text(),
-                                            row.select(".divTableCellTeacher").first().children()
-                                                .map { span ->
+                                            header?.id() ?: "",
+                                            header?.text() ?: "",
+                                            row.select(".divTableCellTeacher").first()?.children()
+                                                ?.map { span ->
                                                     span.text().replace(", ", "")
-                                                },
+                                                } ?: listOf(),
                                             row.select(".enrolTemp_icon").isNotEmpty()
                                         )
                                     }

@@ -21,16 +21,17 @@ data class Updates(
         override fun convert(value: ResponseBody): Updates? {
             document(value).let { document ->
                 return Updates(
-                    document.select("input[name=_csrf]").first().`val`(),
+                    document.select("input[name=_csrf]").first()?.`val`() ?: "",
                     document.select(".updateInfoTable .updateTableContents .updateInfoCell")
                         .map { row ->
                             lateinit var url: String
                             lateinit var courseName: String
                             val periods = mutableListOf<Pair<TimeTable.DayOfWeek, Int>>()
                             lateinit var text: String
-                            row.select(".message_link button").first().let { element ->
+                            row.select(".message_link button").first()?.let { element ->
                                 url = element.`val`()
-                                COURSE_NAME_REGEX.matchEntire(element.select("span").first().text())
+                                element.select("span").first()?.text()
+                                    ?.let { COURSE_NAME_REGEX.matchEntire(it) }
                                     ?.let {
                                         it.groupValues[1].split("・").forEach { periodText ->
                                             PERIOD_REGEX.matchEntire(periodText)?.let { result ->
@@ -44,17 +45,17 @@ data class Updates(
                             }
 
                             Update(
-                                row.select("input#updateInfoId").first().`val`(),
-                                row.select("input#role").first().`val`().toRole(),
-                                row.select(".message_link label").first().text().toDateTime(),
+                                row.select("input#updateInfoId").first()?.`val`() ?: "",
+                                row.select("input#role").first()?.`val`().toRole(),
+                                row.select(".message_link label").first()?.text()?.toDateTime(),
                                 url,
-                                row.select("input#idnumber").first().`val`(),
+                                row.select("input#idnumber").first()?.`val`() ?: "",
                                 courseName,
                                 periods,
                                 text,
-                                row.select("input#contentId").first().`val`(),
-                                row.select("input#module").first().`val`().toContentType(),
-                                row.select("input#info_action").first().`val`().toActionType()
+                                row.select("input#contentId").first()?.`val`() ?: "",
+                                row.select("input#module").first()?.`val`().toContentType(),
+                                row.select("input#info_action").first()?.`val`().toActionType(),
                             )
                         },
                     null

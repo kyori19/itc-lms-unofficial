@@ -20,12 +20,13 @@ data class Update(
     val targetId = "${role.idPrefix}-${id}"
 
     enum class Role(val idPrefix: Int, private val text: String) {
-        STUDENT(2, "STUDENT");
+        STUDENT(2, "STUDENT"),
+        UNKNOWN(-1, ""),
+        ;
 
         companion object {
-            fun String.toRole(): Role {
-                return values().first { this == it.text }
-            }
+            fun String?.toRole(): Role =
+                values().firstOrNull { this == it.text } ?: UNKNOWN
         }
     }
 
@@ -40,9 +41,8 @@ data class Update(
         ;
 
         companion object {
-            fun String.toContentType(): ContentType {
-                return values().firstOrNull { this == it.text } ?: UNKNOWN
-            }
+            fun String?.toContentType(): ContentType =
+                values().firstOrNull { this == it.text } ?: UNKNOWN
         }
     }
 
@@ -55,9 +55,8 @@ data class Update(
         ;
 
         companion object {
-            fun String.toActionType(): ActionType {
-                return values().firstOrNull { this == it.text } ?: UNKNOWN
-            }
+            fun String?.toActionType(): ActionType =
+                values().firstOrNull { this == it.text } ?: UNKNOWN
         }
     }
 }

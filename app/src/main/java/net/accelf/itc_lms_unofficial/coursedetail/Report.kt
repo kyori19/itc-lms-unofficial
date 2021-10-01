@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import net.accelf.itc_lms_unofficial.R
@@ -41,7 +42,9 @@ fun Report(
     ) {
         Icon(
             imageVector = when (report.status) {
-                Report.ReportStatus.NOT_SUBMITTED -> Icons.Default.Cancel
+                Report.ReportStatus.NOT_SUBMITTED,
+                Report.ReportStatus.UNKNOWN,
+                -> Icons.Default.Cancel
                 Report.ReportStatus.SUBMITTED_IN_TIME -> Icons.Default.Check
                 Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> Icons.Default.Schedule
                 Report.ReportStatus.TEMPORARILY_SAVED -> Icons.Default.Save
@@ -53,6 +56,7 @@ fun Report(
                 Report.ReportStatus.SUBMITTED_AFTER_DEADLINE,
                 Report.ReportStatus.TEMPORARILY_SAVED,
                 -> MaterialTheme.colors.error
+                Report.ReportStatus.UNKNOWN -> Color.Unspecified
             },
             contentDescription = stringResource(
                 id = when (report.status) {
@@ -60,6 +64,7 @@ fun Report(
                     Report.ReportStatus.SUBMITTED_IN_TIME -> R.string.hint_icon_submitted_in_time
                     Report.ReportStatus.SUBMITTED_AFTER_DEADLINE -> R.string.hint_icon_submitted_after_deadline
                     Report.ReportStatus.TEMPORARILY_SAVED -> R.string.hint_icon_temporarily_saved
+                    Report.ReportStatus.UNKNOWN -> R.string.hint_icon_unknown
                 },
             )
         )

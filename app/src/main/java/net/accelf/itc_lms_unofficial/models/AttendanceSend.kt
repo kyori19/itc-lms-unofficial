@@ -34,11 +34,11 @@ data class AttendanceSend(
                     var lateUntil: Date? = null
                     form?.select(".subblock_contents .subblock_line .subblock_form .important")
                         ?.apply {
-                            first().text().toTimeSpan().apply {
+                            first()?.text()?.toTimeSpan()?.apply {
                                 allowedSince = get(0)
                                 allowedUntil = get(1)
                             }
-                            last().text().toTimeSpan().apply {
+                            last()?.text()?.toTimeSpan()?.apply {
                                 lateSince = get(0)
                                 lateUntil = get(1)
                             }

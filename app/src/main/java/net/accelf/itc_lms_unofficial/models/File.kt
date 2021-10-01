@@ -11,12 +11,13 @@ data class File(
     enum class ScanStatus(val text: String) {
         SCANNED("1"),
         NOT_SCANNED("0"),
-        FAILED("9");
+        FAILED("9"),
+        UNKNOWN(""),
+        ;
 
         companion object {
-            fun fromText(text: String): ScanStatus {
-                return values().first { it.text == text }
-            }
+            fun String?.toScanStatus(): ScanStatus =
+                values().firstOrNull { it.text == this } ?: UNKNOWN
         }
     }
 

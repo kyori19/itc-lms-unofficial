@@ -4,12 +4,14 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import net.accelf.itc_lms_unofficial.models.Attendance.AttendanceStatus.Companion.toAttendanceStatus
 import net.accelf.itc_lms_unofficial.models.Attendance.Companion.ATTENDANCE_ID_REGEX
+import net.accelf.itc_lms_unofficial.models.File.ScanStatus.Companion.toScanStatus
 import net.accelf.itc_lms_unofficial.models.Forum.Companion.getForumId
 import net.accelf.itc_lms_unofficial.models.Message.Companion.MESSAGE_STATUS_REGEX
 import net.accelf.itc_lms_unofficial.models.Message.Companion.getMessageId
 import net.accelf.itc_lms_unofficial.models.Message.MessageStatus.Companion.toMessageStatus
 import net.accelf.itc_lms_unofficial.models.Notify.Companion.NOTIFY_ID_REGEX
 import net.accelf.itc_lms_unofficial.models.QuillData.Companion.parseQuill
+import net.accelf.itc_lms_unofficial.models.Report.ReportStatus.Companion.toReportStatus
 import net.accelf.itc_lms_unofficial.models.Survey.Companion.getSurveyId
 import net.accelf.itc_lms_unofficial.models.Test.Companion.getTestParams
 import net.accelf.itc_lms_unofficial.models.TimeTable.DayOfWeek.Companion.toDow
@@ -46,46 +48,47 @@ data class CourseDetail(
         override fun convert(value: ResponseBody): CourseDetail {
             document(value).let { document ->
                 var (department, courseCode, name) = Triple("", "", "")
-                COURSE_NAME_REGEX.matchEntire(
-                    document.select("#courseName .page_name_txt")
-                        .first().text()
-                )?.let {
-                    department = it.groupValues[1]
-                    courseCode = it.groupValues[2]
-                    name = it.groupValues[3]
-                }
+                document.select("#courseName .page_name_txt")
+                    .first()?.text()
+                    ?.let { COURSE_NAME_REGEX.matchEntire(it) }
+                    ?.let {
+                        department = it.groupValues[1]
+                        courseCode = it.groupValues[2]
+                        name = it.groupValues[3]
+                    }
 
                 var teachers: List<String>
                 var semester = ""
                 val periods = mutableListOf<Pair<TimeTable.DayOfWeek, Int>>()
                 document.select("#syllabusSupplement .page_supple_title").let { syllabus ->
-                    teachers = syllabus.first().select("span").last().text().split(",")
-                    SEMESTER_REGEX.matchEntire(
-                        syllabus.second().select(".subblock_form")
-                            .first().text()
-                    )?.let {
-                        semester = it.groupValues[1]
-                        it.groupValues[2].split(",").forEach { periodStr ->
-                            PERIOD_REGEX.matchEntire(periodStr)?.let { result ->
-                                periods.add(result.groupValues[1].toDow() to (result.groupValues[2].toIntOrNull()
-                                    ?: -1))
+                    teachers =
+                        syllabus.first()?.select("span")?.last()?.text()?.split(",") ?: listOf()
+                    syllabus.second().select(".subblock_form")
+                        .first()?.text()
+                        ?.let { SEMESTER_REGEX.matchEntire(it) }
+                        ?.let {
+                            semester = it.groupValues[1]
+                            it.groupValues[2].split(",").forEach { periodStr ->
+                                PERIOD_REGEX.matchEntire(periodStr)?.let { result ->
+                                    periods.add(result.groupValues[1].toDow() to (result.groupValues[2].toIntOrNull()
+                                        ?: -1))
+                                }
                             }
                         }
-                    }
                 }
 
                 return CourseDetail(
-                    document.select("input[name=\"idnumber\"]").first().`val`(),
+                    document.select("input[name=\"idnumber\"]").first()?.`val`() ?: "",
                     department,
                     courseCode,
                     name,
                     teachers,
                     semester,
                     periods,
-                    document.select("#syllabusSupplement .page_supple_txt p").first().html(),
+                    document.select("#syllabusSupplement .page_supple_txt p").first()?.html() ?: "",
                     document.select("#syllabusSupplement .page_online_date").firstOrNull()?.text()
                         ?.substringAfter(":")?.toDateTime(),
-                    document.select("head script:not([src])").last().html().let {
+                    document.select("head script:not([src])").last()?.html()?.let {
                         val jsonEscaped =
                             "{\"data\": ${SCRIPT_QUILL_REGEX.find(it)?.groupValues?.get(1)}}"
                         gson.fromJson<JsonObject>(jsonEscaped)
@@ -101,13 +104,13 @@ data class CourseDetail(
                             title = it.text()
                         }
 
-                        val times = row.select(".subblock_list_txt2").first().text().toTimeSpan()
+                        val times = row.select(".subblock_list_txt2").first()?.text()?.toTimeSpan()
 
                         Notify(
                             id,
                             title,
-                            times[0],
-                            times[1]
+                            times?.get(0),
+                            times?.get(1),
                         )
                     },
                     document.select(
@@ -126,11 +129,12 @@ data class CourseDetail(
                                             courseContents.add(builder!!.build())
                                         }
                                         builder = CourseContent.Builder()
-                                        builder!!.title = it.select("label").first().text()
+                                        builder!!.title = it.select("label").first()?.text() ?: ""
                                     }
                                     it.hasClass("subblock_line") -> {
                                         val times =
-                                            it.select(".subblock_form").first().text().toTimeSpan()
+                                            it.select(".subblock_form").first()!!.text()
+                                                .toTimeSpan()
                                         builder!!.from = times[0]
                                         builder!!.until = times[1]
                                     }
@@ -147,34 +151,36 @@ data class CourseDetail(
                                         }
                                         builder!!.materials.add(
                                             Material(
-                                                it.select(".resource_Id").first().text(),
-                                                it.select("#dlMaterialId").first().`val`(),
+                                                it.select(".resource_Id").first()?.text() ?: "",
+                                                it.select("#dlMaterialId").first()?.`val`() ?: "",
                                                 type,
                                                 when (type) {
                                                     Material.MaterialType.FILE -> it.select("label.fileDownload")
-                                                        .first().text()
+                                                        .first()?.text()
                                                     Material.MaterialType.LINK -> it.select("a")
-                                                        .first().text()
-                                                    else -> ""
-                                                },
+                                                        .first()?.text()
+                                                    else -> null
+                                                } ?: "",
                                                 when (type) {
                                                     Material.MaterialType.FILE -> File(
-                                                        it.select(".objectName").first().text(),
-                                                        it.select(".fileName").first().text(),
-                                                        File.ScanStatus.fromText(it.select(".scanStatus")
-                                                            .first().text())
+                                                        it.select(".objectName").first()?.text()
+                                                            ?: "",
+                                                        it.select(".fileName").first()?.text()
+                                                            ?: "",
+                                                        it.select(".scanStatus").first()?.text()
+                                                            .toScanStatus(),
                                                     )
                                                     else -> null
                                                 },
                                                 when (type) {
                                                     Material.MaterialType.LINK -> it.select("a")
-                                                        .first().attr("href")
+                                                        .first()?.attr("href")
                                                     else -> null
                                                 },
-                                                it.select(".result_list_txt").last().text()
-                                                    .toDate(),
-                                                it.select(".openEndDate").first().text()
-                                                    .toTimeSeconds()
+                                                it.select(".result_list_txt").last()?.text()
+                                                    ?.toDate(),
+                                                it.select(".openEndDate").first()?.text()
+                                                    ?.toTimeSeconds()
                                             )
                                         )
                                     }
@@ -187,43 +193,40 @@ data class CourseDetail(
                         },
                     document.select("#reportList .report_list_line").map { row ->
                         Report(
-                            row.select("input.reportId").first().`val`(),
-                            row.select(".result_list_txt.break a").first().text(),
-                            TIME_FORMAT.parse(
-                                row.select(".result_list_txt.timeStart").first().text()
-                            ),
-                            TIME_FORMAT.parse(
-                                row.select(".result_list_txt.timeEnd").first().text()
-                            ),
-                            Report.ReportStatus.fromSource(
-                                row.select(".result_list_txt.submitStatus label").first().text()
-                            )
+                            row.select("input.reportId").first()?.`val`() ?: "",
+                            row.select(".result_list_txt.break a").first()?.text() ?: "",
+                            row.select(".result_list_txt.timeStart").first()?.text()
+                                ?.toDateTime(),
+                            row.select(".result_list_txt.timeEnd").first()?.text()
+                                ?.toDateTime(),
+                            row.select(".result_list_txt.submitStatus label").first()?.text()
+                                .toReportStatus(),
                         )
                     },
                     document.select("#message #inquiryList .result_list_line").map { row ->
                         lateinit var id: String
                         lateinit var title: String
-                        row.select(".result_list_txt a").first().let {
+                        row.select(".result_list_txt a").first()?.let {
                             id = it.attr("href").getMessageId()
-                            title = it.text()
+                            title = it.text() ?: ""
                         }
 
                         var (status, by) = Pair<Message.MessageStatus, String?>(
                             Message.MessageStatus.COMPLETED,
                             null
                         )
-                        MESSAGE_STATUS_REGEX.matchEntire(
-                            row.select(".inquiryStatus")
-                                .first().text()
-                        )?.let {
-                            status = it.groupValues[1].toMessageStatus()
-                            by = it.groupValues[2]
-                        }
+                        row.select(".inquiryStatus")
+                            .first()?.text()
+                            ?.let { MESSAGE_STATUS_REGEX.matchEntire(it) }
+                            ?.let {
+                                status = it.groupValues[1].toMessageStatus()
+                                by = it.groupValues[2]
+                            }
 
                         Message(
                             id,
                             title,
-                            row.select(".createDate").first().text().toDateTime(),
+                            row.select(".createDate").first()?.text()?.toDateTime(),
                             status,
                             when (status) {
                                 Message.MessageStatus.COMPLETED -> by
@@ -238,7 +241,7 @@ data class CourseDetail(
                     document.select("#attendance .result_list_line").map { row ->
                         lateinit var id: String
                         lateinit var status: Attendance.AttendanceStatus
-                        row.select(".result_list_txt").last().let {
+                        row.select(".result_list_txt").last()?.let {
                             id = ATTENDANCE_ID_REGEX.matchEntire(it.attr("onclick"))
                                 ?.groupValues?.get(1) ?: ""
                             status = it.text().toAttendanceStatus()
@@ -246,7 +249,7 @@ data class CourseDetail(
 
                         Attendance(
                             id,
-                            row.select(".result_list_txt").first().text().toDate(),
+                            row.select(".result_list_txt").first()?.text()?.toDate(),
                             status
                         )
                     },
@@ -258,7 +261,7 @@ data class CourseDetail(
                             ".result_list_txt.break a," +
                                     ".result_list_txt.break label"
                         )
-                            .first().let { element ->
+                            .first()?.let { element ->
                                 if (element.tagName() == "a") {
                                     element.attr("href").getTestParams().let {
                                         id = it.first
@@ -281,7 +284,7 @@ data class CourseDetail(
                     document.select("#discussion #forumList .result_list_line").map { row ->
                         lateinit var id: String
                         lateinit var title: String
-                        row.select(".result_list_txt.break a").first().let { element ->
+                        row.select(".result_list_txt.break a").first()?.let { element ->
                             id = element.attr("href").getForumId()
                             title = element.text()
                         }
@@ -298,7 +301,7 @@ data class CourseDetail(
                     document.select("#questionnaire #surveyList .result_list_line").map { row ->
                         lateinit var id: String
                         lateinit var title: String
-                        row.select(".result_list_txt.break a").first().let { element ->
+                        row.select(".result_list_txt.break a").first()?.let { element ->
                             id = element.attr("href").getSurveyId()
                             title = element.text()
                         }
