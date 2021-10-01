@@ -31,6 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -211,7 +213,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
                     .padding(Values.Spacing.around)
                     .fillMaxWidth(),
             ) {
-                val (textDepartment, textPeriod, textCourseTitle, textCourseCode) = createRefs()
+                val (textDepartment, textPeriod, textCourseTitle) = createRefs()
 
                 NormalText(
                     text = courseDetail.department,
@@ -238,24 +240,23 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
                         },
                 )
                 NormalText(
-                    text = courseDetail.name,
+                    text = AnnotatedString.Builder()
+                        .apply {
+                            pushStyle(SpanStyle(
+                                color = MaterialTheme.colors.secondary,
+                                fontSize = MaterialTheme.typography.h5.fontSize,
+                            ))
+                            append(courseDetail.name)
+                            pop()
+                            append(" ")
+                            append(courseDetail.courseCode)
+                        }.toAnnotatedString(),
                     modifier = Modifier
                         .padding(Values.Spacing.around)
                         .constrainAs(textCourseTitle) {
                             top.linkTo(textDepartment.bottom)
                             start.linkTo(parent.start)
                             bottom.linkTo(parent.bottom)
-                        },
-                    style = MaterialTheme.typography.h5,
-                    color = MaterialTheme.colors.secondary,
-                )
-                NormalText(
-                    text = courseDetail.courseCode,
-                    modifier = Modifier
-                        .padding(Values.Spacing.around)
-                        .constrainAs(textCourseCode) {
-                            start.linkTo(textCourseTitle.end)
-                            bottom.linkTo(textCourseTitle.bottom)
                         },
                 )
             }
