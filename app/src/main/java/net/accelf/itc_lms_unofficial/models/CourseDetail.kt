@@ -347,7 +347,7 @@ data class CourseDetail(
             sendAttendanceId = "33333",
         )
 
-        private val ATTENDANCE_SEND_ID_REGEX = Regex("""attendancesSend\('\d+[A-Z]\d+,(\d+)'\);""")
+        private val ATTENDANCE_SEND_ID_REGEX = Regex("""attendancesSend\('[A-Za-z\d-]+,(\d+)'\);""")
         private val COURSE_NAME_REGEX = Regex("""(.+)\s([A-Za-f\d-]+)\s(.+)""")
         private val PERIOD_REGEX = Regex("""([^,/]+)/[^,/]*([\d０-９他]|Other)[^,/]*""")
         private val SEMESTER_REGEX =
