@@ -1,6 +1,7 @@
 package net.accelf.itc_lms_unofficial.models
 
 import net.accelf.itc_lms_unofficial.models.File.ScanStatus.Companion.toScanStatus
+import net.accelf.itc_lms_unofficial.models.Report.ReportStatus
 import net.accelf.itc_lms_unofficial.models.Report.ReportStatus.Companion.toReportStatus
 import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
 import net.accelf.itc_lms_unofficial.util.*
@@ -17,7 +18,7 @@ data class ReportDetail(
     val from: Date?,
     val until: Date?,
     val afterDeadlineSubmittable: Boolean,
-    val status: Report.ReportStatus,
+    val status: ReportStatus,
     val submissionType: SubmissionType,
     val submittedAt: Date?,
     val submittedFiles: List<SubmittedFile>,
@@ -63,8 +64,11 @@ data class ReportDetail(
                     times.last().text().toDateTime(),
                     document.select(".page_supple .subblock_form")
                         .last()?.text() in listOf("可", "Allowed"),
+                    // When there's no element of status, it could be assumed as not submitted.
+                    // If there's an element and failed to parse into ReportStatus, it should be
+                    // treated as UNKNOWN.
                     document.select("#report_statu .subblock_form span")
-                        .firstOrNull()?.text().toReportStatus(),
+                        .firstOrNull()?.text()?.toReportStatus() ?: ReportStatus.NOT_SUBMITTED,
                     when {
                         document.select("#submissionArea").isNotEmpty() -> SubmissionType.FILE
                         document.select("#submissionText").isNotEmpty() -> SubmissionType.TEXT_INPUT
@@ -117,7 +121,7 @@ data class ReportDetail(
             from = Date(),
             until = Date(),
             afterDeadlineSubmittable = false,
-            status = Report.ReportStatus.SUBMITTED_IN_TIME,
+            status = ReportStatus.SUBMITTED_IN_TIME,
             submissionType = SubmissionType.FILE,
             submittedAt = Date(),
             submittedFiles = listOf(SubmittedFile.sample, SubmittedFile.sample),
