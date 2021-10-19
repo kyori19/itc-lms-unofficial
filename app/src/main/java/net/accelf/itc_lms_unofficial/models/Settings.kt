@@ -17,7 +17,7 @@ data class Settings(
     class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<Settings>(baseUrl) {
 
-        override fun convert(value: ResponseBody): Settings? {
+        override fun convert(value: ResponseBody): Settings {
             document(value).let {
                 return Settings(
                     it.select("input[name=_csrf]").first()?.`val`() ?: "",

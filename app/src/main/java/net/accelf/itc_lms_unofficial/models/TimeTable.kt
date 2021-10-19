@@ -42,7 +42,7 @@ data class TimeTable(
 
     class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<TimeTable>(baseUrl) {
-        override fun convert(value: ResponseBody): TimeTable? {
+        override fun convert(value: ResponseBody): TimeTable {
             document(value).let {
                 lateinit var since: Date
                 var until: Date? = null

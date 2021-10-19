@@ -47,7 +47,7 @@ class DocumentConverterFactory(private val gson: Gson) : Converter.Factory() {
     }
 
     class StringConverter : Converter<ResponseBody, String> {
-        override fun convert(value: ResponseBody): String? {
+        override fun convert(value: ResponseBody): String {
             return value.string()
         }
     }

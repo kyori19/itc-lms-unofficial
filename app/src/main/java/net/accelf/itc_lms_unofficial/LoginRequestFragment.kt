@@ -31,7 +31,6 @@ class LoginRequestFragment : Fragment() {
     private val mutableUserName = mutableStateOf("")
     private val mutablePassword = mutableStateOf("")
 
-    @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +41,7 @@ class LoginRequestFragment : Fragment() {
         }
     }
 
-    @ExperimentalComposeUiApi
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     @Preview
     private fun LoginRequestFragmentContent() {

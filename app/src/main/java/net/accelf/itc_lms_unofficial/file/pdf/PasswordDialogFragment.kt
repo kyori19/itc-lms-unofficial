@@ -33,7 +33,7 @@ class PasswordDialogFragment : DialogFragment() {
     private val mutablePassword = mutableStateOf("")
     private val mutableIsWrong = mutableStateOf(false)
 
-    @ExperimentalComposeUiApi
+    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             AlertDialog.Builder(it).apply {

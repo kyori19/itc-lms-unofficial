@@ -15,7 +15,7 @@ open class RxAwareViewModel : ViewModel() {
 
     fun Disposable.autoDispose() = disposables.add(this)
 
-    fun <T> Single<T>.toLiveData(target: MutableLiveData<Request<T>>) {
+    fun <T : Any> Single<T>.toLiveData(target: MutableLiveData<Request<T>>) {
         target.postValue(Loading())
         subscribe(
             {
@@ -28,7 +28,7 @@ open class RxAwareViewModel : ViewModel() {
     }
 
     @JvmName("toLiveDataNullable")
-    fun <T> Single<T>.toLiveData(target: MutableLiveData<Request<T>?>) {
+    fun <T : Any> Single<T>.toLiveData(target: MutableLiveData<Request<T>?>) {
         target.postValue(Loading())
         subscribe(
             {

@@ -18,7 +18,7 @@ data class Updates(
 
     class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<Updates>(baseUrl) {
-        override fun convert(value: ResponseBody): Updates? {
+        override fun convert(value: ResponseBody): Updates {
             document(value).let { document ->
                 return Updates(
                     document.select("input[name=_csrf]").first()?.`val`() ?: "",

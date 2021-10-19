@@ -25,7 +25,7 @@ data class AttendanceSend(
     class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<AttendanceSend>(baseUrl) {
 
-        override fun convert(value: ResponseBody): AttendanceSend? {
+        override fun convert(value: ResponseBody): AttendanceSend {
             document(value).let { document ->
                 document.select("#attendancesSendForm").first().let { form ->
                     var allowedSince: Date? = null

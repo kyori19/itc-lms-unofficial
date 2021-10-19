@@ -27,7 +27,8 @@ class LoadingFragment : ActionableFragment(5000L) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             loadingText = it.getString(ARG_LOADING_TEXT)
-            actionType = valueOf(it.getString(ARG_ACTION_TYPE)) ?: ActionType.BACK_TO_MAIN
+            actionType =
+                valueOf<ActionType>(it.getString(ARG_ACTION_TYPE)) ?: ActionType.BACK_TO_MAIN
         }
     }
 

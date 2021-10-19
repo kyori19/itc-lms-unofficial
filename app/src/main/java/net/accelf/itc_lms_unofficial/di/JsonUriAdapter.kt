@@ -18,7 +18,7 @@ internal class JsonUriAdapter : JsonSerializer<Uri?>, JsonDeserializer<Uri?> {
         src: Uri?,
         typeOfSrc: Type?,
         context: JsonSerializationContext?,
-    ): JsonElement? {
+    ): JsonElement {
         return JsonPrimitive(src.toString())
     }
 }

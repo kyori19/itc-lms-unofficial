@@ -26,7 +26,9 @@ class PdfActivity : BaseActivity(false) {
                     replaceFragment(pdfFragment)
                     invalidateOptionsMenu()
                 }
-                is Loading -> {
+                is Loading,
+                is Progress,
+                -> {
                     replaceFragment(loadingFragment)
                     invalidateOptionsMenu()
                 }

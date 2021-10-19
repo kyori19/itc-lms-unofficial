@@ -44,7 +44,6 @@ class PdfFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    @ExperimentalUnsignedTypes
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,7 +54,6 @@ class PdfFragment : Fragment() {
         }
     }
 
-    @ExperimentalUnsignedTypes
     @Composable
     @Preview
     private fun PdfFragmentContent() {

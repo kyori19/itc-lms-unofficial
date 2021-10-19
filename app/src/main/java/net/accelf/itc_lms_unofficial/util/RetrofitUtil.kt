@@ -13,7 +13,7 @@ import retrofit2.HttpException
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-fun <T : Any?> Single<T>.call(owner: LifecycleOwner): SingleSubscribeProxy<T> {
+fun <T : Any> Single<T>.call(owner: LifecycleOwner): SingleSubscribeProxy<T> {
     return observeOn(AndroidSchedulers.mainThread())
         .autoDispose(from(owner, Lifecycle.Event.ON_DESTROY))
 }

@@ -17,7 +17,7 @@ data class NotifyDetail(
 
     class Converter(baseUrl: String) :
         DocumentConverterFactory.DocumentConverter<NotifyDetail>(baseUrl) {
-        override fun convert(value: ResponseBody): NotifyDetail? {
+        override fun convert(value: ResponseBody): NotifyDetail {
             document(value).let { document ->
                 val blocks =
                     document.select("#information_view .subblock_form span:not(#osiraseTitle)")
