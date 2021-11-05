@@ -2,10 +2,10 @@
 buildscript {
     ext.about_libs_version = '8.9.0'
     ext.autodispose_version = '2.0.0'
-    ext.compose_version = '1.1.0-alpha04'
+    ext.compose_version = '1.1.0-beta01'
     ext.dagger_version= '2.39.1'
     ext.hilt_version = '1.0.0'
-    ext.kotlin_version = '1.5.30'
+    ext.kotlin_version = '1.5.31'
     ext.lifecycle_version = '2.3.1'
     ext.retrofit_version = '2.9.0'
 
