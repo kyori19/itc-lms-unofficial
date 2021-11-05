@@ -122,7 +122,8 @@ class PdfFragment : Fragment() {
         return when (item.itemId) {
             R.id.actionDownload -> {
                 val dialog =
-                    ConfirmDownloadDialogFragment.newInstance(viewModel.downloadable.file.fileName)
+                    ConfirmDownloadDialogFragment.newInstance("application/pdf",
+                        viewModel.downloadable.file.fileName)
                 setFragmentResultListener(ConfirmDownloadDialogFragment::class.java.simpleName) { _, it ->
                     @Suppress("UNCHECKED_CAST")
                     (it.getSerializable(ConfirmDownloadDialogFragment.BUNDLE_RESULT) as Result<DownloadDialogResult>).onSuccess {

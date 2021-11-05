@@ -6,6 +6,7 @@ import net.accelf.itc_lms_unofficial.util.mutableLiveDataOf
 
 class DownloadDialogViewModel : ViewModel() {
 
+    lateinit var mimeType: String
     lateinit var defaultFileName: String
 
     val targetDirectoryUri = mutableLiveDataOf<Uri?>(null)
@@ -13,7 +14,8 @@ class DownloadDialogViewModel : ViewModel() {
 
     val targetDocumentUri = mutableLiveDataOf<Uri?>(null)
 
-    fun init(defaultDir: Uri?, defaultFileName: String) {
+    fun init(defaultDir: Uri?, mimeType: String, defaultFileName: String) {
+        this.mimeType = mimeType
         this.defaultFileName = defaultFileName
         targetDirectoryUri.postValue(defaultDir)
         fileName.postValue(defaultFileName)

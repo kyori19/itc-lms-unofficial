@@ -1,5 +1,6 @@
 package net.accelf.itc_lms_unofficial.file.download
 
+import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -55,7 +56,12 @@ data class Downloadable(
     }
 
     private fun <T> downloadWithDialog(fragment: T) where T : Fragment, T : ProvidesGson {
-        val confirmDownloadDialog = ConfirmDownloadDialogFragment.newInstance(file.fileName)
+        val confirmDownloadDialog = ConfirmDownloadDialogFragment.newInstance(
+            MimeTypeMap.getSingleton()
+                .getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(file.fileName))
+                ?: "*/*",
+            file.fileName,
+        )
         fragment.setFragmentResultListener(ConfirmDownloadDialogFragment::class.java.simpleName) { _, it ->
             @Suppress("UNCHECKED_CAST")
             (it.getSerializable(BUNDLE_RESULT) as Result<DownloadDialogResult>).onSuccess {

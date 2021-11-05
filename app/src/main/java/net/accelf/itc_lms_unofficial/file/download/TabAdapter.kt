@@ -69,12 +69,12 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
         private val viewModel by activityViewModels<DownloadDialogViewModel>()
 
-        private lateinit var launcher: ActivityResultLauncher<String>
+        private lateinit var launcher: ActivityResultLauncher<Pair<String, String>>
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
 
-            launcher = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+            launcher = registerForActivityResult(CreateDocumentWithMime()) { uri ->
                 viewModel.targetDocumentUri.postValue(uri)
             }
         }
@@ -87,7 +87,7 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
             }
 
             binding.textTargetDoc.setOnClickListener {
-                launcher.launch(viewModel.defaultFileName)
+                launcher.launch(viewModel.mimeType to viewModel.defaultFileName)
             }
         }
     }

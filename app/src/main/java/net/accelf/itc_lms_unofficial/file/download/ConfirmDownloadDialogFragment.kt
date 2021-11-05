@@ -127,6 +127,7 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
                     viewModel.init(
                         preferences.getString(Prefs.Keys.LAST_DOWNLOADED_URI, null)
                             ?.let { Uri.parse(it) },
+                        arguments?.getString(ARG_MIME_TYPE) ?: "*/*",
                         arguments?.getString(ARG_FILE_NAME, null) ?: "",
                     )
                 }
@@ -135,13 +136,15 @@ class ConfirmDownloadDialogFragment : DialogFragment() {
     }
 
     companion object {
+        private const val ARG_MIME_TYPE = "mime_type"
         private const val ARG_FILE_NAME = "file_name"
         const val BUNDLE_RESULT = "result"
 
-        fun newInstance(fileName: String): ConfirmDownloadDialogFragment {
+        fun newInstance(mimeType: String, fileName: String): ConfirmDownloadDialogFragment {
             return ConfirmDownloadDialogFragment().apply {
                 arguments = bundleOf(
-                    ARG_FILE_NAME to fileName
+                    ARG_MIME_TYPE to mimeType,
+                    ARG_FILE_NAME to fileName,
                 )
             }
         }
