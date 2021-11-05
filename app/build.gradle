@@ -13,8 +13,8 @@ android {
         applicationId "net.accelf.itc_lms_unofficial"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 20
-        versionName "1.4.5"
+        versionCode 21
+        versionName "1.4.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
