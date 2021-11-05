@@ -30,12 +30,10 @@ class InformationActivity : BaseActivity(true), BaseActivity.ProvidesUrl {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
 
-        menu?.apply {
-            findItem(R.id.actionLmsInformation)?.isVisible = false
-        }
+        menu.findItem(R.id.actionLmsInformation)?.isVisible = false
         return true
     }
 

@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 
-class CreateDocumentWithMime : ActivityResultContract<Pair<String, String>, Uri>() {
+class CreateDocumentWithMime : ActivityResultContract<Pair<String, String>, Uri?>() {
     override fun createIntent(context: Context, input: Pair<String, String>): Intent =
         Intent(Intent.ACTION_CREATE_DOCUMENT)
             .setType(input.first)

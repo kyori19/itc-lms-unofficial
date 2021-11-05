@@ -91,11 +91,11 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() 
         PullUpdatesWorker.enqueue(applicationContext)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar, menu)
 
         listOf(R.id.actionOpenInBrowser, R.id.actionCopyUrl, R.id.actionShareUrl).forEach {
-            menu?.findItem(it)?.isVisible = this is ProvidesUrl
+            menu.findItem(it)?.isVisible = this is ProvidesUrl
         }
 
         return true

@@ -16,12 +16,10 @@ class PreferenceActivity : BaseActivity(false) {
         replaceFragment(PreferenceFragment.newInstance())
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
 
-        menu?.apply {
-            findItem(R.id.actionSettings).isVisible = false
-        }
+        menu.findItem(R.id.actionSettings).isVisible = false
         return true
     }
 }

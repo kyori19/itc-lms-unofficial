@@ -1,12 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.about_libs_version = '8.9.0'
+    ext.about_libs_version = '8.9.1'
     ext.autodispose_version = '2.0.0'
     ext.compose_version = '1.1.0-beta01'
     ext.dagger_version= '2.39.1'
     ext.hilt_version = '1.0.0'
     ext.kotlin_version = '1.5.31'
-    ext.lifecycle_version = '2.3.1'
+    ext.lifecycle_version = '2.4.0'
     ext.retrofit_version = '2.9.0'
 
     repositories {

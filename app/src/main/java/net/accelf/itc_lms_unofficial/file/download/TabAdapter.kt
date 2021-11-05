@@ -30,16 +30,10 @@ class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
         private val viewModel by activityViewModels<DownloadDialogViewModel>()
 
-        private lateinit var launcher: ActivityResultLauncher<Uri>
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-
-            launcher =
-                registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
-                    viewModel.targetDirectoryUri.postValue(uri)
-                }
-        }
+        private val launcher =
+            registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+                viewModel.targetDirectoryUri.postValue(uri)
+            }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             viewModel.targetDirectoryUri.observe(viewLifecycleOwner) {

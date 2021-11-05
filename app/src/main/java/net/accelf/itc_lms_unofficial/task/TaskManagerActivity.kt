@@ -16,10 +16,10 @@ class TaskManagerActivity : BaseActivity(false) {
         replaceFragment(TaskManagerFragment.newInstance())
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
 
-        menu?.apply {
+        menu.apply {
             findItem(R.id.actionOpenTaskManager)?.isVisible = false
             findItem(R.id.actionFlush)?.isVisible = true
         }
