@@ -10,6 +10,7 @@ data class Attendance(
 ) : Serializable {
     enum class AttendanceStatus(private val texts: Set<String>) {
         UNKNOWN(setOf()),
+        BEFORE(setOf("登録期間外", "Outside the attendance submission period")),
         PRESENT(setOf("出席", "Present")),
         LATE(setOf("遅刻", "Late")),
         ABSENT(setOf("欠席", "Absent")),
@@ -23,6 +24,11 @@ data class Attendance(
     }
 
     companion object {
+        val sampleBefore = Attendance(
+            id = "44444",
+            date = Date(),
+            status = AttendanceStatus.BEFORE,
+        )
         val samplePresent = Attendance(
             id = "55555",
             date = Date(),

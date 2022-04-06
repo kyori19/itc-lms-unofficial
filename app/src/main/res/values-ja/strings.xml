@@ -140,4 +140,5 @@
     <string name="pref_text_logout">アプリケーションに保存されているクッキーを削除します。</string>
     <string name="hint_icon_expand">もっと見る</string>
     <string name="hint_icon_collapse">隠す</string>
+    <string name="hint_icon_before">登録期間外</string>
 </resources>
