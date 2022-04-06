@@ -48,7 +48,8 @@ import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.di.CustomLinkMovementMethod
 import net.accelf.itc_lms_unofficial.file.download.Downloadable
 import net.accelf.itc_lms_unofficial.file.download.Downloadable.Companion.preparePermissionRequestForDownloadable
-import net.accelf.itc_lms_unofficial.models.*
+import net.accelf.itc_lms_unofficial.models.CourseDetail
+import net.accelf.itc_lms_unofficial.models.Material
 import net.accelf.itc_lms_unofficial.permission.PermissionRequestable
 import net.accelf.itc_lms_unofficial.reportdetail.ReportDetailActivity
 import net.accelf.itc_lms_unofficial.ui.*
@@ -487,6 +488,7 @@ class CourseDetailFragment : Fragment(), PermissionRequestable, Downloadable.Pro
                         courseDetail.tests.forEach { test ->
                             Test(
                                 test = test,
+                                courseId = courseDetail.id,
                                 modifier = Modifier.padding(Values.Spacing.around),
                             )
                         }

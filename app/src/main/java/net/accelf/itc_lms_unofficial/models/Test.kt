@@ -11,6 +11,14 @@ class Test(
     val from: Date,
     val until: Date
 ) : Serializable {
+
+    fun getTakeUrl(courseId: String) =
+        lmsHostUrl.newBuilder("/lms/course/examination/taketop")!!
+            .addQueryParameter("idnumber", courseId)
+            .addQueryParameter("examinationId", id)
+            .build()
+            .toString()
+
     enum class TestStatus {
         TAKEN,
         NOT_TAKEN,
