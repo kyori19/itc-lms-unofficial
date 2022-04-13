@@ -60,9 +60,9 @@ class PreferenceFragment : PreferenceFragmentCompat() {
                     setTitle(R.string.pref_title_logout)
                     setSummary(R.string.pref_text_logout)
                     setOnPreferenceClickListener {
-                        sharedPreferences.edit()
-                            .putStringSet(Prefs.Keys.COOKIE, emptySet())
-                            .apply()
+                        sharedPreferences?.edit()
+                            ?.putStringSet(Prefs.Keys.COOKIE, emptySet())
+                            ?.apply()
                         cookieJar.loadCookies()
                         restartApp()
                         true
