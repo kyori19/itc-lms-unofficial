@@ -47,7 +47,7 @@ data class Updates(
                             Update(
                                 row.select("input#updateInfoId").first()?.`val`() ?: "",
                                 row.select("input#role").first()?.`val`().toRole(),
-                                row.select(".message_link label").first()?.text()?.toDateTime(),
+                                row.select(".info_updateData label").first()?.text()?.toDateTime(),
                                 url,
                                 row.select("input#idnumber").first()?.`val`() ?: "",
                                 courseName,
