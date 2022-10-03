@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import net.accelf.itc_lms_unofficial.databinding.FragmentStartLoginBinding
+import net.accelf.itc_lms_unofficial.login.LoginActivity
+import net.accelf.itc_lms_unofficial.util.startActivity
 
 class StartLoginFragment : Fragment(R.layout.fragment_start_login) {
 
@@ -15,7 +17,7 @@ class StartLoginFragment : Fragment(R.layout.fragment_start_login) {
         _binding = FragmentStartLoginBinding.bind(view)
 
         binding.buttonStartLogin.setOnClickListener {
-            startActivity(LoginActivity.intent(requireContext()))
+            requireContext().startActivity<LoginActivity>()
             activity?.finish()
         }
     }

@@ -1,9 +1,7 @@
 package net.accelf.itc_lms_unofficial.settings
 
 import android.os.Bundle
-import android.text.InputType
 import androidx.fragment.app.activityViewModels
-import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.Prefs
@@ -15,6 +13,7 @@ import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toTextStrings
 import net.accelf.itc_lms_unofficial.models.SelectOption.Companion.toValueStrings
 import net.accelf.itc_lms_unofficial.util.onSuccess
 import net.accelf.itc_lms_unofficial.util.restartApp
+import net.accelf.itc_lms_unofficial.util.startActivity
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -53,7 +52,6 @@ class PreferenceFragment : PreferenceFragmentCompat() {
                 }
             }
 
-            val automateLoginDependents = mutableListOf<EditTextPreference>()
             preferenceCategory(R.string.pref_category_login) {
                 preference {
                     key = Prefs.Keys.LOGOUT
@@ -72,40 +70,25 @@ class PreferenceFragment : PreferenceFragmentCompat() {
                     key = Prefs.Keys.AUTOMATE_LOGIN
                     setTitle(R.string.pref_title_automate_login)
                     setSummary(R.string.pref_text_automate_login)
-                    setOnPreferenceClickListener {
-                        if (!isChecked) {
-                            automateLoginDependents.forEach {
-                                it.text = ""
+                    setOnPreferenceChangeListener { _, newValue ->
+                        if (newValue as Boolean) {
+                            requireActivity().finish()
+                            requireContext().startActivity<CredentialsActivity>()
+                            false
+                        } else {
+                            encryptedDataStore.apply {
+                                listOf(
+                                    Prefs.Keys.LOGIN_USERNAME,
+                                    Prefs.Keys.LOGIN_PASSWORD,
+                                    Prefs.Keys.MFA_SECRET,
+                                ).forEach {
+                                    putString(it, "")
+                                }
                             }
+                            true
                         }
-                        false
                     }
                 }
-                editTextPreference {
-                    key = Prefs.Keys.LOGIN_USERNAME
-                    setTitle(R.string.login_hint_user_name)
-                    preferenceDataStore = encryptedDataStore
-                    automateLoginDependents.add(this)
-
-                    setOnBindEditTextListener {
-                        it.inputType =
-                            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                    }
-                }
-                editTextPreference {
-                    key = Prefs.Keys.LOGIN_PASSWORD
-                    setTitle(R.string.input_hint_password)
-                    preferenceDataStore = encryptedDataStore
-                    automateLoginDependents.add(this)
-
-                    setOnBindEditTextListener {
-                        it.inputType =
-                            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                    }
-                }
-            }
-            automateLoginDependents.forEach {
-                it.dependency = Prefs.Keys.AUTOMATE_LOGIN
             }
         }
     }

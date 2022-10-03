@@ -68,7 +68,7 @@ interface LMS {
     ): Single<ResponseBody>
 
     @GET("updateinfo")
-    fun getUpdates(): Single<Updates>
+    suspend fun getUpdates(): Updates
 
     @POST("updateinfo")
     @FormUrlEncoded

@@ -42,16 +42,6 @@ inline fun PreferenceParent.switchPreference(
     return pref
 }
 
-inline fun PreferenceParent.editTextPreference(
-    builder: EditTextPreference.() -> Unit,
-): EditTextPreference {
-    val pref = EditTextPreference(context)
-    pref.apply(applyToAll)
-    builder(pref)
-    addPref(pref)
-    return pref
-}
-
 inline fun PreferenceParent.preferenceCategory(
     @StringRes title: Int,
     builder: PreferenceParent.(PreferenceCategory) -> Unit,

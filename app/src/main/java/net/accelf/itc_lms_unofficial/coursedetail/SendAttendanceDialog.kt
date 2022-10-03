@@ -123,7 +123,7 @@ private fun SendAttendanceDialogContent(
         PasswordField(
             value = password,
             modifier = Modifier.padding(Values.Spacing.around),
-            onChange = {
+            setValue = {
                 onPasswordChange(it)
                 isErrorOnPassword = false
             },

@@ -17,7 +17,7 @@
         <activity
             android:name=".coursedetail.CourseDetailActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".login.LoginActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -38,6 +38,9 @@
         <activity
             android:name=".settings.PreferenceActivity"
             android:label="@string/title_settings" />
+        <activity
+            android:name=".settings.CredentialsActivity"
+            android:label="@string/pref_title_automate_login" />
         <activity
             android:name=".information.InformationActivity"
             android:label="@string/title_information" />

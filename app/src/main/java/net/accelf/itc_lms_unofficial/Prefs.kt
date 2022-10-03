@@ -12,6 +12,7 @@ class Prefs {
             const val LMS_LANGUAGE = "lms_language"
             const val LOGIN_USERNAME = "login_username"
             const val LOGIN_PASSWORD = "login_password"
+            const val MFA_SECRET = "mfa_secret"
         }
     }
 }

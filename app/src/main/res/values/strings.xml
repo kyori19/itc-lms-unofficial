@@ -5,14 +5,14 @@
     <string name="button_start_login">Login to ITC-LMS</string>
 
     <string name="loading_default">Loading…</string>
-    <string name="loading_check_account">Checking login state…</string>
     <string name="loading_information">Loading information…</string>
     <string name="loading_time_table">Loading timetable…</string>
     <string name="loading_course_detail">Loading course details…</string>
     <string name="loading_report_detail">Loading report details…</string>
+    <string name="loading_initialize_login">Initializing login…</string>
+    <string name="loading_login">Logging in…</string>
 
     <string name="err_default">Something wrong happened!</string>
-    <string name="err_page_not_loaded">Page is not loaded.</string>
     <string name="err_login_failed">Login failed.</string>
 
     <string name="snackbar_hint_restart">Back to top page?</string>
@@ -30,11 +30,18 @@
     <string name="button_dialog_open">Open</string>
     <string name="button_dialog_send">Send</string>
 
-    <string name="login_instruction">This application saves only cookies and won\'t save passwords.</string>
+    <string name="login_instruction">Login using UTokyo Account.\nThis application saves only cookies and won\'t save passwords.</string>
+    <string name="mfa_instruction">Multi Factor Authentication</string>
+    <string name="mfa_register_instruction">Go to Microsoft My Sign-Ins and add new Authenticator Application.</string>
+    <string name="without_mfa">If you don\'t need to configure MFA:</string>
     <string name="login_hint_user_name">Username</string>
     <string name="input_error_password_wrong">Wrong password!</string>
     <string name="input_hint_password">Password</string>
+    <string name="input_hint_verification_code">Verification Code</string>
+    <string name="input_hint_mfa_secret">Secret Key</string>
     <string name="button_login">Login</string>
+    <string name="button_save">Save</string>
+    <string name="button_without_mfa">Complete without MFA</string>
 
     <string name="course_temp">TEMP</string>
 
@@ -46,13 +53,11 @@
     <string name="text_attendance_already_sent">The attendance for this class is already sent.</string>
     <string name="text_attendance_error">Some errors found.</string>
 
-    <string name="dialog_message_bug_notify">Sorry for inconvenience. Because of the bug of ITC-LMS, you have to re-login to ITC-LMS. Currently we are trying to fix this issue, so please hold on.</string>
     <string name="dialog_message_open_link">Open this link?\n%s</string>
     <string name="dialog_message_open_video_unsupported">Sorry, watching video is not supported now.</string>
     <string name="dialog_message_send_attendance_success">Completed sending attendance. Now updating data…</string>
     <string name="dialog_tab_title_download_doc">Document</string>
     <string name="dialog_tab_title_download_tree">Dir &amp; File Name</string>
-    <string name="dialog_title_bug_notify">Sorry! Problem happened while loading!</string>
     <string name="dialog_title_confirm_download">Download file</string>
     <string name="dialog_title_open_link">Open link</string>
     <string name="dialog_title_open_video">Watch video</string>

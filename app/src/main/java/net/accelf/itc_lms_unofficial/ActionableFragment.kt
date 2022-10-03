@@ -11,13 +11,6 @@ open class ActionableFragment(
     private val delayMillis: Long = 0,
 ) : Fragment() {
 
-    enum class ActionType {
-        BACK_TO_MAIN,
-        RETRY_LOGIN,
-    }
-
-    var actionType = ActionType.BACK_TO_MAIN
-
     private var snackbar: Snackbar? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,31 +36,13 @@ open class ActionableFragment(
     }
 
     private fun showAction(view: View) {
-        when (actionType) {
-            ActionType.BACK_TO_MAIN -> {
-                snackbar =
-                    Snackbar.make(view, R.string.snackbar_hint_restart, Snackbar.LENGTH_INDEFINITE)
-                        .apply {
-                            setAction(R.string.snackbar_button_restart) {
-                                restartApp()
-                            }
+        snackbar = Snackbar.make(view, R.string.snackbar_hint_restart, Snackbar.LENGTH_INDEFINITE)
+            .apply {
+                setAction(R.string.snackbar_button_restart) {
+                    restartApp()
+                }
 
-                            show()
-                        }
+                show()
             }
-            ActionType.RETRY_LOGIN -> {
-                snackbar =
-                    Snackbar.make(view, R.string.snackbar_hint_re_login, Snackbar.LENGTH_INDEFINITE)
-                        .apply {
-                            setAction(R.string.snackbar_button_re_login) {
-                                if (activity is LoginActivity) {
-                                    (activity as LoginActivity).retryLogin()
-                                }
-                            }
-
-                            show()
-                        }
-            }
-        }
     }
 }

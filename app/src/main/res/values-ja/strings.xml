@@ -3,11 +3,9 @@
     <string name="hint_start_login">まだログインしていないかセッションが失効しているようです。\nアプリを利用するためにログインしてください。</string>
     <string name="button_start_login">ITC-LMSにログイン</string>
     <string name="loading_default">読込中…</string>
-    <string name="loading_check_account">アカウント情報を確認中…</string>
     <string name="loading_time_table">時間割を読込中…</string>
     <string name="loading_course_detail">講義を読込中…</string>
     <string name="err_default">問題が発生しました。</string>
-    <string name="err_page_not_loaded">ログインページが読み込めませんでした。</string>
     <string name="err_login_failed">ログインに失敗しました。</string>
     <string name="snackbar_hint_restart">トップページに戻る</string>
     <string name="snackbar_button_restart">再起動</string>
@@ -18,7 +16,7 @@
     <string name="button_dialog_cancel">キャンセル</string>
     <string name="button_dialog_close">閉じる</string>
     <string name="button_dialog_open">開く</string>
-    <string name="login_instruction">このアプリはクッキーのみを保存し、パスワードは保存しません。</string>
+    <string name="login_instruction">UTokyo Accountでログイン\nこのアプリはクッキーのみを保存し、パスワードは保存しません。</string>
     <string name="login_hint_user_name">ユーザー名</string>
     <string name="input_error_password_wrong">パスワードが間違っています</string>
     <string name="input_hint_password">パスワード</string>
@@ -116,8 +114,6 @@
     <string name="pref_category_language">言語</string>
     <string name="pref_title_lms_language">ITC-LMSの言語</string>
     <string name="pref_text_lms_language">ITC-LMS内の言語設定です。\nこの設定は他のブラウザでの設定に影響を与える、またはその影響を受ける可能性があります。</string>
-    <string name="dialog_title_bug_notify">読込中に問題が発生しました</string>
-    <string name="dialog_message_bug_notify">ご迷惑をおかけし申し訳ありません。ITC-LMSのバグにより、再度ログインが必要です。現在この問題の修正を試みておりますので、しばらくお待ち下さい。</string>
     <string name="hint_icon_temporarily_saved">一時保存済</string>
     <string name="input_hint_target_doc">ファイルのパス</string>
     <string name="dialog_tab_title_download_tree">ディレクトリ + ファイル名</string>
@@ -141,4 +137,13 @@
     <string name="hint_icon_expand">もっと見る</string>
     <string name="hint_icon_collapse">隠す</string>
     <string name="hint_icon_before">登録期間外</string>
+    <string name="input_hint_verification_code">認証コード</string>
+    <string name="loading_initialize_login">ログインを初期化しています…</string>
+    <string name="loading_login">ログインしています…</string>
+    <string name="mfa_instruction">多要素認証</string>
+    <string name="mfa_register_instruction">Microsoft My Sign-Insで認証アプリを追加します</string>
+    <string name="input_hint_mfa_secret">秘密鍵</string>
+    <string name="button_save">保存</string>
+    <string name="without_mfa">多要素認証を設定する必要がない場合</string>
+    <string name="button_without_mfa">多要素認証なしで完了</string>
 </resources>
