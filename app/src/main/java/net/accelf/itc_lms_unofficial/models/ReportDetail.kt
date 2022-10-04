@@ -44,14 +44,15 @@ data class ReportDetail(
                 val details = document.select("#report_view .textareaContents")
                 val times = document.select(".page_supple .label span")
                     .filter { TIME_SPAN_REGEX.matches(it.text()) }
-                val feedback = document.select("#report_statu .subblock_form.break div")
+                val (feedback, submission) = document.select("#report_statu:not(.underArea)")
+                    .let { it.firstOrNull() to it.secondOrNull() }
 
                 return ReportDetail(
-                    document.select("#reportId").first()?.`val`() ?: "",
-                    document.select("input[name=idnumber]").first()?.`val`() ?: "",
-                    details.first()?.text() ?: "",
-                    details.second().html(),
-                    document.select(".page_supple .subblock_form div")
+                    id = document.select("#reportId").first()?.`val`() ?: "",
+                    courseId = document.select("input[name=idnumber]").first()?.`val`() ?: "",
+                    title = details.first()?.text() ?: "",
+                    description = details.second().html(),
+                    attachmentFiles = document.select(".page_supple .subblock_form div")
                         .filter { it.select("div .downloadFile").size == 1 }
                         .map {
                             File(
@@ -60,23 +61,23 @@ data class ReportDetail(
                                 it.select(".scanStatus").first()?.text().toScanStatus(),
                             )
                         },
-                    times.first().text().toDateTime(),
-                    times.last().text().toDateTime(),
-                    document.select(".page_supple .subblock_form")
+                    from = times.first().text().toDateTime(),
+                    until = times.last().text().toDateTime(),
+                    afterDeadlineSubmittable = document.select(".page_supple .subblock_form")
                         .last()?.text() in listOf("可", "Allowed"),
                     // When there's no element of status, it could be assumed as not submitted.
                     // If there's an element and failed to parse into ReportStatus, it should be
                     // treated as UNKNOWN.
-                    document.select("#report_statu .subblock_form span")
-                        .firstOrNull()?.text()?.toReportStatus() ?: ReportStatus.NOT_SUBMITTED,
-                    when {
+                    status = submission?.select(".subblock_form span")?.firstOrNull()
+                        ?.text()?.toReportStatus() ?: ReportStatus.NOT_SUBMITTED,
+                    submissionType = when {
                         document.select("#submissionArea").isNotEmpty() -> SubmissionType.FILE
                         document.select("#submissionText").isNotEmpty() -> SubmissionType.TEXT_INPUT
                         else -> SubmissionType.NOT_ALLOWED
                     },
-                    document.select("#report_statu .subblock_form div")
-                        .lastOrNull()?.text()?.toDateTime(),
-                    document.select("#submissionFileResult .result_list_line").map { row ->
+                    submittedAt = submission?.select(".subblock_form div")?.lastOrNull()
+                        ?.text()?.toDateTime(),
+                    submittedFiles = document.select("#submissionFileResult .result_list_line").map { row ->
                         val cols = row.select(".result_list_txt span:not(.downloadLink)")
 
                         return@map SubmittedFile(
@@ -90,19 +91,19 @@ data class ReportDetail(
                             )
                         )
                     },
-                    document.select("textarea#submissionText").firstOrNull()?.text() ?: "",
-                    feedback.firstOrNull()?.text() ?: "",
-                    feedback.secondOrNull()?.text() ?: "",
-                    document.select("#report_statu .subblock_form:not(.break) div")
-                        .takeIf { it.size > 2 }?.first()?.text()?.toDateTime(),
-                    feedback.thirdOrNull()?.text() ?: "",
-                    document.select("#report_statu .subblock_form.break .downloadFile")
-                        .firstOrNull()?.let {
+                    submittedText = document.select("textarea#submissionText").firstOrNull()?.text() ?: "",
+                    fedBackBy = feedback?.select(".subblock_form.break div")?.firstOrNull()?.text() ?: "",
+                    feedbackComment = feedback?.select(".subblock_form.break div")?.secondOrNull()?.text() ?: "",
+                    fedBackAt = feedback?.select(".subblock_form:not(.break) div")
+                        ?.firstOrNull()?.text()?.toDateTime(),
+                    feedbackScore = feedback?.select(".subblock_form.break div")?.thirdOrNull()?.text() ?: "",
+                    feedbackFile = feedback?.select(".subblock_form.break .downloadFile")
+                        ?.firstOrNull()?.let {
                             File(
-                                document.select("#report_statu .subblock_form.break .objectName")
+                                objectName = feedback.select(".subblock_form.break .objectName")
                                     .first()?.text() ?: "",
-                                it.text(),
-                                document.select("#report_statu .subblock_form.break .scanStatus")
+                                fileName = it.text(),
+                                scanStatus = feedback.select(".subblock_form.break .scanStatus")
                                     .first()?.text().toScanStatus(),
                             )
                         },
