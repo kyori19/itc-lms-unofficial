@@ -7,21 +7,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.accelf.itc_lms_unofficial.BaseActivity
 import net.accelf.itc_lms_unofficial.LoadingFragment
 import net.accelf.itc_lms_unofficial.R
-import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.network.lmsHostUrl
 import net.accelf.itc_lms_unofficial.util.replaceFragment
 import net.accelf.itc_lms_unofficial.util.withResponse
 import okhttp3.HttpUrl
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ReportDetailActivity : BaseActivity(false), BaseActivity.ProvidesUrl {
 
     private lateinit var courseId: String
     private lateinit var reportId: String
-
-    @Inject
-    lateinit var lms: LMS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

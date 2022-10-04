@@ -21,15 +21,25 @@ import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.aboutlibraries.LibsBuilder
 import net.accelf.itc_lms_unofficial.databinding.ActivityBaseBinding
 import net.accelf.itc_lms_unofficial.information.InformationActivity
+import net.accelf.itc_lms_unofficial.models.Update
+import net.accelf.itc_lms_unofficial.network.LMS
+import net.accelf.itc_lms_unofficial.services.DeleteNotificationService
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
+import net.accelf.itc_lms_unofficial.task.EXTRA_CSRF
+import net.accelf.itc_lms_unofficial.task.EXTRA_UPDATE
 import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
+import net.accelf.itc_lms_unofficial.util.call
 import net.accelf.itc_lms_unofficial.util.startActivity
 import okhttp3.HttpUrl
+import javax.inject.Inject
 
 // FIXME: The base class of the @AndroidEntryPoint, contains a constructor with default parameters.
 //  This is currently not supported by the Hilt Gradle plugin.
 open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() {
+
+    @Inject
+    lateinit var lms: LMS
 
     lateinit var binding: ActivityBaseBinding
 
@@ -50,6 +60,7 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityBaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -89,6 +100,10 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() 
         }
 
         PullUpdatesWorker.enqueue(applicationContext)
+
+        (intent.getSerializableExtra(EXTRA_UPDATE) as Update?)?.let { update ->
+            startService(DeleteNotificationService.intent(this, update, intent.getStringExtra(EXTRA_CSRF)!!))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

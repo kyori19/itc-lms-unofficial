@@ -20,7 +20,6 @@ import net.accelf.itc_lms_unofficial.LoadingPage
 import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.di.SavedCookieJar
-import net.accelf.itc_lms_unofficial.network.LMS
 import net.accelf.itc_lms_unofficial.ui.NormalText
 import net.accelf.itc_lms_unofficial.ui.Root
 import net.accelf.itc_lms_unofficial.ui.Values
@@ -30,9 +29,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity(false), BaseActivity.ProvidesUrl {
-
-    @Inject
-    lateinit var lms: LMS
 
     @Inject
     lateinit var cookieJar: SavedCookieJar

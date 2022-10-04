@@ -45,7 +45,7 @@
             android:name=".information.InformationActivity"
             android:label="@string/title_information" />
 
-        <service android:name=".services.NotificationService" />
+        <service android:name=".services.DeleteNotificationService" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

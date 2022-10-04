@@ -12,7 +12,6 @@ import java.io.Serializable
 data class Updates(
     val csrf: String,
     val updates: List<Update>,
-    val throwable: Throwable?,
 ) : Serializable {
 
     class Converter(baseUrl: String) :
@@ -58,7 +57,6 @@ data class Updates(
                                 row.select("input#info_action").first()?.`val`().toActionType(),
                             )
                         },
-                    null
                 )
             }
         }

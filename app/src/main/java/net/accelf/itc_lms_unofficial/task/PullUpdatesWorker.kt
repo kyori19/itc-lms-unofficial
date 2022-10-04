@@ -26,7 +26,7 @@ import net.accelf.itc_lms_unofficial.login.LoginActivity
 import net.accelf.itc_lms_unofficial.login.LoginHelper
 import net.accelf.itc_lms_unofficial.models.Update
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.services.NotificationService
+import net.accelf.itc_lms_unofficial.services.DeleteNotificationService
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.util.*
 import retrofit2.HttpException
@@ -124,7 +124,6 @@ class PullUpdatesWorker @AssistedInject constructor(
         return Result.failure()
     }
 
-    @SuppressLint("LaunchActivityFromNotification")
     private fun Update.toNotification(csrf: String): Notification {
         return NotificationCompat.Builder(context, Notifications.Channels.LMS_UPDATES)
             .apply {
@@ -140,18 +139,15 @@ class PullUpdatesWorker @AssistedInject constructor(
 
                 setAutoCancel(true)
 
-                val openIntent =
-                    NotificationService.intent(context, this@toNotification, csrf, false)
-                val pendingOpenIntent = PendingIntent.getService(
+                val openIntent = toPendingIntent(
                     context,
+                    csrf,
                     80000000 + id.toInt(),
-                    openIntent,
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT,
                 )
-                setContentIntent(pendingOpenIntent)
+                setContentIntent(openIntent)
 
-                val cancelIntent =
-                    NotificationService.intent(context, this@toNotification, csrf, true)
+                val cancelIntent = DeleteNotificationService.intent(context, this@toNotification, csrf)
                 val pendingCancelIntent = PendingIntent.getService(
                     context,
                     90000000 + id.toInt(),

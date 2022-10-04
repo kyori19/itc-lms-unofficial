@@ -76,7 +76,7 @@ interface LMS {
         @Field("_csrf") csrf: String,
         @Field("deleteUpdateInfoList") targetIds: List<String>,
         @Field("_method") method: String = "delete",
-    ): Single<Updates>
+    ): Single<ResponseBody>
 
     @GET("lms/course/report/submission")
     fun getReportDetail(
