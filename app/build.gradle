@@ -15,8 +15,8 @@ android {
         applicationId "net.accelf.itc_lms_unofficial"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 26
-        versionName "2.0.1"
+        versionCode 27
+        versionName "2.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
