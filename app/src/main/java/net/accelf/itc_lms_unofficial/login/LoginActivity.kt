@@ -20,6 +20,7 @@ import net.accelf.itc_lms_unofficial.LoadingPage
 import net.accelf.itc_lms_unofficial.Prefs
 import net.accelf.itc_lms_unofficial.R
 import net.accelf.itc_lms_unofficial.di.SavedCookieJar
+import net.accelf.itc_lms_unofficial.network.ProxyInterface
 import net.accelf.itc_lms_unofficial.ui.NormalText
 import net.accelf.itc_lms_unofficial.ui.Root
 import net.accelf.itc_lms_unofficial.ui.Values
@@ -50,6 +51,11 @@ class LoginActivity : BaseActivity(false), BaseActivity.ProvidesUrl {
                                 state = State.LOGIN_FORM
                             },
                             login = { username, password ->
+                                if ("Google" in username) {
+                                    special()
+                                    return@Content
+                                }
+
                                 state = State.LOADING
                                 runCatching { helper.login(username, password) }
                                     .onSuccess {
@@ -81,6 +87,11 @@ class LoginActivity : BaseActivity(false), BaseActivity.ProvidesUrl {
                 }
             }
         )
+    }
+
+    private fun special() {
+        (lms as ProxyInterface).__special__dummy__()
+        restartApp()
     }
 
     private fun onLogin(credentials: Set<String>) {

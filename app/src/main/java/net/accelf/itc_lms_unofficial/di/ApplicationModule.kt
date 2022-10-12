@@ -8,13 +8,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import net.accelf.itc_lms_unofficial.BuildConfig
-import net.accelf.itc_lms_unofficial.network.DocumentConverterFactory
-import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.network.lmsHostUrl
+import net.accelf.itc_lms_unofficial.network.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import java.lang.reflect.Proxy
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Singleton
 
@@ -37,13 +36,19 @@ class ApplicationModule {
             followRedirects(false)
         }.build()
 
-        return Retrofit.Builder()
+        val lms = Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(lmsHostUrl)
             .addConverterFactory(DocumentConverterFactory(gson))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(LMS::class.java)
+
+        return Proxy.newProxyInstance(
+            LMS::class.java.classLoader,
+            arrayOf(LMS::class.java, ProxyInterface::class.java),
+            LMSProxy(lms),
+        ) as LMS
     }
 
     @Provides
