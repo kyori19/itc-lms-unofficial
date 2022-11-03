@@ -15,6 +15,7 @@ import net.accelf.itc_lms_unofficial.permission.Permission
 import net.accelf.itc_lms_unofficial.permission.PermissionRequestable
 import net.accelf.itc_lms_unofficial.permission.PermissionRequestable.Companion.preparePermissionRequest
 import net.accelf.itc_lms_unofficial.util.TIME_SECONDS_FORMAT
+import net.accelf.itc_lms_unofficial.util.getSerializableCompat
 import okhttp3.ResponseBody
 import java.io.Serializable
 import java.util.*
@@ -64,7 +65,7 @@ data class Downloadable(
         )
         fragment.setFragmentResultListener(ConfirmDownloadDialogFragment::class.java.simpleName) { _, it ->
             @Suppress("UNCHECKED_CAST")
-            (it.getSerializable(BUNDLE_RESULT) as Result<DownloadDialogResult>).onSuccess {
+            (it.getSerializableCompat<Result<DownloadDialogResult>>(BUNDLE_RESULT)!!).onSuccess {
                 FileDownloadWorker.enqueue(fragment.requireContext(), fragment.gson, this, it)
             }
         }

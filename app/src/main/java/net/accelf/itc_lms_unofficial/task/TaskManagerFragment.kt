@@ -5,6 +5,7 @@ import android.view.View
 import net.accelf.itc_lms_unofficial.BaseFragment
 import net.accelf.itc_lms_unofficial.databinding.FragmentTaskManagerBinding
 import net.accelf.itc_lms_unofficial.file.download.FileDownloadWorker
+import net.accelf.itc_lms_unofficial.updates.PullUpdatesWorker
 
 class TaskManagerFragment :
     BaseFragment<FragmentTaskManagerBinding>(FragmentTaskManagerBinding::class.java) {

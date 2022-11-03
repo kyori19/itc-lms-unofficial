@@ -66,11 +66,11 @@ class DummyLMS : LMS {
         TODO("Not yet implemented")
     }
 
-    override fun deleteUpdates(
+    override suspend fun deleteUpdates(
         csrf: String,
         targetIds: List<String>,
         method: String,
-    ): Single<ResponseBody> {
+    ): ResponseBody {
         TODO("Not yet implemented")
     }
 

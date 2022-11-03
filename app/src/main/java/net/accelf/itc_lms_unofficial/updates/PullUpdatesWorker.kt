@@ -1,6 +1,5 @@
-package net.accelf.itc_lms_unofficial.task
+package net.accelf.itc_lms_unofficial.updates
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
@@ -26,7 +25,6 @@ import net.accelf.itc_lms_unofficial.login.LoginActivity
 import net.accelf.itc_lms_unofficial.login.LoginHelper
 import net.accelf.itc_lms_unofficial.models.Update
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.services.DeleteNotificationService
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
 import net.accelf.itc_lms_unofficial.util.*
 import retrofit2.HttpException
@@ -147,8 +145,8 @@ class PullUpdatesWorker @AssistedInject constructor(
                 )
                 setContentIntent(openIntent)
 
-                val cancelIntent = DeleteNotificationService.intent(context, this@toNotification, csrf)
-                val pendingCancelIntent = PendingIntent.getService(
+                val cancelIntent = CancelNotificationReceiver.intent(context, this@toNotification, csrf)
+                val pendingCancelIntent = PendingIntent.getBroadcast(
                     context,
                     90000000 + id.toInt(),
                     cancelIntent,

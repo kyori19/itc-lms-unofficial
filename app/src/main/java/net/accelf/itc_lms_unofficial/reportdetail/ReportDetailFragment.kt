@@ -32,6 +32,7 @@ import net.accelf.itc_lms_unofficial.ui.*
 import net.accelf.itc_lms_unofficial.ui.Values.Theme.success
 import net.accelf.itc_lms_unofficial.util.TIME_FORMAT
 import net.accelf.itc_lms_unofficial.util.fromHtml
+import net.accelf.itc_lms_unofficial.util.getSerializableCompat
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -55,7 +56,7 @@ class ReportDetailFragment : Fragment(),
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            reportDetail = it.getSerializable(ARG_REPORT_DETAIL) as ReportDetail
+            reportDetail = it.getSerializableCompat(ARG_REPORT_DETAIL)!!
         }
     }
 

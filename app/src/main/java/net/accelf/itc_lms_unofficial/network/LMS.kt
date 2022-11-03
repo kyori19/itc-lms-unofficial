@@ -72,11 +72,11 @@ interface LMS {
 
     @POST("updateinfo")
     @FormUrlEncoded
-    fun deleteUpdates(
+    suspend fun deleteUpdates(
         @Field("_csrf") csrf: String,
         @Field("deleteUpdateInfoList") targetIds: List<String>,
         @Field("_method") method: String = "delete",
-    ): Single<ResponseBody>
+    ): ResponseBody
 
     @GET("lms/course/report/submission")
     fun getReportDetail(

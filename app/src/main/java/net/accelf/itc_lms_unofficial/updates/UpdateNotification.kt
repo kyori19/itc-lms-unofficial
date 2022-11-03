@@ -1,4 +1,4 @@
-package net.accelf.itc_lms_unofficial.task
+package net.accelf.itc_lms_unofficial.updates
 
 import android.content.Context
 import androidx.core.app.TaskStackBuilder

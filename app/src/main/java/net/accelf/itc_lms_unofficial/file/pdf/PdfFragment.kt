@@ -126,7 +126,7 @@ class PdfFragment : Fragment() {
                         viewModel.downloadable.file.fileName)
                 setFragmentResultListener(ConfirmDownloadDialogFragment::class.java.simpleName) { _, it ->
                     @Suppress("UNCHECKED_CAST")
-                    (it.getSerializable(ConfirmDownloadDialogFragment.BUNDLE_RESULT) as Result<DownloadDialogResult>).onSuccess {
+                    (it.getSerializableCompat<Result<DownloadDialogResult>>(ConfirmDownloadDialogFragment.BUNDLE_RESULT)!!).onSuccess {
                         val file = it.writeToFile(requireContext(),
                             MIME_PDF,
                             (viewModel.pdfFile.value as Success).data)

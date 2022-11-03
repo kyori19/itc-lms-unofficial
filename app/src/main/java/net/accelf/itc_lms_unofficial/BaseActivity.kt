@@ -23,13 +23,13 @@ import net.accelf.itc_lms_unofficial.databinding.ActivityBaseBinding
 import net.accelf.itc_lms_unofficial.information.InformationActivity
 import net.accelf.itc_lms_unofficial.models.Update
 import net.accelf.itc_lms_unofficial.network.LMS
-import net.accelf.itc_lms_unofficial.services.DeleteNotificationService
 import net.accelf.itc_lms_unofficial.settings.PreferenceActivity
-import net.accelf.itc_lms_unofficial.task.EXTRA_CSRF
-import net.accelf.itc_lms_unofficial.task.EXTRA_UPDATE
-import net.accelf.itc_lms_unofficial.task.PullUpdatesWorker
+import net.accelf.itc_lms_unofficial.updates.EXTRA_CSRF
+import net.accelf.itc_lms_unofficial.updates.EXTRA_UPDATE
+import net.accelf.itc_lms_unofficial.updates.PullUpdatesWorker
 import net.accelf.itc_lms_unofficial.task.TaskManagerActivity
-import net.accelf.itc_lms_unofficial.util.call
+import net.accelf.itc_lms_unofficial.updates.CancelNotificationReceiver
+import net.accelf.itc_lms_unofficial.util.getSerializableExtraCompat
 import net.accelf.itc_lms_unofficial.util.startActivity
 import okhttp3.HttpUrl
 import javax.inject.Inject
@@ -101,8 +101,8 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() 
 
         PullUpdatesWorker.enqueue(applicationContext)
 
-        (intent.getSerializableExtra(EXTRA_UPDATE) as Update?)?.let { update ->
-            startService(DeleteNotificationService.intent(this, update, intent.getStringExtra(EXTRA_CSRF)!!))
+        (intent.getSerializableExtraCompat<Update>(EXTRA_UPDATE))?.let { update ->
+            sendBroadcast(CancelNotificationReceiver.intent(this, update, intent.getStringExtra(EXTRA_CSRF)!!))
         }
     }
 
