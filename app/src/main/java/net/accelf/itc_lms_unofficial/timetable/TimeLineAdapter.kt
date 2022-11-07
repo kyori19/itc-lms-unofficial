@@ -14,7 +14,9 @@ class TimeLineAdapter(
         val item = items[position]
 
         holder.binding.apply {
-            textPeriod.text = (position + 1).toString()
+            // avoid false positive of TextView string concatenation
+            val period = position + 1
+            textPeriod.text = period.toString()
 
             cardCourse.apply {
                 cardElevation = when (item.isEmpty()) {

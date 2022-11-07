@@ -39,12 +39,12 @@ fun Update.toPendingIntent(context: Context, csrf: String, requestCode: Int, fla
                 )
             })
 
-            @Suppress("NON_EXHAUSTIVE_WHEN_STATEMENT")
             when (contentType) {
                 Update.ContentType.REPORT -> {
                     editIntentAt(intents.indexOfFirst { it.component?.className == CourseDetailActivity::class.java.name })
                         ?.putCourseId(courseId)
                 }
+                else -> {}
             }
 
             editIntentAt(intentCount - 1)?.apply {

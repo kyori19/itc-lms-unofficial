@@ -167,8 +167,6 @@ open class BaseActivity(val swipeRefreshEnabled: Boolean) : AppCompatActivity() 
                     showLicense = true
                     aboutAppName = getString(R.string.app_name)
                     activityTitle = getString(R.string.title_about)
-
-                    withLibraryModification(libraries)
                 }.start(this)
                 true
             }
