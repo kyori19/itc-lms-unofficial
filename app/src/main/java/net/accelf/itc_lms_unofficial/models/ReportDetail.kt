@@ -44,7 +44,8 @@ data class ReportDetail(
                 val details = document.select("#report_view .textareaContents")
                 val times = document.select(".page_supple .label span")
                     .filter { TIME_SPAN_REGEX.matches(it.text()) }
-                val (feedback, submission) = document.select("#report_statu:not(.underArea)")
+                val (submission, feedback) = document.select("#report_statu:not(.underArea)")
+                    .reversed()
                     .let { it.firstOrNull() to it.secondOrNull() }
 
                 return ReportDetail(
